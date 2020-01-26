@@ -1,0 +1,47 @@
+{block content}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link"><a n:href=":Admin:Dashboard:">Administrace</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link"><a n:href=":Admin:ContentManager:">Správa obsahu</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link breadcumb-current"><a n:href=":Admin:ContentManager:Edit, id => $presenter->getParam('id')">Upravit</a></span>
+</div>
+
+
+
+{include '../components/defaultFormLayout.latte', name => 'Upravit obsah', form => sectionForm}
+
+
+{/block}
+{block scripts}
+{include parent}
+<script src="{$basePath}/ext/tinymce/js/tinymce/tinymce.min.js"></script>
+<script>
+	//tinymce.init({ selector:'textarea#frm-newsForm-long' });
+	tinymce.init({
+		selector: 'textarea.tinymce',
+		height: 350,
+		theme: 'modern',
+		plugins: [
+			'advlist autolink lists link image {*charmap*} preview hr {*anchor*}',
+			'searchreplace wordcount visualblocks visualchars code',
+			'insertdatetime media nonbreaking save table contextmenu directionality',
+			'emoticons paste textcolor colorpicker textpattern imagetools autosave'
+		],
+		removed_menuitems: 'newdocument',
+		toolbar1: 'insertfile undo redo | styleselect | bold italic | {*alignleft aligncenter alignright alignjustify |*} bullist numlist {*outdent indent*} | link image | code',
+		//toolbar2: 'print preview media | forecolor backcolor emoticons',
+		table_default_attributes: {
+			class: 'table table-striped'
+		},
+		table_default_styles: {
+			width: '100%'
+		},
+		entity_encoding : 'raw',
+		image_advtab: true,
+		convert_urls: false,
+		language: 'cs_CZ',
+	});
+</script>
+{/block}

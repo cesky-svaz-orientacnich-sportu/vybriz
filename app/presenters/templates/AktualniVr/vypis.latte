@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+	<meta charset="UTF-8">
+	<title>Výpis přihlášek</title>
+	<link rel="shortcut icon" type="image/png" href="{$basePath}/favicon.png">
+
+	<style>
+		body {
+			color: #000;
+			background: #F2F2F2;
+			font-family: Arial, sans-serif;
+			font-size: 13px;
+			line-height:1.4;
+			width: 860px;
+			margin: 3px auto;
+		}
+
+		table td {
+			vertical-align: top;
+		}
+
+		#content {
+			background: #FFF;
+			padding: 15px 25px;
+		}
+
+		.cols1 { width: 80px; }
+		.cols3 { width: 260px; //80*3 + 10*2 }
+		.cols6 { width: 530px; //80*6 + 10*5 }
+
+		.cols1, .cols3, .cols6 { margin-right: 10px; }
+
+		.warning {
+			color: #654D49;
+			background-color: #F0E2DB;
+			border: 1px solid #E2AAA9;
+			border-radius: 2px;
+			padding: 0 16px;
+			width: 800px;
+			margin: 15px auto 25px;
+		}
+
+		h1 {
+			font-family: Arial;
+			font-size: 19px;
+			text-align: center;
+			margin: 10px 0 5px;
+		}
+
+		h2 {
+			font-family: Arial;
+			font-size: 17px;
+			margin: 26px 0 5px;
+		}
+
+		h3 {
+			font-family: Arial;
+			font-size: 14px;
+			margin: 14px 0 6px;
+			color: #666;
+		}
+
+	</style>
+	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
+</head>
+<body>
+
+{*dump $prihlasky*}
+{var $p2 = NULL}
+
+
+<div id="content">
+
+	<h1>Výběrové řízení na pořadatele závodů ČSOS v roce {$rok}</h1>
+	<h2 style="text-align:center;font-size: 14px;">(přehled přihlášek {$kolo}. kola)</h2>
+
+	{foreach $terminy as $termin_id => $sdruzeny_id}
+
+		<h2>
+			{$termin_id ? $terminy_table[$termin_id]->termin|date:'j.n.'}
+			{if $sdruzeny_id}+ {$terminy_table[$sdruzeny_id]->termin|date:'j.n.'}{/if}
+
+			{if $termin_id}: {$druhy[$terminy_table[$termin_id]->druh_id]}{/if}
+			{if $sdruzeny_id}+ {$druhy[$terminy_table[$sdruzeny_id]->druh_id]}{/if}
+		</h2>
+
+		{if isset($prihlasky[$termin_id])}
+		{foreach $prihlasky[$termin_id] as $klub => $prihlaska}
+
+			{var $oba_dny = isset($prihlasky[$sdruzeny_id][$klub]) ? 1 : 0}
+			{var $p1 = $prihlaska}
+			<?php unset($prihlasky[$termin_id][$klub]) ?>
+
+
+			<h3>
+				{if $oba_dny}Oba dny
+					{var $p2 = $prihlasky[$sdruzeny_id][$klub]}
+					<?php unset($prihlasky[$sdruzeny_id][$klub]) ?>
+				{else}Pouze 1. den{/if}
+				- {$klub} ({$p1->poradatel})
+
+				{if $p1->dalsi_poradatele || ($oba_dny && $p2->dalsi_poradatele)}
+					+ {$p1->dalsi_poradatele}
+					{if $oba_dny && $p1->dalsi_poradatele != $p2->dalsi_poradatele && $p2->dalsi_poradatele}, {$p2->dalsi_poradatele}{/if}
+				{/if}
+			</h3>
+			
+
+			<table>
+
+				<tr>
+					<td>Preference</td>
+					{if $p1->preference || ($oba_dny && $p2->preference)}
+						<td>{$p1->preference ? $p1->preference}
+						{if $p2 && $p1->preference != $p2->preference}, {$p2->preference}{/if}
+						</td>
+					{else}
+						<td><i>neurčena</i></td>
+					{/if}
+				</tr>
+				<tr>
+					<td>Termín</td>
+					<td><a n:href="AktualniVr:Detail $p1->id" target="_blank">{$terminy_table[$p1->termin]->termin|date:'j.n.'}</a> {if $oba_dny && $p1->termin != $p2->termin}+ <a n:href="AktualniVr:Detail $p2->id" target="_blank">{$terminy_table[$p2->termin]->termin|date:'j.n.'}</a>{/if}</td>
+				</tr>
+
+				<tr>
+					<td>Prostor</td>
+					<td>{$p1->prostor_zavodu}</td>
+				</tr>
+				{if $oba_dny && $p1->prostor_zavodu != $p2->prostor_zavodu}
+					<tr>
+						<td>Prostor 2. den</td>
+						<td>{$p2->prostor_zavodu}</td>
+					</tr>
+				{/if}
+
+				<tr>
+					<td>Terén</td>
+					<td>{$p1->popis_terenu}</td>
+				</tr>
+				{if $oba_dny && $p1->prostor_zavodu != $p2->prostor_zavodu}
+					<tr>
+						<td>Terén 2. den</td>
+						<td>{$p2->prostor_zavodu}</td>
+					</tr>
+				{/if}
+
+				<tr>
+					<td>Web</td>
+					<td><a href="{$p1->web}" target="_blank">{$p1->web}</a></td>
+				</tr>
+			</table>
+
+		{/foreach}
+		{/if}
+
+
+
+		{if isset($prihlasky[$sdruzeny_id])}
+		{foreach $prihlasky[$sdruzeny_id] as $klub => $prihlaska}
+
+			{var $p1 = $prihlaska}
+			<?php unset($prihlasky[$termin_id][$klub]) ?>
+
+			<h3>Pouze 2. den</h3>
+
+			<table>
+				<tr>
+					<td>Termín</td>
+					<td>{$p1->termin}</td>
+				</tr>
+				<tr>
+					<td>Oddíl</td>
+					<td>{$klub}</td>
+				</tr>
+				<tr n:if="$p1->dalsi_poradatele">
+					<td>Další pořadatelé</td>
+					<td>{$p1->dalsi_poradatele}</td>
+				</tr>
+				<tr>
+					<td>Prostor</td>
+					<td>{$p1->prostor_zavodu}</td>
+				</tr>
+				<tr>
+					<td>Terén</td>
+					<td>{$p1->popis_terenu}</td>
+				</tr>
+				<tr>
+					<td>Web</td>
+					<td><a href="{$p1->web}" target="_blank">{$p1->web}</a></td>
+				</tr>
+			</table>
+
+		{/foreach}
+		{/if}
+
+	{/foreach}
+
+
+{dump $prihlasky}
+
+</div>
+
+
+<div style="opacity:0.4; margin: 10px auto; width: 400px;" class="noprint"><endora></div>
+
+</body>
+</html>

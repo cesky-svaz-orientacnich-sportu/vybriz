@@ -1,0 +1,281 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Přihláška #{$prihlaska['id']|padLeft:4,'0'}</title>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+<h1>Přihláška #{$prihlaska['id']|padLeft:4,'0'}</h1>
+<h2>{$druh->druh}, {$termin->termin|niceDate}</h2>
+
+<table style="width:100%;">
+	<tr><td colspan="2"><b>Základní údaje a informace o přihlášce</b></td></tr>
+	<tr>
+		<td width="25%" style="width:25%;max-width:25%;">id</td>
+		<td>#{$prihlaska['id']|padLeft:4,'0'}</td>
+	</tr>
+	{*
+	<tr>
+		<td>stav</td>
+		<td>{$prihlaska['stav']}</td>
+	</tr>
+	*}
+	<tr>
+		<td>Autor přihlášky</td>
+		<td>{$prihlaska['jmeno']} ({$prihlaska['registracni_cislo']}), {$prihlaska['pozice_v_oddile']}</td>
+	</tr>
+	<tr>
+		<td>E-mail</td>
+		<td>{$prihlaska['mail']}{*<a href="mailto:{$prihlaska['mail']}">{$prihlaska['mail']}</a>*}</td>
+	</tr>
+	<tr>
+		<td>Vytvořeno</td>
+		<td>{$prihlaska['created_at']|date:'j.n. Y, H:i:s'}</td>
+	</tr>
+	<tr>
+		<td>Kolo VŘ</td>
+		<td>{$kolo->rok} - <b>{$kolo->kolo}.&nbsp;kolo</b></td>
+	</tr>
+	<tr>
+		<td>Druh závodu</td>
+		<td><b>{$druh->druh}</b></td>
+	</tr>
+	<tr>
+		<td>Termín</td>
+		<td><b>{$termin->termin|niceDate}</b></td>
+	</tr>
+	<tr>
+		<td>Pořadatel</td>
+		<td>{$prihlaska['poradatel']} ({$prihlaska['poradatel_zkratka']})</td>
+	</tr>
+	<tr>
+		<td>Web. prezentace</td>
+		<td><a n:tag-if="$prihlaska['web']" href="{$prihlaska['web']}" target="_blank">{$prihlaska['web'] ? $prihlaska['web'] : 'neurčena'}</a></td>
+	</tr>
+
+
+
+<tr><td colspan="2"><b>Prostor a centrum závodu</b></td></tr>
+
+	<tr>
+		<td>Prostor závodu</td>
+		<td>{$prihlaska['prostor_zavodu']}</td>
+	</tr>
+	<tr>
+		<td>Popis terénu</td>
+		<td>{$prihlaska['popis_terenu']}</td>
+	</tr>
+
+
+
+<tr><td colspan="2"><b>Organizátoři</b></td></tr>
+
+	<tr>
+		<td>Ředitel závodu</td>
+		<td>{$prihlaska['reditel_zavodu']}</td>
+	</tr>
+	<tr>
+		<td>Hlavní rozhodčí</td>
+		<td>{$prihlaska['hlavni_rozhodci']} (třída {$prihlaska['hlavni_rozhodci_trida']})</td>
+	</tr>
+	<tr>
+		<td>Stavitel tratí</td>
+		<td>{$prihlaska['stavitel_trati']} (třída {$prihlaska['stavitel_trati_trida']})</td>
+	</tr>
+
+
+
+
+<tr><td colspan="2"><b>Údaje o mapě</b></td></tr>
+
+
+	<tr>
+		<td>km<sup>2</sup> lesa</td>
+		<td>{$prihlaska['km_lesa'] ? $prihlaska['km_lesa'] : '-'} km<sup>2</sup></td>
+	</tr>
+	<tr>
+		<td>km<sup>2</sup> celkem</td>
+		<td>{$prihlaska['km_celkem'] ? $prihlaska['km_celkem'] : '-'} km<sup>2</sup></td>
+	</tr>
+	<tr>
+		<td>km<sup>2</sup> nezmapovaného lesa</td>
+		<td>{$prihlaska['km_nezmapovaneho_lesa'] ? $prihlaska['km_nezmapovaneho_lesa'] : '-'} km<sup>2</sup></td>
+	</tr>
+	<tr>
+		<td>Odpovědný zpracovatel mapy</td>
+		<td>{$prihlaska['odpovedny_zpracovatel_mapy'] ? $prihlaska['odpovedny_zpracovatel_mapy'] : '-'}</td>
+	</tr>
+
+
+<tr><td colspan="2"><b>Mapy pokrývající prostor</b></td></tr>
+<tr><td colspan="2">
+{if count($mapy_pokryvajici_prostor)>0}
+	<tr>
+		<td>Mapa</td>
+		<td>Oddíl</td>
+		<td>Měřítko</td>
+		<td>Rok</td>
+		<td>Disciplína</td>
+	</tr>
+	<tr n:foreach="$mapy_pokryvajici_prostor as $mapa">
+		<td><a href="{$mapa->odkaz}" target="_blank">{$mapa->mapa}</a></td>
+		<td>{$mapa->oddil}</td>
+		<td>{$mapa->meritko}</td>
+		<td>{$mapa->rok}</td>
+		<td>{$mapa->disciplina}</td>
+	</tr>
+</table>
+{else}
+	<p>Žádná předchozí mapa prostoru.</p>
+{/if}
+</td></tr>
+
+
+<tr><td colspan="2"><b>Předchozí aktivity prostoru</b></td></tr>
+<tr><td colspan="2">
+{if count($probehle_zavody)>0}
+<table class="table">
+	<tr>
+		<td>Datum</td>
+		<td>Typ závodu</td>
+	</tr>
+	<tr n:foreach="$probehle_zavody as $zavod">
+		<td>{$zavod->datum}</td>
+		<td>{$zavod->typ_zavodu}</td>
+	</tr>
+</table>
+{else}
+	<p>Žádný probéhlý závod.</p>
+{/if}
+</td></tr>
+
+
+<tr><td colspan="2"><b>Vlastníci pozemků a orgány státní správy</b></td></tr>
+
+	<tr>
+		<td>Seznam vlastníků lesních a dalších pozemků, přes které povede závod</td>
+		<td>{$prihlaska['vlastnici_pozemku_zavod'] ? $prihlaska['vlastnici_pozemku_zavod'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>Seznam vlastníků pozemku určených pro shromaždiště</td>
+		<td>{$prihlaska['vlastnici_pozemku_shromazdiste'] ? $prihlaska['vlastnici_pozemku_shromazdiste'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>Seznam vlastníků pozemku určených pro parkování</td>
+		<td>{$prihlaska['vlastnici_pozemku_parkovani'] ? $prihlaska['vlastnici_pozemku_parkovani'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>Seznam katastrálních území, na kterých se závod bude konat</td>
+		<td>{$prihlaska['katastr_zavod'] ? $prihlaska['katastr_zavod'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>Seznam dotčených orgánů ochrany lesa dle zákona o lesích</td>
+		<td>{$prihlaska['organy_ochrany_lesa'] ? $prihlaska['organy_ochrany_lesa'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>Seznam dotčených orgánů ochrany přírody dle zákona o ochraně přírody a krajiny 114/1992</td>
+		<td>{$prihlaska['organy_ochrany_prirody'] ? $prihlaska['organy_ochrany_prirody'] : '-'}</td>
+	</tr>
+
+
+
+<tr><td colspan="2"><b>Chráněná území</b></td></tr>
+
+	<tr>
+		<td>Národní park</td>
+		<td>{$prihlaska['np'] ? $prihlaska['np'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>CHKO</td>
+		<td>{$prihlaska['chko'] ? $prihlaska['chko'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>Národní přírodní rezervace</td>
+		<td>{$prihlaska['narodni_prirodni_rezervace'] ? $prihlaska['narodni_prirodni_rezervace'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>Přírodní rezervace</td>
+		<td>{$prihlaska['prirodni_rezervace'] ? $prihlaska['prirodni_rezervace'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>Národní přírodní památka</td>
+		<td>{$prihlaska['narodni_prirodni_pamatka'] ? $prihlaska['narodni_prirodni_pamatka'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>Přírodní památka</td>
+		<td>{$prihlaska['prirodni_pamatka'] ? $prihlaska['prirodni_pamatka'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>Přírodní park</td>
+		<td>{$prihlaska['prirodni_park'] ? $prihlaska['prirodni_park'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>Ptačí oblast<br>(dle Natura 2000)</td>
+		<td>{$prihlaska['natura2000_ptaci_oblast'] ? $prihlaska['natura2000_ptaci_oblast'] : '-'}</td>
+	</tr>
+	<tr>
+		<td>Evropsky významná lokalita<br>(dle Natura 2000)</td>
+		<td>{$prihlaska['natura2000_evropsky_vyznamna_lokalita'] ? $prihlaska['natura2000_evropsky_vyznamna_lokalita'] : '-'}</td>
+	</tr>
+
+
+
+
+
+<tr><td colspan="2"><b>Poznámky</b></td></tr>
+<p>{$prihlaska['poznamky'] ? $prihlaska['poznamky'] : 'Nevyplněno.'}</p>
+
+
+<tr><td colspan="2"><b>Přiložené soubory</b></td></tr>
+
+{if count($soubory) > 0}
+	<tr>
+		<td>ID</td>
+		<td>Název souboru</td>
+	</tr>
+	<tr n:foreach="$soubory as $soubor">
+		<td>#{$soubor->id|padLeft:4,'0'}</td>
+		<td><a href="{$basePath}{$soubor->url}" class="t-file" target="_blank">{$soubor->nazev}</a></td>
+	</tr>
+
+{else}
+
+<tr><td colspan="2">Nebyl přiložen žádný soubor.</td></tr>
+
+{/if}
+
+
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,166 @@
+{block content}
+{var $k_id = $presenter->getParam('id')}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link"><a n:href=":Admin:Dashboard:">Administrace</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link"><a n:href=":Admin:Kola:">Kola</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link breadcumb-current"><a n:href=":Admin:Kola:Detail, id => $k_id">Detail</a></span>
+</div>
+
+
+
+<fieldset>
+	<legend>Přehled</legend>
+	<table class="table">
+		<tbody>
+			<tr>
+				<td class="cols2">ID</td>
+				<td class="cols7">{$kolo['id']}</td>
+			</tr>
+			<tr>
+				<td class="cols2">Rok</td>
+				<td class="cols7">{$kolo['rok']}</td>
+			</tr>
+			<tr>
+				<td class="cols2">Kolo</td>
+				<td class="cols7">{$kolo['kolo']}. kolo</td>
+			</tr>
+			<tr>
+				<td class="cols2">Přihlášky od</td>
+				<td class="cols7">{$kolo['od']|date:'j. n. Y'}</td>
+			</tr>
+			<tr>
+				<td class="cols2">Přihlášky do</td>
+				<td class="cols7">{$kolo['do']|date:'j. n. Y'}</td>
+			</tr>
+			<tr>
+				<td class="cols2">Podmínky</td>
+				<td class="cols7">
+				{if $kolo['podminky_link']}
+					<a href="{$kolo['podminky_link']}" target="_blank">Sdělení sekce {$kolo['podminky_cislo_sdeleni']?:'???'}</a>
+				{else}
+					<span class="soft">není nastaveno</span>
+				{/if}
+				</td>
+			</tr>
+			<tr>
+				<td class="cols2">Výsledky</td>
+				<td class="cols7">
+				{if $kolo['vysledky_link']}
+					<a href="{$kolo['vysledky_link']}" target="_blank">Sdělení sekce {$kolo['vysledky_cislo_sdeleni']?:'???'}</a>
+				{else}
+					<span class="soft">není nastaveno</span>
+				{/if}
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a n:href=":Admin:Kola:Edit, id => $kolo['id']" class="btn small">Upravit</a>
+</fieldset>
+
+
+
+
+<fieldset {* n:cache="terminy.$k_id, expire => '12 months', tags => ['terminy/' . (int) $k_id]" *}>
+	<legend>Termíny <span class="soft">({count($terminy)})</span></legend>
+	<table class="table" style="width:100%;" n:if="$terminy">
+		<thead>
+			<tr>
+				<td>ID</td>
+				<td>souvis. ID</td>
+				<td>druh</td>
+				<td>datum závodu</td>
+			</tr>
+		</thead>
+		<tbody>
+		{foreach $terminy as $termin}
+			{dump $termin}
+			<tr class="{$iterator->isOdd()?'odd-row':'even-row'}">
+				<td><a n:href=":Admin:Terminy:Edit, id => $termin['id'], kolo_id => $k_id">{$termin['id']}</a></td>
+				<td>{$termin['souvisejici_termin']}</td>
+				<td>{$termin['druh']}</td>
+				<td>{$termin['termin']|date:"j. n. Y"}</td>
+			</tr>
+		{/foreach}
+		</tbody>
+	</table>
+
+	<a n:href=":Admin:Terminy:Manage, id => $kolo['id']" class="btn small">Spravovat termíny</a>
+</fieldset>
+
+
+<fieldset {* n:cache="prihlasky.$k_id, expire => '12 months', tags => ['prihlasky/' . (int) $k_id]" *}>
+	<legend>Přihlášky <span class="soft">({count($prihlasky)})</span></legend>
+
+
+	{if $user->isAllowed('admin/prihlasky', 'edit') || $kolo['do'] < Nette\Utils\DateTime::from('now')}
+		<table id="tavr-table" class="table" style="width:100%;" n:if="$prihlasky">
+			<thead>
+				<tr>
+					<td>ID</td>
+					<td>souvis. ID</td>
+					<td>odd.</td>
+					<td>datum</td>
+					<td>druh</td>
+					<td colspan="2">vytvořeno</td>
+					<td></td>
+					<td style="text-align:center;">S</td>
+					<td colspan="1">akce</td>
+				</tr>
+			</thead>
+			<tbody>
+			{var $prev_date}
+			{var $odd_date = 0}
+			{foreach $prihlasky as $prihlaska}
+				{if $prev_date != $prihlaska['termin']}
+					{var $odd_date = $odd_date && 1 ? 0 : 1}
+					{var $prev_date = $prihlaska['termin']}
+				{/if}
+				{dump $prihlaska}
+				<tr class="{$odd_date==1?'odd':'even'}-row{if $prihlaska['stav'] == 'draft'} soft{/if}{if $prihlaska['oris_id'] !== NULL} oris-confirmed{/if}">
+					<td><a n:href=":Archiv:Detail, id => $prihlaska['id']" target="_blank" n:tag-if="$prihlaska['stav'] != 'draft'">{$prihlaska['id']}</a></td>
+					<td>{$prihlaska['sdruzena_prihlaska_id']?:"-"}</td>
+					<td>{$prihlaska['poradatel_zkratka']}</td>
+					<td>{$prihlaska['termin']|date:"j. n."}</td>
+					<td class="{if $prihlaska['stav'] != 'draft'}event-type-{$prihlaska['druh_id']}{/if}">{$prihlaska['druh']}</td>
+					<td title="{$prihlaska['created_at']|date:'j. n. Y, H:i:s'}">{$prihlaska['created_at']|date:"d.m."}</td>
+					<td title="{$prihlaska['created_at']|date:'j. n. Y, H:i:s'}">{$prihlaska['created_at']|date:"H:i"}</td>
+					<td><a n:href=":Admin:Prihlasky:Oris, id => $prihlaska['id']" class="icon-oris">ORIS</a></td>
+					<td>
+						{if $prihlaska['stav'] == "submitted" && $prihlaska['oris_id'] === NULL} <span class="pdot-submitted" title="Žádost byla přijata">Přijato</span>
+						{elseif $prihlaska['stav'] == "submitted" && $prihlaska['oris_id'] !== NULL} <span class="pdot-selected">Vybráno</span>
+						{elseif $prihlaska['stav'] == "draft"} <span class="pdot-draft" title="Žádost nebyla dokončena">Koncept</span>
+						{else}?
+						{/if}
+					</td>
+					<td>
+						{if $prihlaska['stav'] != "draft"}
+							<a n:href=":Admin:Prihlasky:Edit, id => $prihlaska['id']">Upravit</a>
+						{else}-
+						{/if}
+					</td>
+					{*<td>
+						{if $prihlaska['stav'] != "draft"}
+						<a n:href=":Archiv:Detail, id => $prihlaska['id']" target="_blank">Zobrazit</a>
+						{else}-
+						{/if}
+					</td>*}
+				</tr>
+			{/foreach}
+			</tbody>
+		</table>
+	{else}
+		<p>Přehled přihlášek bude zpřístupněn po skončení kola.</p>
+	{/if}
+
+
+	<br>
+	<a n:href=":Admin:Prihlasky:Vypis, kolo_id => $kolo['id'], rok => $kolo['rok']" target="_blank" class="btn small">Výpis přihlášek</a>
+	<a n:href=":Admin:Prihlasky:MultiOris, id => $kolo['id']" class="btn small">Nastavit OrisId</a>
+	<a n:href="refreshAll!" class="btn small">Načíst z databáze</a>
+</fieldset>
+
+{/block}

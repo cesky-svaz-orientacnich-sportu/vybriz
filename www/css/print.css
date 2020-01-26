@@ -1,0 +1,14 @@
+body {
+	font: 11px/1.4 Arial, sans-serif;
+	color: black;
+	background: none;
+	width: 100%;
+}
+
+a img { border: none; }
+
+#ajax-spinner {
+	display: none;
+}
+
+.noprint, .no-print { display: none; }

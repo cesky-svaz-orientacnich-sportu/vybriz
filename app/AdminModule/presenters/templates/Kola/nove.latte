@@ -1,0 +1,65 @@
+{block content}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link"><a n:href=":Admin:Dashboard:">Administrace</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link"><a n:href=":Admin:Kola:">Kola</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link breadcumb-current"><a n:href=":Admin:Kola:Nove">Přidat kolo</a></span>
+</div>
+
+
+
+{include '../components/defaultFormLayout.latte', name => 'Přidat nové kolo', form => koloForm}
+
+
+{/block}
+
+
+{block head}
+<link href="{$basePath}/ext/jquery-ui/css/theme/jquery-ui-1.10.4.custom.css" rel="stylesheet">
+{/block}
+
+{block scripts}
+{include parent}
+
+<script type="text/javascript" src="{$basePath}/ext/jquery-ui/js/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="{$basePath}/ext/jquery-ui/js/jquery-ui-1.10.4.custom.min.js"></script>
+
+<script type="text/javascript">
+	$(function() {
+		$('#' + {$control['koloForm-t_od']->htmlId} + ', #' + {$control['koloForm-t_do']->htmlId}).datepicker({
+			dateFormat: "yy-mm-dd",
+			showOtherMonths: true,
+			showAnim: "blind",
+			duration: 150,
+			numberOfMonths: 4,
+			showButtonPanel: true
+		});
+
+
+    $.datepicker.regional['cs'] = {
+        closeText: 'Zavřít',
+        prevText: '&#x3c;Dříve',
+        nextText: 'Později&#x3e;',
+        currentText: 'Nyní',
+        monthNames: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen',
+            'září', 'Říjen', 'Listopad', 'Prosinec'],
+        monthNamesShort: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen',
+            'září', 'Říjen', 'Listopad', 'Prosinec'],
+        dayNames: ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'],
+        dayNamesShort: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
+        dayNamesMin: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
+        weekHeader: 'Týd',
+        dateFormat: 'yy-mm-dd',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.setDefaults($.datepicker.regional['cs']);
+
+	});
+</script>
+
+{/block}

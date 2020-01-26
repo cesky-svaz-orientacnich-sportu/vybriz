@@ -1,0 +1,39 @@
+{block content}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link"><a n:href=":Admin:Dashboard:">Administrace</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link breadcumb-current"><a n:href=":Admin:Uzivatele:">Uživatelé</a></span>
+</div>
+
+
+<table class="table" style="width:100%;" n:if="$uzivatele">
+	<thead>
+		<tr>
+			<td>ID</td>
+			<td>Uživatel</td>
+			<td>Jméno</td>
+			<td>Příjmení</td>
+			<td>E-mail</td>
+			<td>Role</td>
+		</tr>
+	</thead>
+	<tbody>
+	{foreach $uzivatele as $uzivatel}
+		<tr class="{$iterator->isOdd()?'odd-row':'even-row'}">
+			<td>{$uzivatel['id']}</td>
+			<td><a n:href=":Admin:Uzivatele:Detail, id => $uzivatel['id']"><b n:tag-if="$user->id == $uzivatel['id']">{$uzivatel['user_name']}</b></a></td>
+			<td>{$uzivatel['first_name']}</td>
+			<td>{$uzivatel['last_name']}</td>
+			<td>{$uzivatel['mail']}</td>
+			<td>{$uzivatel['role']}</td>
+		</tr>
+	{/foreach}
+	</tbody>
+</table>
+
+<a n:href=":Admin:Uzivatele:Novy" class="btn small">Přidat uživatele</a>
+
+
+
+{/block}

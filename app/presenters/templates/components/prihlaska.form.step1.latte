@@ -1,0 +1,159 @@
+{form prihlaskaForm}
+{var $step = $form['krok1']}
+<div class="form-notification warning" n:foreach="$form->ownErrors as $error">{$error}</div>
+
+
+<fieldset>
+<legend>Termín a druh závodu</legend>
+
+<table>
+	<tr>
+		<td>{$step['druh']->label}</td>
+		<td>{$step['druh']->control}</td>
+	</tr>
+	<tr>
+		<td>{$step['termin']->label}</td>
+		<td id="termin-control">{$step['termin']->control}<label><i n:if="!$step['termin']->isFilled()">Zvolte druh</i></label></td>
+	</tr>
+</table>
+
+</fieldset>
+
+
+
+<fieldset>
+<legend>Sdružený termín</legend>
+
+<table>
+	<tr>
+		<td>{$step['sdruzeny_termin']->control}</td>
+	</tr>
+</table>
+
+<div id="form-notifications"></div>
+
+</fieldset>
+
+
+
+<fieldset>
+<legend>Preference</legend>
+
+<table>
+	<tr>
+		<td>{$step['preference']->label}</td>
+		<td>
+			{$step['preference']->control}
+			<div class="cols6 form-item-description">{$step['preference']->getOption('description')}</div>
+		</td>
+	</tr>
+</table>
+
+<div id="form-notifications"></div>
+
+</fieldset>
+
+
+
+<div class="controls-panel">
+<div class="controls-panel-inner">
+{*<a href="#" class="btn">Zpět</a>*}
+{input send class=>'btn'}
+</div>
+</div>
+
+{/form}
+
+
+<script type="text/javascript">
+
+var ajax;
+
+function changeDates(druh_id){
+
+	abordAjax();
+
+	var $el_send = $('#'+{$control['prihlaskaForm']['send']->htmlId});
+
+	var $el_checkboxes = $(document).find("[name='krok1[termin]']");
+	var $el_druh = $('#'+{$control['prihlaskaForm']['krok1']['druh']->htmlId});
+
+
+	$el_druh.attr('disabled','true');
+	$el_checkboxes.each(function() {
+		$(this).attr('disabled','true');
+	});
+
+    $.fancybox.showLoading();
+	$el_send.attr('disabled','true');
+		ajax = $.getJSON({link changeDates!}, { 'druh_id': druh_id }, function( data ) {
+			if(data.html_control != ''){
+				$('#termin-control').html(data.html_control);
+				$el_send.removeAttr('disabled');
+			}else{
+				$('#termin-control').html('<label>Pro zvolený druh závodu není žádný dostupný termín k dispozici.</label>');
+			}
+
+			$('#form-notifications').html('');
+
+
+
+			$el_druh.removeAttr('disabled');
+			$el_checkboxes.each(function() {
+				$(this).removeAttr('disabled','true');
+			});
+			
+        	$.fancybox.hideLoading();
+		});
+}
+
+function dateAssoc(termin_id){
+
+	abordAjax();
+
+	var $el_send = $('#'+{$control['prihlaskaForm']['send']->htmlId});
+	var $el_checkboxes = $(document).find("[name='krok1[termin]']");
+	var $el_druh = $('#'+{$control['prihlaskaForm']['krok1']['druh']->htmlId});
+
+    $.fancybox.showLoading();
+	$el_send.attr('disabled','true');
+	$el_druh.attr('disabled','true');
+	$el_checkboxes.each(function() {
+		$(this).attr('disabled','true');
+	});
+
+		ajax = $.getJSON({link dateAssoc!}, { 'termin_id': termin_id }, function( data ) {
+
+			var notification_type = data.enable_checkbox ? 'info' : 'warning';
+
+			$('#form-notifications').html('<div class="form-notification '+notification_type+'">'+data.message+'</div>');
+			$el_send.removeAttr('disabled');
+        	$.fancybox.hideLoading();
+
+        	if(data.enable_checkbox){
+        		$('#'+{$step['sdruzeny_termin']->htmlId}).removeAttr('disabled');
+        	}else{
+        		$('#'+{$step['sdruzeny_termin']->htmlId}).prop('disabled', true);
+        	}
+
+
+
+			$el_druh.removeAttr('disabled');
+			$el_checkboxes.each(function() {
+				$(this).removeAttr('disabled','true');
+			});
+
+		});
+}
+
+function abordAjax() {
+	if(typeof ajax != 'undefined'){
+		if(ajax.readyState != 4 && ajax.readyState != 0){
+			ajax.abord();
+		}
+	}
+}
+
+
+
+</script>

@@ -1,0 +1,763 @@
+html {overflow-y: scroll;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+
+body {
+	font-size: 15px;
+	color: #333;
+	background: #444349;/*#96C256;*/
+	background-repeat: repeat;
+	background-image: url('../images/stardust.png');	/* background downloaded from subtlepatterns.com */
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	line-height:1.4;
+	color: #333;
+}
+
+img { border: none; }
+
+a { color: #006aeb; padding: 3px 2px; }
+
+a:hover, a:active, a:focus { color: #2B7095; }
+
+
+
+#userbar-wrapper {
+	text-align: right;
+	width: 940px;
+	margin: 0 auto;
+	padding: 0;
+}
+
+#userbar {
+	display: inline-block;
+	font-size: 92%;
+	padding: 10px 15px;
+	border: 1px solid #323135;
+	border-radius: 0 0 2px 2px;
+	border-top-width: 0;
+	background-color: #37363A;
+	color: #999;
+}
+
+#userbar a {
+	color: #A4A3A7;
+	text-decoration: none;
+}
+
+#userbar a:hover {
+	text-decoration: underline;
+}
+
+
+#banner {
+	margin: 10px auto 0;
+	width: 920px;
+}
+
+#banner h1 {
+	color: #BBB;
+	font-size: 36px;
+	font-weight: normal;
+	line-height: 50px;
+	margin: 0;
+	text-shadow: 0 -1px 4px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 600px) {
+	#banner h1 { background: none; }
+}
+
+#wrapper {
+	background-color: #FFF;
+	border: 1px solid #F0F0F0;
+	margin: 38px auto;
+	max-width: 940px;
+	min-width: 620px;
+	border-radius: 2px;
+	overflow: hidden;
+	box-shadow: 0 1px 5px 0 rgba(0,0,0,0.2);
+}
+
+#content {
+	background-color: #FFF;
+	padding: 20px 35px 30px;
+	min-height: 250px;
+}
+
+
+html.js section { display: none; }
+
+table tr td {
+	padding: 3px 2px;
+}
+
+
+pre { font-size: 12px;
+	line-height: 1.4;
+	padding: 10px;
+	margin: 1.3em 0;
+	overflow: auto;
+	max-height: 500px;
+	background: #F1F5FB;
+	border-radius: 5px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+}
+
+footer { font-size: 70%;
+	padding: 1em 20px;
+	color: gray;
+}
+
+input, textarea {
+	margin: 0 3px;
+}
+
+input, textarea, select {
+	box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.02);
+}
+
+label {
+	display: inline-block;
+	padding: 6px 0;
+}
+
+fieldset {
+	border: 1px solid #F2F2F2;
+	margin: 10px 0;
+	padding: 10px 10px 15px;
+}
+
+legend {
+	font-size: 14px;
+	color: #888;
+}
+
+ul#menu {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	font-size: 0;
+	width: 100%;
+	background-color: #F9F9F9;
+	text-align: center;
+}
+
+
+ul#menu li {
+	display: inline-block;
+}
+
+
+ul#menu li a {
+	color: #676A55;
+	font-size: 13px;
+	text-shadow: 0 1px 1px #FFF;
+	display: block;
+	padding: 18px 15px;
+	text-decoration: none;
+
+	position: relative;
+}
+
+ul#menu li a:after {
+	content: '.';
+	font-size: 0;
+	position: absolute;
+	bottom: 0;
+	left: 3%;
+	width: 94%;
+	height: 0px;
+	background-color: #F0F0F0;
+}
+
+ul#menu li a, ul#menu li a:after {
+    -webkit-transition: all 0.15s ease;
+    -moz-transition: all 0.15s ease;
+    -o-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+}
+
+
+
+ul#menu li.current a {
+	color: #9D9191;
+}
+
+
+ul#menu li.current a:after {
+	height: 5px;
+}
+
+
+
+ul#menu li a:hover, ul#menu li a:active, ul#menu li a:focus {
+	color: #558DC6;
+}
+
+ul#menu li a:hover:after, ul#menu li a:active:after, ul#menu li a:focus:after {
+	height: 5px;
+}
+
+
+
+h1 {
+	color: #3484D2;
+}
+
+
+h2 {
+	font-family: 'Open Sans';
+	font-size: 24px;
+	font-weight: normal;
+	color: #666;
+	-webkit-text-stroke: 1px rgba(0,0,0,0);
+	margin: 0;
+	padding: 3px 0 13px;
+}
+h2 a { text-decoration: none; background: transparent; }
+h2 .h2-subtitle {
+	padding: 6px 0 0;
+	font-size: 20px;
+	color: #7D6564;
+}
+h2 .date {
+	color: #000;
+}
+h2 .application-id {
+	display: block;
+	text-indent: 5px;
+	font-size: 13px;
+}
+
+h3 {
+			font-family: 'Open Sans';
+			font-size: 18px;
+			font-weight: normal;
+			color: #777;
+			-webkit-text-stroke: 1px rgba(0,0,0,0);
+			margin: 0;
+			padding: 8px 0 10px;
+}
+
+p {
+	padding: 4px 0 16px;
+}
+
+#ajax-spinner {
+	margin: 15px 0 0 15px;
+	padding: 13px;
+	background: white url('../images/spinner.gif') no-repeat 50% 50%;
+	font-size: 0;
+	z-index: 123456;
+	display: none;
+}
+
+div.flashes {
+	width: 100%;/*940px;*/
+	margin: 10px auto;
+	text-align: left;
+}
+
+div.flash {
+	font-size: 92%;
+	text-align: left;
+	color: #888;
+	background-color: #F9F9F9;
+	border: 1px solid #F2F2F2;
+	border-radius: 2px;
+	box-shadow: 0 1px 1px 0px rgba(0,0,0,0.2);
+	padding: 12px 24px 12px 38px;
+	margin-bottom: 5px;
+	display: inline-block;
+	line-height: 1.5;
+	background-image: url('../images/icon-warning.png');
+	background-repeat: no-repeat;
+	background-position: 11px 13px;
+}
+
+div.flash.error {
+	color: #FFF;
+	background-color: #C14F3E;
+	border-color: #AA4637;
+}
+
+div.flash.warning {
+	color: #FFF;
+	background-color: #A04757;
+	border-color: #763A49;
+}
+
+div.flash.info {
+	color: #FFF;
+	background-color: #537EB3;
+	border-color: #48709F;
+}
+
+form th, form td {
+	vertical-align: top;
+	font-weight: normal;
+}
+
+form th {
+	text-align: right;
+}
+
+form .required label {
+	font-weight: bold;
+}
+
+form .error {
+	color: #D00;
+	font-weight: bold;
+}
+
+html.js .jshidden {
+	display: none;
+}
+
+
+
+
+
+
+
+
+
+	textarea {
+	}
+	input, select {
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		box-sizing: border-box;         /* Opera/IE 8+ */
+	}
+	textarea, input[type=text], input[type=password], input[type=number], input[type=search] {
+		border: 1px solid #CCC;
+		padding: 6px 4px;
+		margin: 0 1px;
+	}
+	select {
+		border: 1px solid #CCC;
+		padding: 4px 3px;
+		margin: 0 1px;
+		font-size: 13px;
+		font-family: 'Open Sans';
+	}
+	option {
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		box-sizing: border-box;         /* Opera/IE 8+ */
+		font-size: 13px;
+		font-family: 'Open Sans';
+	}
+	#uploader {
+		display: none;
+	}
+	table {
+		margin: 0 0 6px;
+	}
+	table td {
+		vertical-align: top;
+	}
+	.controls-panel {
+		display: block;
+		background-color: #F2F2F2;
+		width: 100%;
+		padding: 0;
+	}
+	.controls-panel-inner {
+		padding: 15px 18px;
+	}
+
+	.btn {
+		outline: none;
+		display: inline-block;
+		padding: 8px 16px;
+		line-height: 24px;
+		font-size: 15px;
+		font-family: 'Open Sans';
+		color: #333;
+		text-align: center;
+		text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+		border: solid 1px #aaa;
+		cursor: pointer;
+		text-decoration: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		box-shadow: 0 1px 0 0 rgba(0,0,0,0.05),inset 0 1px 0 0 #fff;
+		border-radius: 3px;
+		background-color: #fafafa;
+		-webkit-transition: all .05s linear;
+		-moz-transition: all .05s linear;
+		-ms-transition: all .05s linear;
+		transition: all .05s linear;
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		box-sizing: border-box;         /* Opera/IE 8+ */
+	}
+	
+	.btn:before,.btn:after{ display:table; scontent:"" }
+	label {
+	}
+
+	.btn:hover {
+		color: #222;
+		background-color: #F6F6F6;
+	}
+
+	.btn.small {
+		padding: 8px;
+		line-height: 12px;
+		font-size: 13px;
+	}
+
+	.btn.btn-remove {
+		max-width: 21px;
+		padding: 3px 6px;
+		line-height: 12px;
+		font-size: 13px;
+		background-color: #F9F9F9;
+		border-color: transparent;
+		box-shadow: none;
+		border-radius: 50%;
+		margin: 5px 2px;
+	}
+
+	.btn.btn-remove:hover {
+		background-color: #E1DFE0;
+		border-color: #C9BEC0;
+	}
+
+	.btn:disabled {
+		background-color: #EEE;
+		color:#AAA;
+	}
+
+
+
+	.input-small {
+		width: 50px;
+	}
+	.input-medium {
+		width: 180px;
+	}
+	.input-large {
+		width: 450px;
+	}
+
+	.texarea-wide {
+		width: 600px;
+		height: 50px;
+	}
+
+	.texarea-wide-high {
+		width: 600px;
+		height: 100px;
+	}
+
+	.checkbox-label {
+		text-indent: -20px;
+		padding-left: 20px;
+	}
+
+	.cols1 { width: 80px; }
+	.cols2 { width: 170px; //80*2 + 10 }
+	.cols3 { width: 260px; //80*3 + 10*2 }
+	.cols4 { width: 350px; //80*4 + 10*3 }
+	.cols5 { width: 440px; //80*5 + 10*4 }
+	.cols6 { width: 530px; //80*6 + 10*5 }
+	.cols7 { width: 620px; //80*7 + 10*6 }
+	.cols8 { width: 710px; //80*8 + 10*7 }
+	.cols9 { width: 800px; //80*9 + 10*8 }
+
+	.cols1, .cols2, .cols3, .cols4, .cols5, .cols6,
+	.cols7, .cols8, .cols9 { margin-right: 10px; }
+
+
+	input:required:invalid, textarea:required:invalid {
+		border-color: #E9A398 !important;
+		box-shadow: inset 0 2px 8px 0 rgba(255,0,0,0.05) !important;
+	}
+
+	input.noborder, textarea.noborder {
+		border-width: 0 0 1px 0;
+		border-color: #F2F2F2;
+		box-shadow: none !important;
+	}
+
+
+
+	.form-notification {
+		font-size: 92%;
+		color: #FFF;
+		border-radius: 2px;
+		box-shadow: 0 1px 1px 0px rgba(0,0,0,0.2);
+		padding: 12px 16px 12px 36px;
+		margin: 8px 10px;
+		display: block;
+		line-height: 1.5;
+		background-image: url('../images/icon-warning.png');
+		background-repeat: no-repeat;
+		background-position: 11px 13px;
+	}
+
+
+
+	.form-notification.info {
+		background-color: #537EB3;
+		border: 1px solid #48709F;
+	}
+
+	.form-notification.warning {
+		background-color: #C14F3E;
+		border: 1px solid #AA4637;
+	}
+
+	.form-item-description {
+		padding: 5px 0;
+		color: #6A6A6A;
+		font-size: 92%;
+	}
+
+
+	table.table {
+		border-collapse: collapse;
+	}
+
+	table.table tr td, 
+	table.table tr th {
+		border: 1px solid #F9F9F9;
+		padding: 5px 6px;
+	}
+
+	.table a.t-file {
+		display: block;
+		padding: 5px 8px;
+		margin: -5px -6px;
+		text-decoration: none;
+	}
+
+	.table a.t-file:hover {
+
+		background-color: #F4F9FB;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* components -> form.mapa */
+#map-preview {
+	background-image: url('../images/map-preview.gif');
+	font-size: 0;
+}
+
+/* aktuální VŘ */
+.tavr-p-highlighted td {
+	background-color: #FFF9C4 !important;
+	border-color: #FDD54A !important;
+}
+
+.tavr-p-highlighted2 td {
+	background-color: #F4F9FB !important;
+	border-color: #B1D5E2 !important;
+}
+
+.tavr-state-submitted td {
+	background-color: #FBEBDD;
+}
+
+.tavr-state-confirmed td {
+	background-color: #F0F9DF;
+}
+
+
+.odd-row td {
+	background-color: #FBFBFB;
+}
+
+.even-row td {
+	background-color: #FFF;
+}
+
+#tavr-table td {
+	font-size: 13px;
+	border-width: 1px 0 !important;
+	border-color: #EBEBEB !important;
+}
+
+#tavr-table a {
+	text-decoration: none;
+}
+
+#tavr-table a:hover {
+	text-decoration: underline;
+}
+
+
+/**
+ * Zvýraznění druhů závodu
+ */
+
+
+/* ČP, Žebříček A-Čechy - klasika	(ČP, ŽA-Čechy - klasika) */
+.event-type-1 { color: #f44336; }
+/* ČP, Žebříček A-Čechy - KT	(ČP, ŽA-Čechy - KT) */
+.event-type-2 { color: #f44336; }
+/* ČP, Žebříček B-Čechy - klasika	(ČP, ŽB-Čechy - klasika) */
+.event-type-3 { color: #F4511E; }
+/* ČP, Žebříček B-Čechy - KT	(ČP, ŽB-Čechy - KT) */
+.event-type-4 { color: #F4511E; }
+/* MČR - klasika	(MČR - klasika) */
+.event-type-5 { color: #F4511E; }
+/* MČR - štafety	(MČR - štafety) */
+.event-type-6 { color: #9C27B0; }
+/* MČR - družstva	(MČR - družstva) */
+.event-type-7 { color: #673AB7; }
+/* MČR - NOB	(MČR - NOB) */
+.event-type-8 { color: #673AB7; }
+/* Mistrovství a veteraniáda ČR v nočním OB	(MČR - NOB) */
+.event-type-9 { color: #673AB7; }
+/* Český pohár štafet	(ČP štafet) */
+.event-type-10 { color: #FFB300; }
+/* Český pohár, žebříček A, žebříček B – klasická trať	(ČP, ŽA, ŽB - klasika) */
+.event-type-11 { color: #F4511E; }
+/* Český pohár, žebříček A, žebříček B – krátká trať	(ČP, ŽA, ŽB - KT) */
+.event-type-12 { color: #F4511E; }
+/* Mistrovství a veteraniáda ČR ve sprintu	(MČR - sprint) */
+.event-type-13 { color: #8BC34A; }
+/* Mistrovství a veteraniáda ČR sprintových štafet	(MČR - sprint. štafety) */
+.event-type-14 { color: #4CAF50; }
+/* EMPTY	(EMP) .event-type-15 */
+/* Český pohár, žebříček A – sprint	(ČP, ŽA - śprint) */
+.event-type-16 { color: #8BC34A; }
+/* EMPTY	(EMP) .event-type-17 */
+/* Mistrovství a veteraniáda ČR na krátké trati 	(MČR - KT) */
+.event-type-18 { color: #03A9F4; }
+/* Mistrovství a veteraniáda ČR na klasické trati	(MČR - klasika) */
+.event-type-19 { color: #F4511E; }
+/* Mistrovství a veteraniáda ČR štafet	(MČR štafet) */
+.event-type-20 { color: #9C27B0; }
+/* Mistrovství a veteraniáda ČR klubů a oblastních výběrů žactva	(MČR klubů a OVŽ) */
+.event-type-21 { color: #673AB7; }
+/* Žebříček B-Čechy - klasika	ŽB-Čechy - klasika */
+.event-type-22 { color: #673AB7; }
+/* Žebříček B-Čechy - KT	ŽB-Čechy - KT */
+.event-type-23 { color: #673AB7; }
+/* Žebříček B-Morava - klasika	ŽB-Morava - klasika */
+.event-type-24 { color: #F51D53; }
+/* Žebříček B-Morava - KT */
+.event-type-25 { color: #F51D53; }
+
+
+
+
+
+/**
+ * Drobečková navigace
+ */
+
+.breadcumb {
+	font-size: 90%;
+	padding: 0px 10px 8px;
+	margin: 0px 20px 16px;
+	border-bottom: 1px solid #F9F9F9;
+	color: #888;
+}
+
+.breadcumb a {
+	display: inline-block;
+	padding: 5px 0;
+	text-decoration: none;
+	color: #3D9ED3;
+}
+
+.breadcumb .breadcumb-current a {
+	color: #CB4949;
+}
+
+.breadcumb a:hover {
+	text-decoration: underline;
+	color: #679AD8;
+}
+
+.breadcumb .breadcumb-current a:hover {
+	color: #A76D79;
+}
+
+.breadcumb .breadcumb-link {
+	padding: 0 5px;
+}
+
+.breadcumb .breadcumb-separator {
+	padding: 0 5px;
+	color: #DDD;
+}
+
+.breadcumb .breadcumb-number {
+	color: #999;
+	font-size: 82%;
+}
+
+/*table of conent*/
+
+.toc-list {
+	list-style-position: outside;
+	list-style-type: disc;
+	color: #DDD;
+	padding-lef: 32px;
+	margin: 5px 25px 25px;
+	border-radius: 2px;
+	font-size: 90%;
+}
+
+.toc-list a {
+	text-decoration: none;
+}
+
+.toc-list a:hover {
+	text-decoration: underline;
+}
+
+
+
+ul.list, ol.list {
+	list-style-position: outside;
+	padding-left: 30px;
+	margin-bottom: 15px;
+}
+
+.john-hancock,
+.smooth,
+.soft,
+.note,
+.gray,
+.gray-text {
+	color: #AAA;
+}
+
+.john-hancock a,
+.smooth a,
+.soft a,
+.note a,
+.gray a,
+.gray-text a {
+	color: #76A7D8;
+}

@@ -1,0 +1,34 @@
+{block content}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link"><a n:href=":Admin:Dashboard:">Administrace</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link breadcumb-current"><a n:href=":Admin:ContentManager:">Správa obsahu</a></span>
+</div>
+
+
+<table class="table" style="width:100%;" n:if="$sections">
+	<thead>
+		<tr>
+			<td>Id</td>
+			<td>titulek / název sekce</td>
+			<td>akce</td>
+		</tr>
+	</thead>
+	<tbody>
+	{foreach $sections as $section}		
+		<tr class="{$iterator->isOdd()?'odd-row':'even-row'}">
+			<td>{$section['id']}</td>
+			<td>{$section['title']}</td>
+			<td>
+				<a n:href=":Admin:ContentManager:Edit, $section['id']">Upravit</a>
+				<a n:href="delete!, id => $section['id']" onclick="return confirm('Opravdu chcete smazat tuto stránku?')">Smazat</a>
+			</td>
+		</tr>
+	{/foreach}
+	</tbody>
+</table>
+
+<a n:href=":Admin:ContentManager:Add" class="btn small">Přidat sekci</a>
+
+{/block}

@@ -1,0 +1,70 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Žádost o přistup k zobrazení odeslaných přihlášek</title>
+    <style>
+    body, #msg {
+        margin: 0;
+        padding: 0;
+        background-color: #444349;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+    }
+    #msg {
+        background-color: #FFF;
+        width: 80%;
+        max-width: 800px;
+        margin: 20px auto 50px;
+        border-radius: 2px;
+        box-shadow: 0 1px 3px 0 rgba(0,0,0,0.5);
+        overflow: hidden;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    #msg-content {
+        padding: 20px 40px 40px;
+    }
+    #msg-content p {
+        line-height: 1.5;
+        margin: 6px 0 8px;
+    }
+
+    #headline {
+        display: block;
+        width: 100%;
+        margin: 0 0 0px;
+
+        padding: 22px 40px 20px;
+        font-family: Arial, sans-serif;
+        font-size: 18px;
+        font-weight: normal;
+
+        color: #888;
+        background-color: #F2F2F2;
+        border-bottom: 1px solid #EEE;
+        
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    #headline p {
+        margin: 0;
+        padding: 0;
+    }
+    #headline b {
+        font-weight: normal;
+    }
+    </style>
+</head>
+<body>
+    <div id="msg">
+    <div id="headline"><b>Žádost o přístup k zobrazení odeslaných přihlášek ve VŘ OB</b></div>
+    <div id="msg-content">
+        <p>Dobrý den,<br>
+pro zobrazení Vámi odeslaných přihlášek přejděte na adresu <a n:href="//Prihlaska:AccessRequest, id => $data['id'], mail => $data['mail'], token => $data['token']" target="_blank">{plink //Prihlaska:AccessRequest, id => $data['id'], mail => $data['mail'], token => $data['token']}</a></p>
+<p>V případě dotazu nás kontaktujte na e-mailové adrese <a href="mailto:vyberoverizeni@orientacnibeh.cz" target="_blank">vyberoverizeni@orientacnibeh.cz</a>.</p>
+    </div>
+    </div>
+</body>
+</html>

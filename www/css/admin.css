@@ -1,0 +1,119 @@
+/**
+ * Administrace
+ */
+
+body {
+	background: url('../images/stardust-white.png') #D0D0D0;
+}
+
+#banner h1 {
+	color: #FFF;
+	text-shadow: 0 -1px 3px rgba(0,0,0,.2);
+}
+
+#userbar {
+    border-color: #C4C4C4;
+    background-color: #DADADA;
+    color: #777;
+}
+
+
+.pdot-submitted {
+	background-color: #2DBEEE;
+}
+.pdot-draft {
+	background-color: #DFDFDF;
+}
+.pdot-selected {
+	background-color: #EC1385;/* žlutá #F9C206; zelená #8AC936; */
+}
+
+
+.pdot-submitted,
+.pdot-draft,
+.pdot-selected {
+	margin: 6px auto 0;
+	width: 6px;
+	height: 6px;
+	border-radius: 2.5px;
+	box-shadow: inset 1px 1px 1px 0 rgba(0,0,0,.2);
+	text-indent: -99999px;
+	display: block;
+	vertical-align: middle;
+}
+
+td {
+	vertical-align: middle;
+}
+
+
+
+
+
+
+
+.icon-vybriz,
+.icon-vybriz-confirmed {
+	background-image: url('../images/vybriz-icon.gif');
+	background-position: 0 0;
+	width: 16px;
+	height: 15px;
+	display: block;
+	text-indent: -99999px;
+	margin: 2px auto 0;
+}
+
+
+.icon-oris,
+.icon-oris-confirmed {
+	background-image: url('../images/oris-icon.gif');
+	background-position: 0 0;
+	width: 14px;
+	height: 15px;
+	display: block;
+	text-indent: -99999px;
+	margin: 2px auto 0;
+}
+
+a.icon-oris,
+a.icon-oris-confirmed {
+	opacity: 0.5;
+}
+
+a.icon-oris:hover,
+a.icon-oris-confirmed:hover {
+	opacity: 1;
+}
+
+.oris-confirmed {
+	font-weight: bold;
+}
+
+.oris-confirmed .icon-oris,
+.icon-oris-confirmed {
+	background-position: 14px 0;
+}
+
+
+
+
+.orisId-highlight {
+	color: #50981F;
+	background-color: #F0FDEC;
+	border: 1px solid #CAF8BA;
+	padding: 0px 4px;
+}
+
+.blank-holder {
+	padding: 13px 2px 0;
+}
+
+a.hidden-link {
+	color: #6C7086;
+	text-decoration: none;
+	padding: 0;
+}
+
+a.hidden-link:hover {
+	text-decoration: underline;
+}

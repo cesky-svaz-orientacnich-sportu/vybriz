@@ -1,0 +1,31 @@
+{form prihlaskaForm}
+{var $step = $form['krok0']}
+<div class="form-notification warning" n:foreach="$form->ownErrors as $error">{$error}</div>
+
+<table>
+	<tr>
+		<td>{$step['registracni_cislo']->label}</td>
+		<td>{input $step['registracni_cislo']}{*$step['registracni_cislo']->getOption('description')*}</td>
+	</tr>
+	<tr>
+		<td>{$step['jmeno']->label}</td>
+		<td>{input $step['jmeno'], 'required'=>''}</td>
+	</tr>
+	<tr>
+		<td>{$step['mail']->label}</td>
+		<td>{input $step['mail']}</td>
+	</tr>
+	<tr>
+		<td>{$step['pozice_v_oddile']->label}</td>
+		<td>{input $step['pozice_v_oddile']}</td>
+	</tr>
+</table>
+
+<div class="controls-panel">
+<div class="controls-panel-inner">
+{*<a href="#" class="btn">Zpět</a>*}
+{input send class=>'btn'}
+</div>
+</div>
+
+{/form}

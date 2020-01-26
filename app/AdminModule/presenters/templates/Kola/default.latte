@@ -1,0 +1,67 @@
+{block content}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link"><a n:href=":Admin:Dashboard:">Administrace</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link breadcumb-current"><a n:href=":Admin:Kola:">Kola</a></span>
+</div>
+
+
+<table class="table" style="width:100%;" n:if="$kola">
+	<thead>
+		<tr>
+			<td colspan="3">Kolo</td>
+			<td colspan="2">termín přihlášek</td>
+			<td colspan="2">Sdělení sekce OB</td>
+		</tr>
+		<tr>
+			<td>ID</td>
+			<td>rok</td>
+			<td>kolo</td>
+			<td>od</td>
+			<td>do</td>
+			<td>podmínky</td>
+			<td>výsledky</td>
+		</tr>
+	</thead>
+	<tbody>
+	{foreach $kola as $kolo}
+
+		{dump $kolo}
+
+		
+
+		<tr class="{$iterator->isOdd()?'odd-row':'even-row'}">
+			<td>{$kolo['id']}</td>
+			<td>{$kolo['rok']}</td>
+			<td><a n:href=":Admin:Kola:Detail, $kolo['id']">{$kolo['kolo']}</a></td>
+			<td>{$kolo['od']|date:'j. n. Y'}</td>
+			<td>{$kolo['do']|date:'j. n. Y'}</td>
+			<td>
+				{if $kolo['podminky_link']}
+					<a href="{$kolo['podminky_link']}" target="_blank">{$kolo['podminky_cislo_sdeleni']?:'???'}</a>
+				{else}
+					<span class="soft">není</span>
+				{/if}
+			</td>
+			<td>
+				{if $kolo['vysledky_link']}
+					<a href="{$kolo['vysledky_link']}" target="_blank">{$kolo['vysledky_cislo_sdeleni']?:'???'}</a>
+				{else}
+					<span class="soft">není</span>
+				{/if}
+			</td>
+		</tr>
+
+		
+
+
+	{/foreach}
+	</tbody>
+</table>
+
+<a n:href=":Admin:Kola:Nove" class="btn small">Přidat kolo</a>
+
+
+
+{/block}

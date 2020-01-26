@@ -1,0 +1,88 @@
+{block content}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link"><a n:href=":Admin:Dashboard:">Administrace</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link"><a n:href=":Admin:Prihlasky:">Kola</a></span>
+</div>
+
+
+<table id="tavr-table" class="table" width="100%">
+	<thead>
+		<tr>
+			<td>id</td>
+			<td>druh</td>
+			<td>sdruzena_prihlaska_id</td>
+			<td>poradatel_zkratka</td>
+			<td>stav</td>
+			<td>created_at</td>
+			<td>kolo</td>
+			<td>oris_id</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="8">Nahrávám DataGrid</td>
+		</tr>
+	</tbody>
+</table>
+
+
+{/block}
+{block scripts}
+{include parent}
+<link rel="stylesheet" href="{$basePath}/js/DataTables-1.10.8/css/dataTables.foundation.min.css">
+<script src="{$basePath}/js/jquery.dataTables.min.js"></script>
+
+{dump $prihlasky}
+
+<script>
+var dataSet = {$prihlasky|noescape};
+ 
+$(document).ready(function() {
+	$('#tavr-table').DataTable( {
+		data: dataSet,
+		"createdRow": function( row, data, dataIndex ) {
+			if ( data[4] == "draft" ) {
+				$(row).addClass( 'soft' );
+			}
+		},
+		"language": {
+		    "emptyTable":     "Žádné záznamy nebyly nalezeny",
+		    "info":           "Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů",
+		    "infoEmpty":      "Zobrazuji 0 až 0 z 0 záznamů",
+		    "infoFiltered":   "(filtrováno z celkem _MAX_ záznamů)",
+		    "infoPostFix":    "",
+		    "infoThousands":  ",",
+		    "lengthMenu":     "Zobrazit _MENU_ záznamů",
+		    "loadingRecords": "Nahrávám...",
+		    "processing":     "Zpracovávám...",
+		    "search":         "Hledat:",
+		    "zeroRecords":    "Žádné záznamy nebyly nalezeny",
+		    "paginate": {
+		        "sFirst":    "První",
+		        "sLast":     "Poslední",
+		        "sNext":     "Následující",
+		        "sPrevious": "Předchozí"
+		    },
+		    "aria": {
+		        "sSortAscending":  ": kliknout pro setřídění vzestupně",
+		        "sSortDescending": ": kliknout pro setřídění sestupně"
+		    }
+        },
+        "columnDefs": [
+            {
+                "targets": [ 2 ],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [ 3 ],
+                "visible": false
+            }
+        ]
+	} );
+} );
+</script>
+
+{/block}

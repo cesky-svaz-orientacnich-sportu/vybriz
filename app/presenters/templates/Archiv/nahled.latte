@@ -1,0 +1,182 @@
+{block content}
+<div class="breadcumb">
+<span class="breadcumb-link"><a n:href="Archiv:">&larr; Archiv přihlášek</a></span>
+<span class="breadcumb-separator">|</span>
+<span class="breadcumb-link">Náhled přihlášky #{$prihlaska['id']|padLeft:4,'0'}</span>
+</div>
+
+<h2 n:block=title>
+	{$druh->druh_zkratka}, <span class="date">{$termin->termin|niceDate}</span> ({$prihlaska['poradatel_zkratka']})
+</h2>
+
+{*
+<ol class="toc-list">
+	<li><a href="#toc-zakladni-udaje">Základní údaje a informace o přihlášce</a></li>
+	<li><a href="#toc-prostor-a-centrum-závodu">Prostor a centrum závodu</a></li>
+	<li><a href="#toc-organizatori">Organizátoři</a></li>
+	<li><a href="#toc-udaje-o-mape">Údaje o mapě</a></li>
+	<li><a href="#toc-mapy-pokryvajici-prostor">Mapy pokrývající prostor</a></li>
+	<li><a href="#toc-predchozi-aktivity-prostoru">Předchozí aktivity prostoru</a></li>
+	<li><a href="#toc-vlastnici-pozemku-a-organy-statni-spravy">Vlastníci pozemků a orgány státní správy</a></li>
+	<li><a href="#toc-chranena-uzemi">Chráněná území</a></li>
+	<li><a href="#toc-poznamky">Poznámky</a></li>
+	<li><a href="#toc-prilohy">Přiložené soubory</a></li>
+	<li><a href="#toc-mapa-prostoru">Mapa prostoru</a></li>
+</ol>
+*}
+
+
+<h3 id="toc-zakladni-udaje">Základní údaje a informace o přihlášce</h3>
+
+<table class="table">
+	<tr>
+		<td class="cols3">Identifikační číslo</td>
+		<td class="cols6">{$prihlaska['id']}</td>
+	</tr>
+	<tr>
+		{var $kolo = $prihlaska->ref('kola', 'kolo')}
+		<td>Kolo VŘ</td>
+		<td>{$kolo->rok} - <b>{$kolo->kolo}.&nbsp;kolo</b></td>
+	</tr>
+	<tr>
+		<td>Druh závodu</td>
+		<td><b>{$druh->druh}</b></td>
+	</tr>
+	<tr>
+		<td>Termín</td>
+		<td><b>{$termin->termin|niceDate}</b></td>
+	</tr>
+	<tr>
+		<td>Pořadatel</td>
+		<td>{$prihlaska['poradatel']} ({$prihlaska['poradatel_zkratka']})</td>
+	</tr>
+	<tr n:if="$prihlaska[dalsi_poradatele]">
+		<td>Další pořadatelé</td>
+		<td>{$prihlaska['dalsi_poradatele']}</td>
+	</tr>
+</table>
+
+
+<h3 id="toc-prostor-a-centrum-závodu">Prostor a centrum závodu</h3>
+
+<table class="table">
+	<tr>
+		<td class="cols3">Prostor závodu</td>
+		<td class="cols6">{$prihlaska['prostor_zavodu']}</td>
+	</tr>
+	<tr>
+		<td>Popis terénu</td>
+		<td>{$prihlaska['popis_terenu']}</td>
+	</tr>
+</table>
+
+
+
+<h3 id="toc-mapa-prostoru">Mapa prostoru</h3>
+{if $centrum_zavodu_mapa && $prostor_zavodu_mapa}
+
+<div id="mapa" style="width:100%; height:520px; margin:0px auto 20px;"></div>
+
+
+<script type="text/javascript">
+
+var stred = {$centrum_zavodu_mapa ? $centrum_zavodu_mapa : array(49.83, 15.45)};
+
+var m = new SMap(JAK.gel("mapa"), SMap.Coords.fromWGS84(stred[1], stred[0]){if $centrum_zavodu_mapa}, 10{/if});
+m.addControl(new SMap.Control.Sync()); /* Aby mapa reagovala na změnu velikosti průhledu */
+m.addDefaultControls();
+m.setCursor('');
+
+//přidání kontrolního prvku pro ovládání myši
+var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
+m.addControl(mouse);
+
+//přidání podkladových vrstev do mapy
+m.addDefaultLayer(SMap.DEF_OPHOTO);
+m.addDefaultLayer(SMap.DEF_TURIST);
+m.addDefaultLayer(SMap.DEF_BASE).enable();
+
+//přidání ovládacího prvku řídícího změnu podkladů
+var layerSwitch = new SMap.Control.Layer();
+layerSwitch.addDefaultLayer(SMap.DEF_BASE);
+layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
+layerSwitch.addDefaultLayer(SMap.DEF_TURIST);
+
+//přidání ovládacího prvku pro změnu podkladu
+m.addControl(layerSwitch, { left:"8px", top:"9px" });
+
+//nastavení rozsahu přibližování na mapě
+m.setZoomRange(5,15);
+
+//signály
+var signals = m.getSignals();
+signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */  
+
+
+var layer = {};
+
+//přidání vrstvy POLYGON
+layer['raceArea-polygon'] = new SMap.Layer.Geometry();
+m.addLayer(layer['raceArea-polygon']);
+layer['raceArea-polygon'].enable();
+
+//přidání vrstvy CENTRE-MARKER
+layer['centre-marker'] = new SMap.Layer.Marker();
+m.addLayer(layer['centre-marker']);
+layer['centre-marker'].enable();
+
+{if $centrum_zavodu_mapa}
+    var centreMarker = new SMap.Marker(SMap.Coords.fromWGS84(stred[1], stred[0]), "centre-marker", { color: "#000" });
+    layer['centre-marker'].addMarker(centreMarker);
+    layer['centre-marker'].redraw();
+{/if}
+
+
+
+//Body
+var points = {$prostor_zavodu_mapa ? $prostor_zavodu_mapa : array()};
+for (var i = 0; i <= points.length - 1; i++) {
+    var pointCoords = SMap.Coords.fromWGS84(points[i][1], points[i][0]);
+    points[i] = pointCoords;
+};
+
+//nastavení
+var options = {
+    color: "#F5270A", {*"#E98F16",*}
+    width: 3
+};
+
+//PŘIDÁNÍ GEOMETRIE DO VRSTVY
+var polygon = new SMap.Geometry(SMap.GEOMETRY_POLYGON, null, points, options);
+layer['raceArea-polygon'].addGeometry(polygon);
+
+layer['raceArea-polygon'].redraw();
+
+
+function resetZoomRange() {
+	m.setZoomRange(5,15);
+}
+
+</script>
+{else}
+<div class="flashes">
+	<div class="flash error">Mapa prostoru není k dispozici.</div>
+</div>
+{/if}
+
+
+
+
+
+
+
+
+{/block}
+
+
+
+{block head}
+{* Mapy.cz API *}
+<script src="http://api4.mapy.cz/loader.js"></script>
+<script>Loader.load()</script>
+{/block}

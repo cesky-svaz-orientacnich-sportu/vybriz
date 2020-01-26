@@ -1,0 +1,47 @@
+# Apache configuration file (see httpd.apache.org/docs/2.2/mod/quickreference.html)
+
+# disable directory listing
+Options -Indexes
+
+# allows symbolic links in this directory
+Options +FollowSymLinks
+
+# configure PHP
+# <IfModule mod_php5.c>
+#       php_flag register_globals off
+#       php_flag zend.ze1_compatibility_mode off
+#       php_flag session.auto_start off
+# </IfModule>
+
+# enable cool URL
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /www
+
+RewriteCond %{REQUEST_URI} !^/www/
+RewriteRule ^(.*) /www/$1 [L,QSA]
+
+</IfModule>
+
+
+# ----------------------------------------------------------------------
+# | Content Security Policy (CSP)                                      |
+# ----------------------------------------------------------------------
+#<IfModule mod_headers.c>
+#    Header set Content-Security-Policy-Report-Only "script-src self; object-src self; report-uri https://csos0.orientacnisporty.cz/csp/report.php"
+#</IfModule>
+
+
+# ----------------------------------------------------------------------
+# | Reducing MIME type security risks                                  |
+# ----------------------------------------------------------------------
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# ----------------------------------------------------------------------
+# | reflected cross-site scripting                                     |
+# ----------------------------------------------------------------------
+<IfModule mod_headers.c> 
+  Header set X-XSS-Protection "1; mode=block" 
+</IfModule>

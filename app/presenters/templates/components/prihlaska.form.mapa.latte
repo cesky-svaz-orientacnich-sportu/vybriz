@@ -1,0 +1,363 @@
+{block mapModal}
+
+<div id="map-modal" style="width:910px; ">
+<div id="mapa" style="width:900px; height:520px; margin:0px auto 5px;"></div>
+
+<div class="" style="display:block; padding:20px 30px 25px 20px; margin:0 auto; background-color: #F2F2F2;">
+    <select onchange="setMapAction(this.value)">
+        <option value="none">Vyberte akci</option>
+        <option value="drawRaceArea">Zakreslit prostor závodu</option>
+        <option value="drawCentre">Vyznačit centrum závodu</option>
+        {*<option value="getCoords">Získat souřadnice</option>*}
+    </select>
+    <span id="drawRaceArea-options">
+        <input type="button" onclick="stepBack()" class="btn small" value="Smazat poslední uzel">
+        <input type="button" onclick="eraseAll()" class="btn small" value="Vymazat vše">
+    </span>
+    <input type="button" onclick="saveData()" id="map-save-btn" class="btn small" value="Uložit data" style="float:right;" disabled="true">
+</div>
+{*<textarea id="coords" style="width:800px; height:120px;"></textarea>*}
+</div>
+
+<script type="text/javascript">
+
+
+var stred = {$centrum_zavodu_mapa ? $centrum_zavodu_mapa : array(49.83, 15.45)};
+
+var m = new SMap(JAK.gel("mapa"), SMap.Coords.fromWGS84(stred[1], stred[0]){if $centrum_zavodu_mapa}, 10{/if});
+m.addControl(new SMap.Control.Sync()); /* Aby mapa reagovala na změnu velikosti průhledu */
+
+//přidání podkladových vrstev do mapy
+m.addDefaultLayer(SMap.DEF_OPHOTO);
+m.addDefaultLayer(SMap.DEF_TURIST);
+m.addDefaultLayer(SMap.DEF_BASE).enable();
+
+//přidání ovládacího prvku řídícího změnu podkladů
+var layerSwitch = new SMap.Control.Layer();
+layerSwitch.addDefaultLayer(SMap.DEF_BASE);
+layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
+layerSwitch.addDefaultLayer(SMap.DEF_TURIST);
+
+//přidání ovládacího prvku pro změnu podkladu
+m.addControl(layerSwitch, { left:"8px", top:"9px" });
+
+m.addDefaultControls();
+m.setCursor('');
+m.setZoomRange(5,15);
+
+var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
+m.addControl(mouse);
+
+//signály
+var signals = m.getSignals();
+signals.addListener(window, "map-click", mapClick); /* Při signálu kliknutí volat tuto funkci */    
+signals.addListener(window, "marker-drag-stop", markerDragStop); 
+signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu změny zoomu volat tuto funkci */    
+
+
+
+
+
+var layer = {};
+var action = 'none';
+
+
+//přidání vrstvy MARKERS
+layer['raceArea-markers'] = new SMap.Layer.Marker();
+m.addLayer(layer['raceArea-markers']);
+layer['raceArea-markers'].disable();
+
+//přidání vrstvy POLYLINE
+layer['raceArea-polyline'] = new SMap.Layer.Geometry();
+m.addLayer(layer['raceArea-polyline']);
+layer['raceArea-polyline'].disable();
+
+//přidání vrstvy POLYGON
+layer['raceArea-polygon'] = new SMap.Layer.Geometry();
+m.addLayer(layer['raceArea-polygon']);
+layer['raceArea-polygon'].enable();
+
+//přidání vrstvy CENTRE-MARKER
+layer['centre-marker'] = new SMap.Layer.Marker();
+m.addLayer(layer['centre-marker']);
+layer['centre-marker'].enable();
+
+{if $centrum_zavodu_mapa}
+    var centreMarker = new SMap.Marker(SMap.Coords.fromWGS84(stred[1], stred[0]), "centre-marker", { color: "#000" });
+    layer['centre-marker'].addMarker(centreMarker);
+    layer['centre-marker'].redraw();
+{/if}
+
+
+
+//VÝCHOZÍ NASTAVENÍ
+var points = {$prostor_zavodu_mapa ? $prostor_zavodu_mapa : array()};
+var polylineMarkersOptions = {
+        url: {$basePath}+"/images/map-marker-dot.png",
+        anchor: { left:10, top:10 }
+    };
+
+
+//převedení pole na objekty SMap.Coords
+for (var i = 0; i <= points.length - 1; i++) {
+    var pointCoords = SMap.Coords.fromWGS84(points[i][1], points[i][0]);
+    points[i] = pointCoords;
+    var polylineMarker = new SMap.Marker(pointCoords, "pm-"+(i+1), polylineMarkersOptions);
+    polylineMarker.decorate(SMap.Marker.Feature.Draggable);
+    layer['raceArea-markers'].addMarker(polylineMarker);
+};
+
+layer['raceArea-markers'].redraw();
+
+//nastavení
+var options = {
+    color: "#F5270A", {*"#E98F16",*}
+    width: 3
+};
+
+//PŘIDÁNÍ GEOMETRIE DO VRSTVY
+var polyline = new SMap.Geometry(SMap.GEOMETRY_POLYLINE, null, points, options);
+layer['raceArea-polyline'].addGeometry(polyline);
+
+//PŘIDÁNÍ GEOMETRIE DO VRSTVY
+var polygon = new SMap.Geometry(SMap.GEOMETRY_POLYGON, null, points, options);
+layer['raceArea-polygon'].addGeometry(polygon);
+
+
+
+function mapClick(e) { /* Došlo ke kliknutí, spočítáme kde */
+    var coords = SMap.Coords.fromEvent(e.data.event, m);
+
+
+    //is polyline enabled?
+    if(action=='drawRaceArea'){
+
+        //is polyline enabled?
+        if(action=='drawRaceArea'){
+            if (points.length < 120){
+
+                //add and redraw polyline
+                points.push(coords);
+                layer['raceArea-polygon'].redraw();
+                layer['raceArea-polyline'].redraw();
+
+                //add and redraw markers
+                var polylineMarker = new SMap.Marker(coords, "pm-"+points.length, polylineMarkersOptions);
+                polylineMarker.decorate(SMap.Marker.Feature.Draggable);
+                layer['raceArea-markers'].addMarker(polylineMarker);
+                layer['raceArea-markers'].redraw();
+
+
+                //nastavení obrýzku předposledního markeru
+                setNextToLastMarkerImage();
+                setLastMarkerImage();
+                
+                //překreslení pomocné čáry
+                redrawConnectionLine();
+
+            }else{
+                alert('Byl využit maximální počet bodů '+points.length);
+            }
+        }
+    }
+
+    if(action=='drawCentre'){
+        layer['centre-marker'].removeAll();
+        var centreMarker = new SMap.Marker(coords, "centre-marker", { /*url:''*/ color: "#000" });
+        //centreMarker.decorate(SMap.Marker.Feature.Draggable);
+        layer['centre-marker'].addMarker(centreMarker);
+        layer['centre-marker'].redraw();
+        
+        //Reverzní geokódování = vrácení textové interpretace polohy značky v mapě
+        //new SMap.Geocoder.Reverse(coords, geocoderCallback);
+    }
+
+    //enable save-button?
+    enableSaveBtn();
+
+}
+
+//callback pro geokóder
+var geocoderCallback = function(geocoder) {
+    var results = geocoder.getResults();
+    //var prostor_zavodu_text = results.label;
+}
+
+
+function markerDragStop(e) {
+    var coords = e.target.getCoords();
+    var i = e.target.getId().substring(3);
+    points[i-1] = coords;
+    layer['raceArea-polyline'].redraw();
+    layer['raceArea-polygon'].redraw();
+
+    redrawConnectionLine();
+}
+
+
+function setNextToLastMarkerImage() {
+    if(points.length >= 2){
+        var nextToLast = layer['raceArea-markers'].getMarkers()[points.length-2];
+        nextToLast.setURL({$basePath}+"/images/map-marker-dot.png");
+    }
+}
+
+
+function setLastMarkerImage() {
+    if(points.length >= 1){
+        var last = layer['raceArea-markers'].getMarkers()[points.length-1];
+        last.setURL({$basePath}+"/images/map-marker-dot2.png");
+    }
+}
+
+function redrawConnectionLine() {
+    var connection_line = (points.length >= 3) ? [ points[0], points[points.length-1] ] : [];
+    var line_geometry = new SMap.Geometry(SMap.GEOMETRY_POLYLINE, 'connection_line', connection_line, { color: "#888", width: 1 });
+    layer['raceArea-polyline'].addGeometry(line_geometry);
+    layer['raceArea-polyline'].redraw();
+}
+
+
+
+
+//vrátit poslední krok
+function stepBack(){
+	points.pop();
+    layer['raceArea-polyline'].redraw();
+    layer['raceArea-polygon'].redraw();
+    var markerToRemove = layer['raceArea-markers'].getMarkers().pop();
+    layer['raceArea-markers'].removeMarker(markerToRemove);
+    
+    setLastMarkerImage();
+    redrawConnectionLine();
+    enableSaveBtn();
+}
+
+function eraseAll(){
+    var confirmation = window.confirm('Určitě chcete smazat všechny body?');
+    if(confirmation){
+        for (var i = points.length - 1; i >= 0; i--) {
+            points.pop();
+        }
+        layer['raceArea-polyline'].redraw();
+        layer['raceArea-polygon'].redraw();
+        layer['raceArea-markers'].removeAll();
+        //layer['centre-marker'].removeAll();
+
+        //nastavení obrýzku předposledního markeru
+        setNextToLastMarkerImage();
+        setLastMarkerImage();
+        redrawConnectionLine();
+        enableSaveBtn();
+    }
+    
+}
+
+
+function setMapAction(newAction){
+    //if(action=='none'){
+        action = 'none';
+        layer['raceArea-markers'].disable();
+        layer['raceArea-polyline'].disable();
+        layer['raceArea-polygon'].enable();
+        layer['centre-marker'].enable();
+    //}
+    if(newAction=='drawRaceArea'){
+        layer['raceArea-markers'].enable();
+        layer['raceArea-polyline'].enable();
+        layer['raceArea-polygon'].disable();
+        layer['centre-marker'].disable();
+        action = 'drawRaceArea';
+    }
+    if(newAction=='drawCentre'){
+        action = 'drawCentre';
+    }
+    if(newAction=='getCoords'){
+        action = 'getCoords';
+
+        var arr = [];
+        var path = '';
+        for (var i = points.length - 1; i >= 0; i--) {
+            path = path+'|'+points[i].toWGS84()[1].toString().substring(0,7)+','+points[i].toWGS84()[0].toString().substring(0,7);
+        }
+
+        var mapCenter = layer['centre-marker'].getMarkers()[0].getCoords().toWGS84();
+        path = path + '|'+points[points.length-1].toWGS84()[1].toString().substring(0,7)+','+points[points.length-1].toWGS84()[0].toString().substring(0,7);
+
+        var img_link = 'https://maps.googleapis.com/maps/api/staticmap?{*center='+mapCenter[1].toString().substring(0,7)+','+mapCenter[0].toString().substring(0,7)+'&*}size=320x200&markers=color:0x226CDD|size:tiny|'+mapCenter[1]+','+mapCenter[0]+'&path=fillcolor:0x22C1DD44|weight:1'+path;
+
+
+        //$('#coords').html(link);
+        $('#map-preview').attr('src',img_link);
+    }
+
+    {*//zobrazení možností k dané akci*}
+    showOptions();
+}
+
+
+
+
+function showOptions(){
+    if(action=='drawRaceArea'){
+        $('#drawRaceArea-options').show();
+    }else{
+        $('#drawRaceArea-options').hide();
+    }
+}
+
+
+function enableSaveBtn(){
+    var cntrum = layer['centre-marker'].getMarkers();
+    if(points.length>0 && cntrum.length==1){
+        $('#map-save-btn').removeAttr('disabled');
+    }else{
+        $('#map-save-btn').attr('disabled','true');
+    }
+}
+
+
+function saveData(){
+    var cntrum = layer['centre-marker'].getMarkers();
+    if(points.length>0 && cntrum.length==1){
+
+            var mapCenterMarker = layer['centre-marker'].getMarkers()[0].getCoords().toWGS84();
+            var mapCenter = [mapCenterMarker[1].toString(),mapCenterMarker[0].toString()];
+            var mapArea = [];
+
+            for (var i = points.length - 1; i >= 0; i--) {
+                mapArea.unshift(new Array(points[i].toWGS84()[1].toString(), points[i].toWGS84()[0].toString()) );
+            }
+
+            $.fancybox.showLoading();
+            //ajax
+            $.post({link updateCoords!}, { 'centrum_zavodu': mapCenter, 'prostor_zavodu': mapArea }, function( data ) {
+                setMapAction('getCoords');
+                $.fancybox.hideLoading();
+                $.fancybox.close();
+            });
+
+    }else{
+        alert('Zakreslete centrum a prostor závodu.');
+    }
+
+}
+
+function resetZoomRange() {
+    m.setZoomRange(5,15);
+}
+
+
+window.onload=function(){
+    {if $centrum_zavodu_mapa && $prostor_zavodu_mapa}
+        setMapAction('getCoords');
+        setMapAction('none');
+        setLastMarkerImage();
+        redrawConnectionLine();
+    {/if}
+    enableSaveBtn();
+    showOptions();
+};
+
+</script>
+{/block}

@@ -1,0 +1,212 @@
+{block content}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link">Administrace</span>
+</div>
+
+<ul>
+	<li><a n:href=":Admin:Kola:Default">Přehled kol</a></li>
+	<li><a n:href=":Admin:Druhy:">Druhy závodů</a></li>
+	<li><a n:href=":Admin:ContentManager:">Správa obsahu</a></li>
+	<li><a n:href=":Admin:Uzivatele:">Uživatelé</a></li>
+</ul>
+
+<br>
+
+
+<h3>Přehled kol VŘ pro rok {$rok}</h3>
+<table class="table">
+	<thead>
+		<tr>
+			<td>Kolo</td>
+			<td>Aktuální</td>
+			<td>Od</td>
+			<td>Do</td>
+			<td>Přijaté přihlášky</td>
+		</tr>
+	</thead>
+	<tbody>
+		{foreach $kola as $kolo}
+		{var $active = $kolo->od <= Nette\Utils\DateTime::from('today') && $kolo->do >= Nette\Utils\DateTime::from('today')}
+		<tr>
+			<td><a n:href=":Admin:Kola:Detail, $kolo->id">{$kolo->kolo}. kolo</a></td>
+			<td><strong n:tag-if="$active">{$active ? 'Ano' : 'Ne'}</strong></td>
+			<td>{$kolo->od|date:'j.n.Y'}</td>
+			<td>{$kolo->do|date:'j.n.Y'}</td>
+			<td>{$pocty_prihasek[$kolo->id]}</td>
+		</tr>
+		{/foreach}
+	</tbody>
+</table>
+
+
+
+
+{dump $endora}
+
+{if $endora}
+{var $diskspace_current = (int) $endora['diskspace']['current']}
+{var $diskspace_limit = (int) $endora['diskspace']['limit']}
+{var $files_current = (int) $endora['files']['current']}
+{var $files_limit = (int) $endora['files']['limit']}
+{var $traffic_current = (int) $endora['traffic']['current']}
+{var $traffic_limit = (int) $endora['traffic']['limit']}
+
+<br>
+
+<h3>Webhosting - statistika</h3>
+
+
+<table class="table">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Aktuálně využito</th>
+			<th>Limit</th>
+			<th>Procent</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Celkový prostor</td>
+			<td>{$endora['diskspace']['current']}</td>
+			<td>{$endora['diskspace']['limit']}</td>
+			<td>
+				<div class="progress" style="width:120px; border:1px solid #EEE; display: inline-block; height:11px; padding:1px; margin: 0 5px;">
+					<div class="progressbar" style="width:{100*$diskspace_current/$diskspace_limit|noescape}%; background-color: #F9F9F9; border:1px solid #F2F2F2; height:100%"></div>
+				</div>
+				{100*$diskspace_current/$diskspace_limit|number:1,',',' '}%
+			</td>
+		</tr>
+		<tr>
+			<td>Počet souborů</td>
+			<td>{$endora['files']['current']}</td>
+			<td>{$endora['files']['limit']}</td>
+			<td>
+				<div class="progress" style="width:120px; border:1px solid #EEE; display: inline-block; height:11px; padding:1px; margin: 0 5px;">
+					<div class="progressbar" style="width:{100*$files_current/$files_limit|noescape}%; background-color: #F9F9F9; border:1px solid #F2F2F2; height:100%"></div>
+				</div>
+				{100*$files_current/$files_limit|number:1,',',' '}%
+			</td>
+		</tr>
+		<tr>
+			<td>Traffic</td>
+			<td>{$endora['traffic']['current']}</td>
+			<td>{$endora['traffic']['limit']}</td>
+			<td>
+				<div class="progress" style="width:120px; border:1px solid #EEE; display: inline-block; height:11px; padding:1px; margin: 0 5px;">
+					<div class="progressbar" style="width:{100*$traffic_current/$traffic_limit|noescape}%; background-color: #F9F9F9; border:1px solid #F2F2F2; height:100%"></div>
+				</div>
+				{100*$traffic_current/$traffic_limit|number:1,',',' '}%
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+{/if}
+
+
+
+
+{*
+<form action="#" id="findArchivedMapId">
+	<input type="number" name="inputMapId" id="inputMapId" style="width:70px" min="0">
+	<input type="submit" class="btn small" value="Dohledat">
+</form>
+
+
+<input type="text" name="targetInputMapId" id="targetInputMapId" style="width:370px">
+
+<script>
+var MapArchiveLoader = function(el_id) {
+	this.suffixes = ['a', 'b', 'c', 'x', 'n'];
+	this.baselink = 'http://csos.tmapserver.cz/data/jpg/';
+	this.lastId = null;
+	this.pending = -1;//Nasatvíme výchozí stav
+	var _this = this;
+
+	this.formElement = document.getElementById(el_id);
+	this.inputElement = document.getElementById(el_id).getElementsByTagName('input')[0];
+	this.submitElement = document.getElementById(el_id).getElementsByTagName('input')[1];
+
+	this.targetInput = null;
+
+	this.formElement.onsubmit = function (event) {
+		event.preventDefault();
+		var mapId = parseInt(_this.inputElement.value);
+
+		if (_this.lastId !== mapId && typeof mapId == 'number' && mapId%1== 0) {
+			_this.pending = 0;//Nasatvíme na 0 a pak budeme postupně přidávat, pokud se postupně odečte zpět na 0, daný soubor (URL) není obrázek
+			for (var i = _this.suffixes.length - 1; i >= 0; i--) {
+				var url = _this.baselink + mapId + _this.suffixes[i] + '.jpg';
+				_this.pending++;
+				_this.testImage(url);
+			};
+			_this.inputElement.disabled = true;
+			_this.submitElement.disabled = true;
+			_this.lastId = mapId;
+		};
+	};
+
+	this.testImage = function(url, timeout) {
+	    timeout = timeout || 5000;
+	    var timedOut = false, timer;
+	    var img = new Image();
+	    img.onerror = img.onabort = function() {
+	        if (!timedOut) {
+	            clearTimeout(timer);
+	            _this.callback(img, url, "error");
+	        }
+	    };
+	    img.onload = function() {
+	        if (!timedOut) {
+	            clearTimeout(timer);
+	            _this.callback(img, url, "success");
+	        }
+	    };
+	    img.src = url;
+	    timer = setTimeout(function() {
+	        timedOut = true;
+	        _this.callback(img, url, "timeout");
+	    }, timeout); 
+	}
+
+
+
+	this.callback = function (img, url, result) {
+		_this.pending = (_this.pending > 0) ? _this.pending-1 : _this.pending;
+		console.log( result + ': ' + url + ' ( ' + _this.pending + ' )' );
+		if (result === 'success') {
+		    console.log( result + ': ' + url );
+			_this.inputElement.disabled = false;
+			_this.submitElement.disabled = false;
+		    _this.pending = -1;//Nasatvíme výchozí stav
+
+		    if (_this.targetInput) {
+		    	console.log('Target input', _this.targetInput);
+		    	_this.targetInput.value = url;
+		    };
+
+		};
+		if (_this.pending === 0) {
+			_this.pending = -1;//Nasatvíme výchozí stav
+			_this.inputElement.disabled = false;
+			_this.submitElement.disabled = false;
+		    console.log( 'Nebyla nalezena žádná příslušná mapa' );
+		};
+	};
+};
+
+
+function record(url, result) {
+    console.log( result + ': ' + url );
+}
+
+var maploader = new MapArchiveLoader('findArchivedMapId');
+maploader.targetInput = document.getElementById('targetInputMapId');
+
+</script>
+*}
+
+{/block}

@@ -1,0 +1,361 @@
+<fieldset>
+<legend>Osobní údaje</legend>
+
+		<table>
+			<tr>
+				<td class="cols2">Registrační číslo:</td>
+				<td class="cols7"><i>{$formValues->registracni_cislo}</i></td>
+			</tr>
+			<tr>
+				<td>Jméno:</td>
+				<td><i>{$formValues->jmeno}</i></td>
+			</tr>
+			<tr>
+				<td>E-mail:</td>
+				<td><i>{$formValues->mail}</i></td>
+			</tr>
+			<tr>
+				<td>Pozice v klubu/oddíle:</td>
+				<td><i>{$formValues->pozice_v_oddile}</i></td>
+			</tr>
+		</table>
+<a n:href="Prihlaska:Nova krok=>0" class="btn small">Upravit údaje</a>
+</fieldset>
+
+
+<fieldset>
+<legend>Termín a druh závodu</legend>
+<table>
+	<tr>
+		<td class="cols2">Druh závodu:</td>
+		<td class="cols7"><b>{$druh->druh}</b></td>
+	</tr>
+	<tr>
+		<td>Termín závodu:</td>
+		<td><b>{$termin->termin|niceDate}</b></td>
+	</tr>
+	<tr>
+		<td>Pořadí preference:</td>
+		<td>
+			{if $formValues->preference}{$formValues->preference}{else}<i>Nenastavena</i>{/if}
+			<div class="cols7 form-item-description">(Preference v případě více podaných přihlášek jedním pořadatelem. Menší hodnota značí větší preferenci.)</div>
+		</td>
+	</tr>
+	<tr>
+		{var $kolo = $formValues->ref('kola', 'kolo')}
+		<td>Kolo přihlášek:</td>
+		<td>{$kolo->rok} - {$kolo->kolo}. kolo</td>
+	</tr>
+	<tr n:if="$formValues->sdruzit_prihlasku">
+		<td>Sdružený termín:</td>
+		<td><i>Po odeslání přihlášky bude automaticky vytvořen nový formulář pro termín {$termin->ref('terminy', 'souvisejici_termin')->termin|date:'j.n. Y'}</i></td>
+	</tr>
+</table>
+<a n:href="Prihlaska:Nova krok=>1" class="btn small">Upravit druh a termín</a>
+</fieldset>
+
+
+{php
+	$mapy_pokryvajici_prostor = Nette\Utils\Json::decode($formValues->mapy_pokryvajici_prostor, 2);
+	$probehle_zavody = Nette\Utils\Json::decode($formValues->probehle_zavody, 2);
+	$dalsi_stavitele = Nette\Utils\Json::decode($formValues->dalsi_stavitele, 2);
+}
+
+<fieldset>
+<legend>Pořadatel</legend>
+
+
+<table class="table">
+	<tr>
+		<td class="cols2">Pořadatel</td>
+		<td class="cols7">{$formValues->poradatel}</td>
+	</tr>
+	<tr>
+		<td class="cols2">Zkratka oddílu</td>
+		<td class="cols7">{$formValues->poradatel_zkratka}</td>
+	</tr>
+	<tr>
+		<td class="cols2">Další pořadatelé</td>
+		<td class="cols7">{$formValues->dalsi_poradatele}</td>
+	</tr>
+</table>
+</fieldset>
+
+
+
+<fieldset>
+<legend>Prostor závodu</legend>
+
+<table class="table">
+	<tr>
+		<td class="cols2">Prostor závodu</td>
+		<td class="cols7">{$formValues->prostor_zavodu}</td>
+	</tr>
+	<tr>
+		<td>Popis terénu</td>
+		<td>{$formValues->popis_terenu}</td>
+	</tr>
+</table>
+</fieldset>
+
+
+
+<fieldset>
+<legend>Organizátoři</legend>
+
+<table class="table">
+	<tr>
+		<td class="cols2">Ředitel závodu</td>
+		<td class="cols7">{$formValues->reditel_zavodu}</td>
+	</tr>
+	<tr>
+		<td>Hlavní rozhodčí</td>
+		<td>{$formValues->hlavni_rozhodci} <span class="soft">(třída {$formValues->hlavni_rozhodci_trida})</span></td>
+	</tr>
+	<tr>
+		<td>Stavitel tratí</td>
+		<td>{$formValues->stavitel_trati} <span class="soft">(třída {$formValues->stavitel_trati_trida})</span></td>
+	</tr>
+</table>
+</fieldset>
+
+
+
+<fieldset>
+<legend>Další stavitelé</legend>
+
+{if $dalsi_stavitele && count($dalsi_stavitele)>0}
+<table class="table">
+	<tr n:foreach="$dalsi_stavitele as $dalsi_stavitel">
+		<td class="cols2">{$iterator->counter+1}. stavitel</td>
+		<td class="cols7">{@$dalsi_stavitel->stavitel_trati} <span class="soft">(třída {@$dalsi_stavitel->stavitel_trati_trida})</span></td>
+	</tr>
+</table>
+{else}
+	Žádní další stavitelé.
+{/if}
+
+</fieldset>
+
+
+
+<fieldset>
+<legend>Webová prezentace</legend>
+
+<table class="table">
+	<tr>
+		<td class="cols2">Web stránky</td>
+		<td class="cols7">
+			{if $formValues->web}
+				<a href="{$formValues->web}" target="_blank">{$formValues->web}</a>
+			{else}
+				Nenastaveno.
+			{/if}
+		</td>
+	</tr>
+</table>
+</fieldset>
+
+
+
+<fieldset>
+<legend>Maoa</legend>
+
+<table class="table">
+	<tr>
+		<td class="cols2">km<sup>2</sup> lesa</td>
+		<td class="cols7">{$formValues->km_lesa ? $formValues->km_lesa : '-'}</td>
+	</tr>
+	<tr>
+		<td>km<sup>2</sup> celkem</td>
+		<td>{$formValues->km_celkem ? $formValues->km_celkem : '-'}</td>
+	</tr>
+	<tr>
+		<td>km<sup>2</sup> nezmapovaného lesa</td>
+		<td>{$formValues->km_nezmapovaneho_lesa ? $formValues->km_nezmapovaneho_lesa : '-'}</td>
+	</tr>
+	<tr>
+		<td>Odpovědný zpracovatel mapy</td>
+		<td>{$formValues->odpovedny_zpracovatel_mapy ? $formValues->odpovedny_zpracovatel_mapy : '-'}</td>
+	</tr>
+</table>
+
+</fieldset>
+
+
+
+<fieldset>
+<legend>Mapy pokrývající prostor</legend>
+
+{if count($mapy_pokryvajici_prostor)>0}
+<table class="table">
+	<tr>
+		<td class="cols3">Mapa</td>
+		<td class="cols1">Oddíl</td>
+		<td class="cols1">Měřítko</td>
+		<td class="cols1">Rok</td>
+		<td class="cols1">Disciplína</td>
+	</tr>
+	<tr n:foreach="$mapy_pokryvajici_prostor as $mapa">
+		<td><a href="{$mapa->odkaz}" target="_blank">{$mapa->mapa}</a></td>
+		<td>{$mapa->oddil}</td>
+		<td>{$mapa->meritko}</td>
+		<td>{$mapa->rok}</td>
+		<td>{$mapa->disciplina}</td>
+	</tr>
+</table>
+{else}
+	Žádná předchozí mapa prostoru.
+{/if}
+
+</fieldset>
+
+
+
+<fieldset>
+<legend>Předchozí aktivity prostoru</legend>
+
+{if count($probehle_zavody)>0}
+<table class="table">
+	<tr>
+		<td class="cols2">Datum</td>
+		<td class="cols6">Typ závodu</td>
+	</tr>
+	<tr n:foreach="$probehle_zavody as $zavod">
+		<td>{$zavod->datum}</td>
+		<td>{$zavod->typ_zavodu}</td>
+	</tr>
+</table>
+{else}
+	Žádný probéhlý závod.
+{/if}
+
+</fieldset>
+
+
+
+<fieldset>
+<legend>Vlastníci pozemků a orgány státní správy</legend>
+
+<table class="table">
+	<tr>
+		<td class="cols2">Seznam vlastníků lesních a dalších pozemků, přes které povede závod</td>
+		<td class="cols7">{$formValues->vlastnici_pozemku_zavod ? $formValues->vlastnici_pozemku_zavod : '-'}</td>
+	</tr>
+	<tr>
+		<td>Seznam vlastníků pozemku určených pro shromaždiště</td>
+		<td>{$formValues->vlastnici_pozemku_shromazdiste ? $formValues->vlastnici_pozemku_shromazdiste : '-'}</td>
+	</tr>
+	<tr>
+		<td>Seznam vlastníků pozemku určených pro parkování</td>
+		<td>{$formValues->vlastnici_pozemku_parkovani ? $formValues->vlastnici_pozemku_parkovani : '-'}</td>
+	</tr>
+	<tr>
+		<td>Seznam katastrálních území, na kterých se závod bude konat</td>
+		<td>{$formValues->katastr_zavod ? $formValues->katastr_zavod : '-'}</td>
+	</tr>
+	<tr>
+		<td>Seznam dotčených orgánů ochrany lesa dle zákona o lesích</td>
+		<td>{$formValues->organy_ochrany_lesa ? $formValues->organy_ochrany_lesa : '-'}</td>
+	</tr>
+	<tr>
+		<td>Seznam dotčených orgánů ochrany přírody dle zákona o ochraně přírody a krajiny 114/1992</td>
+		<td>{$formValues->organy_ochrany_prirody ? $formValues->organy_ochrany_prirody : '-'}</td>
+	</tr>
+</table>
+
+</fieldset>
+
+
+
+<fieldset>
+<legend>Informace, zda se uvažovaný prostor nachází v chráněných územích (pokud ano, specifikujte)</legend>
+
+<table class="table">
+	<tr>
+		<td class="cols2">Národní park</td>
+		<td class="cols7">{$formValues->np ? $formValues->np : '-'}</td>
+	</tr>
+	<tr>
+		<td>CHKO</td>
+		<td>{$formValues->chko ? $formValues->chko : '-'}</td>
+	</tr>
+	<tr>
+		<td>Národní přírodní rezervace</td>
+		<td>{$formValues->narodni_prirodni_rezervace ? $formValues->narodni_prirodni_rezervace : '-'}</td>
+	</tr>
+	<tr>
+		<td>Přírodní rezervace</td>
+		<td>{$formValues->prirodni_rezervace ? $formValues->prirodni_rezervace : '-'}</td>
+	</tr>
+	<tr>
+		<td>Národní přírodní památka</td>
+		<td>{$formValues->narodni_prirodni_pamatka ? $formValues->narodni_prirodni_pamatka : '-'}</td>
+	</tr>
+	<tr>
+		<td>Přírodní památka</td>
+		<td>{$formValues->prirodni_pamatka ? $formValues->prirodni_pamatka : '-'}</td>
+	</tr>
+	<tr>
+		<td>Přírodní park</td>
+		<td>{$formValues->prirodni_park ? $formValues->prirodni_park : '-'}</td>
+	</tr>
+	<tr>
+		<td>Ptačí oblast (dle Natura 2000)</td>
+		<td>{$formValues->natura2000_ptaci_oblast ? $formValues->natura2000_ptaci_oblast : '-'}</td>
+	</tr>
+	<tr>
+		<td>Evropsky významná lokalita (dle Natura 2000)</td>
+		<td>{$formValues->natura2000_evropsky_vyznamna_lokalita ? $formValues->natura2000_evropsky_vyznamna_lokalita : '-'}</td>
+	</tr>
+</table>
+
+</fieldset>
+
+
+
+<fieldset>
+<legend>Poznámky</legend>
+
+{$formValues->poznamky ? $formValues->poznamky : 'Žádné poznámky.'}
+
+</fieldset>
+
+<fieldset>
+<legend>Přiložené soubory</legend>
+
+{if count($soubory) > 0}
+
+<table class="table">
+	<tr>
+		<td class="cols1">ID</td>
+		<td class="cols6">Název souboru</td>
+	</tr>
+	<tr n:foreach="$soubory as $soubor">
+		<td>#{$soubor->id|padLeft:4,'0'}</td>
+		<td><a href="{$basePath}{$soubor->url}" class="t-file" target="_blank">{$soubor->nazev}</a></td>
+	</tr>
+</table>
+
+{else}
+	Nebyl přiložen žádný soubor.
+{/if}
+
+
+</fieldset>
+
+
+<fieldset>
+<legend>Upravit údaje</legend>
+
+<a n:href="Prihlaska:Nova krok=>2" class="btn small">Upravit údaje přihlášky</a>
+
+
+</fieldset>
+
+
+<div class="controls-panel">
+<div class="controls-panel-inner">
+<a n:href="confirmSubmit!" class="btn">Uložit a odeslat</a>
+</div>
+</div>

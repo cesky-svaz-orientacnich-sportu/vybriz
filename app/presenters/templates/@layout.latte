@@ -1,0 +1,122 @@
+{**
+ * @param string   $basePath web base path
+ * @param array    $flashes  flash messages
+ *}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>{ifset #title}{include title|striptags} | {/ifset}Výběrová řízení OB</title>
+
+	<link rel="stylesheet" href="{$basePath}/css/reset.css">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css">
+	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
+	<link rel="shortcut icon" type="image/png" href="{$basePath}/favicon.png">
+
+  <link rel="prefetch" href="http://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin">
+  <link rel="prefetch" href="http://api4.mapy.cz/loader.js">
+
+	<style>
+	</style>
+
+	{*<script src="http://api4.mapy.cz/loader.js"></script>*}
+	{*<script>Loader.load()</script>*}
+
+	{block head}{/block}
+
+	{block google_analytics}
+	{/block}
+</head>
+
+<body>
+	<script> document.documentElement.className+=' js' </script>
+
+<div id="userbar-wrapper">
+	<div id="userbar">
+	{if $user->isLoggedIn()}
+		{var $user_data = $user->identity->data}
+		Přihlášený uživatel: <a n:href=":Admin:Uzivatele:Detail, id => $user_data['id']">{$user_data['first_name']} {$user_data['last_name']}</a> {*({$user_data['user_name']})*} ({$user_data['user_name']}, {$user_data['role']}) | <a n:href=":Admin:Dashboard:">Administrace</a> | <a n:href="Sign:Out">Odhlásit se</a>
+	{else}
+		Nejste přihlášen | <a n:href="Sign:In">Přihlásit se</a>
+	{/if}
+	</div>
+</div>
+
+
+<div id="banner">
+	<h1>Výběrová řízení OB</h1>
+</div>
+
+<div id="wrapper">
+
+	<ul id="menu">
+		<li {ifCurrent Homepage:*}class="current"{/ifCurrent}>
+			<a n:href="Homepage:">Úvod</a>
+		</li>
+		<li {ifCurrent Prihlaska:*}class="current"{/ifCurrent}>
+			<a n:href="Prihlaska:">Přihlášky</a>
+		</li>
+		<li {ifCurrent AktualniVr:*}class="current"{/ifCurrent}>
+			<a n:href="AktualniVr:">Aktuální VŘ</a>
+		</li>
+		<li {ifCurrent Archiv:*}class="current"{/ifCurrent}>
+			<a n:href="Archiv:">Archiv</a>
+		</li>
+		<li {ifCurrent Vr:Podminky}class="current"{/ifCurrent}>
+			<a n:href="Vr:Podminky">Podmínky VŘ</a>
+		</li>
+		<li {ifCurrent Vr:Faq}class="current"{/ifCurrent}>
+			<a n:href="Vr:Faq">FAQ</a>
+		</li>
+		<li {ifCurrent Kontakt:}class="current"{/ifCurrent}>
+			<a n:href="Kontakt:">Kontakt</a>
+		</li>
+	</ul>
+
+	<div id="content">
+	
+		<div n:if="$flashes" class="flashes">
+			<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
+		</div>
+
+		{include content}
+
+		
+
+	</div>
+	
+	<footer>{*PHP {=PHP_VERSION} |
+		{ifset $_SERVER['SERVER_SOFTWARE']}Server {$_SERVER['SERVER_SOFTWARE']}{/ifset} |
+		Nette Framework {=Nette\Framework::VERSION}*}<endora></footer>
+
+</div>
+
+
+
+	
+
+{block scripts}
+<script src="{$basePath}/js/jquery.js"></script>
+<script src="{$basePath}/js/netteForms.js"></script>
+<script src="{$basePath}/js/nette.ajax.js"></script>
+<script src="{$basePath}/js/main.js"></script>
+<script>
+	$(function () {
+    	$.nette.init();
+		$.nette.ext({
+			start: function (payload) {
+				//ajax start
+			},
+		    success: function (payload) {
+		        //alert('payload'+payload);
+		    }
+		});
+	});
+</script>
+
+{/block}
+</body>
+</html>

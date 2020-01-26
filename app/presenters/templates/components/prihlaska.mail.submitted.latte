@@ -1,0 +1,71 @@
+{*var $mail->from = "Výběrová řízení OB <vybriz@example.com>" *}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Potvrzení přihlášky</title>
+    <style>
+    body, #msg {
+        margin: 0;
+        padding: 0;
+        background-color: #444349;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+    }
+    #msg {
+        background-color: #FFF;
+        width: 80%;
+        max-width: 800px;
+        margin: 20px auto 50px;
+        border-radius: 2px;
+        box-shadow: 0 1px 3px 0 rgba(0,0,0,0.5);
+        overflow: hidden;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    #msg-content {
+        padding: 20px 40px 40px;
+    }
+    #msg-content p {
+        line-height: 1.5;
+        margin: 6px 0 8px;
+    }
+
+    #headline {
+        display: block;
+        width: 100%;
+        margin: 0 0 0px;
+
+        padding: 22px 40px 20px;
+        font-family: Arial, sans-serif;
+        font-size: 18px;
+        font-weight: normal;
+
+        color: #888;
+        background-color: #F2F2F2;
+        border-bottom: 1px solid #EEE;
+        
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    #headline p {
+        margin: 0;
+        padding: 0;
+    }
+    #headline b {
+        font-weight: normal;
+    }
+    </style>
+</head>
+<body>
+    <div id="msg">
+    <div id="headline"><b>Potvrzení přijetí přihlášky #{$data->id|padLeft:4,'0'}, {$druh->druh_zkratka}, {$termin->termin|date:'j.n. Y'}</b></div>
+    <div id="msg-content">
+        <p>Dobrý den,<br>
+děkujeme za vaši přihlášku do výběrového řízení na pořádání závodů ČSOS. Přihláška bude zpracována a společně s dalšími bude vyhodnocena soutěžní komisí. Do ukončení kola lze údaje přihlášky omezeně upravovat na následující adrese: <a href="http://vybriz.orientacnisporty.cz/prihlaska/upravit/?pId={$data->id}&secret={$data->id.$data->hash}" target="_blank">www.vybriz.orientacnisporty.cz/prihlaska/upravit/?pId={$data->id}&secret={$data->id.$data->hash}</a>. Výsledky výběrového řízení se dozvíte na stránkách ČSOS.</p>
+<p>V případě jakýkoliv dotazů se obraťte na e-mailovou adresu <a href="mailto:vyberoverizeni@orientacnibeh.cz" target="_blank">vyberoverizeni@orientacnibeh.cz</a>.</p>
+    </div>
+    </div>
+</body>
+</html>

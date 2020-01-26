@@ -1,0 +1,105 @@
+{block content}
+{var $k_id = $presenter->getParam('id')}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link"><a n:href=":Admin:Dashboard:">Administrace</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link"><a n:href=":Admin:Kola:">Kola</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link"><a n:href=":Admin:Kola:Detail, id => $k_id">Detail</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link breadcumb-current"><a n:href=":Admin:Prihlasky:MultiOris, id => $k_id">Nastavit OrisId</a></span>
+</div>
+
+
+
+<fieldset>
+	<legend>Přehled</legend>
+	<table class="table">
+		<tbody>
+			<tr>
+				<td class="cols2">ID</td>
+				<td class="cols7">{$kolo['id']}</td>
+			</tr>
+			<tr>
+				<td class="cols2">Rok</td>
+				<td class="cols7">{$kolo['rok']}</td>
+			</tr>
+			<tr>
+				<td class="cols2">Kolo</td>
+				<td class="cols7">{$kolo['kolo']}. kolo</td>
+			</tr>
+			<tr>
+				<td class="cols2">Přihlášky od</td>
+				<td class="cols7">{$kolo['od']|date:'j. n. Y'}</td>
+			</tr>
+			<tr>
+				<td class="cols2">Přihlášky do</td>
+				<td class="cols7">{$kolo['do']|date:'j. n. Y'}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>Pro zjištění jednotlivých OrisId můžete využít nástroj pro <a n:href=":Admin:Prihlasky:AutoOris, kolo_id => $kolo['id'], rok => $kolo['rok']">vyhledávání dat z ORISu</a>.</p>
+</fieldset>
+
+<fieldset {* n:cache="orisprihlasky.$k_id, expire => '12 months', tags => ['prihlasky/' . (int) $k_id]" *} n:snippet="orisprihlasky">
+	<legend>Přihlášky <span class="soft">({count($prihlasky)})</span></legend>
+	<table id="tavr-table" class="table" style="width:100%;" n:if="$prihlasky">
+		<thead>
+			<tr>
+				<td>ID</td>
+				<td>odd.</td>
+				<td>datum</td>
+				<td colspan="2">závod</td>
+				<td>vytvořeno</td>
+				<td>ORIS ID</td>
+			</tr>
+		</thead>
+		<tbody>
+		{var $prev_date}
+		{var $odd_date = 0}
+		{foreach $prihlasky as $prihlaska}
+			{if $prev_date != $prihlaska['termin']}
+				{var $odd_date = $odd_date && 1 ? 0 : 1}
+				{var $prev_date = $prihlaska['termin']}
+			{/if}
+			{dump $prihlaska}
+			<tr class="{$odd_date==1?'odd':'even'}-row{if $prihlaska['stav'] == 'draft'} soft{/if}" n:snippet="orisprihlaska-$prihlaska->id">
+				<td>
+					<a n:href=":Archiv:Detail, id => $prihlaska['id']" target="_blank" n:tag-if="$prihlaska['stav'] != 'draft'">{$prihlaska['id']}</a><br>
+					<span class="soft">({$prihlaska['sdruzena_prihlaska_id']?:"-"})</span>
+				</td>
+				<td>
+					{$prihlaska['poradatel_zkratka']}<br>
+					<span>{$prihlaska['dalsi_poradatele']?$prihlaska['dalsi_poradatele']:'-'}</span>
+				</td>
+				<td>{$prihlaska['termin']|date:"j. n."}<br>{$prihlaska['termin']|date:"Y"}</td>
+				<td class="{if $prihlaska['oris_id'] !== NULL}oris-confirmed{/if}">
+					<span class="{if $prihlaska['stav'] != 'draft'}event-type-{$prihlaska['druh_id']}{/if}">{$prihlaska['druh']}</span><br>
+					<div style="max-width:400px;">„{$prihlaska['prostor_zavodu']|truncate:170}“</div>
+				</td>
+				<td>
+					<span class="icon-oris{if $prihlaska['oris_id'] !== NULL}-confirmed{/if}">ORIS</span>
+				</td>
+				<td title="{$prihlaska['created_at']|date:'j. n. Y, H:i:s'}">
+					{$prihlaska['created_at']|date:"d.m.Y"}<br>
+					{$prihlaska['created_at']|date:"H:i:s"}
+				</td>
+				<td>
+					{if $prihlaska['stav'] != 'draft'}
+						{form "multiOrisIdForm-$prihlaska->id" class=>'ajax'}
+							{label oris_id}{input oris_id, size => 5, style => 'width:70px;', value => $prihlaska['oris_id']}{/label}
+							{input send, class => [btn, small]}
+						{/form}
+					{/if}
+				</td>
+			</tr>
+		{/foreach}
+		</tbody>
+	</table>
+
+</fieldset>
+
+
+{/block}

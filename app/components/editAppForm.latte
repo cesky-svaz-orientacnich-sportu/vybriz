@@ -1,0 +1,382 @@
+{form editAppForm}
+
+<b>{$druh->druh}, <span class="date">{$termin->termin|date:'j. n. Y'}</span> ({$prihlaska['poradatel_zkratka']})</b>
+
+<h3 id="toc-zakladni-udaje">Základní údaje a informace o přihlášce</h3>
+
+<table class="table">
+	<tr>
+		<td class="cols3">Identifikační číslo</td>
+		<td class="cols6">{$prihlaska['id']}</td>
+	</tr>
+	{*
+	<tr>
+		<td>stav</td>
+		<td>{$prihlaska['stav']}</td>
+	</tr>
+	*}
+	<tr>
+		<td>Autor přihlášky</td>
+		<td>{$prihlaska['jmeno']} ({$prihlaska['registracni_cislo']}), {$prihlaska['pozice_v_oddile']}</td>
+	</tr>
+	<tr>
+		<td>E-mail</td>
+		<td>{$prihlaska['mail']}{*<a href="mailto:{$prihlaska['mail']}">{$prihlaska['mail']}</a>*}</td>
+	</tr>
+	<tr>
+		<td>Vytvořeno</td>
+		<td>{$prihlaska['created_at']|date:'j.n. Y, H:i:s'}</td>
+	</tr>
+	<tr>
+		{var $kolo = $prihlaska->ref('kola', 'kolo')}
+		<td>Kolo VŘ</td>
+		<td>{$kolo->rok} - <b>{$kolo->kolo}.&nbsp;kolo</b></td>
+	</tr>
+	<tr>
+		<td>{$form['druh']->label}</td>
+		<td>{$form['druh']->control}</td>
+	</tr>
+	<tr>
+		<td>{$form['termin']->label}</td>
+		<td>{$form['termin']->control}</td>
+	</tr>
+	<tr>
+		<td>{label $form['preference'] /}</td>
+		<td>{input $form['preference']}</td>
+	</tr>
+	<tr>
+		<td class="cols2">{label $form['web'] /}</td>
+		<td>
+			{input $form['web']}
+		</td>
+	</tr>
+</table>
+
+<h3 id="toc-zakladni-udaje">Pořadatelé</h3>
+
+<table class="table">
+	<tr>
+		<td class="cols2">{label $form['poradatel'] /}</td>
+		<td>{input $form['poradatel']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['poradatel_zkratka'] /}</td>
+		<td>{input $form['poradatel_zkratka']}</td>
+	</tr>
+</table>
+
+<h4>Další pořadatelé</h4>
+
+<p>Pouze zkratky oddílů podle systému ORIS.</p>
+
+<table class="table">
+	{foreach $form['dalsi_poradatele']->getContainers() as $key => $dalsi_poradatele}
+	    <tr>
+	    	<td class="cols2"><label>{$iterator->counter+1}. pořadatel</label></td>
+		    <td style="width:100px;">{input $dalsi_poradatele['oddil_zkratka']}</td>
+	    	<td>{input $dalsi_poradatele['remove'], class=>"btn btn-remove"}</td>
+		    {*<td><span id="dalsi-poratatel-{$key}-nazev-oddilu">{$key}</span></td>*}
+	    </tr>
+	{/foreach}
+</table>
+<p>{input $form['dalsi_poradatele']['add'], class=>"btn small"}</p>
+
+
+<h3 id="toc-organizatori">Organizátoři</h3>
+
+<table class="table">
+	<tr>
+		<td class="cols2">{label $form['reditel_zavodu'] /}</td>
+		<td style="width:190px;">
+			{input $form['reditel_zavodu']}
+			<div class="form-item-description">Jméno</div>
+		</td>
+		<td colspan='2'></td>
+	</tr>
+	<tr>
+		<td>{label $form['hlavni_rozhodci'] /}</td>
+		<td>
+			{input $form['hlavni_rozhodci_registracni_cislo']}
+			<div class="form-item-description">Registrační číslo</div>
+		</td>
+		<td>
+			{input $form['hlavni_rozhodci']}
+			<div class="form-item-description">Jméno</div>
+		</td>
+		<td>
+			{input $form['hlavni_rozhodci_trida']}
+			<div class="form-item-description">Třída rozhodčího</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			{label $form['stavitel_trati'] /}
+		</td>
+		<td>
+			{input $form['stavitel_trati_registracni_cislo']}
+			<div class="form-item-description">Registrační číslo</div>
+		</td>
+		<td>
+			{input $form['stavitel_trati']}
+			<div class="form-item-description">Jméno</div>
+		</td>
+		<td>
+			{input $form['stavitel_trati_trida']}
+			<div class="form-item-description">Třída rozhodčího</div>
+		</td>
+	</tr>
+</table>
+
+
+
+
+<h3 id="toc-prostor-a-centrum-závodu">Prostor a centrum závodu</h3>
+
+<table class="table">
+	<tr>
+		<td class="cols2">{label $form['prostor_zavodu'] /}</td>
+		<td>{input $form['prostor_zavodu']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['popis_terenu'] /}</td>
+		<td>{input $form['popis_terenu'], rows => 6, cols => 65}</td>
+	</tr>
+</table>
+
+
+
+<h4>Prostor na mapě</h4>
+	<p><img id="map-preview" alt="Náhled prostoru" width="320px" height="200px"><br><a href="#map-modal" class="fancybox fancybox.inline btn small">Zakreslit mapu prostoru</a></p>
+
+{include '../presenters/templates/components/prihlaska.form.mapa.latte'}
+
+
+
+
+
+<h3 id="toc-udaje-o-mape">Údaje o mapě</h3>
+
+
+<table class="table">
+	<tr>
+		<td class="cols3">{label $form['km_lesa'] /}</td>
+		<td>{input $form['km_lesa']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['km_celkem'] /}</td>
+		<td>{input $form['km_celkem']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['km_nezmapovaneho_lesa'] /}</td>
+		<td>{input $form['km_nezmapovaneho_lesa']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['odpovedny_zpracovatel_mapy'] /}</td>
+		<td>{input $form['odpovedny_zpracovatel_mapy']}</td>
+	</tr>
+</table>
+
+
+
+<h3 id="toc-mapy-pokryvajici-prostor">Mapy pokrývající prostor</h3>
+
+<table class="table">
+	<tr>
+	    <td>Mapa</td>
+	    <td>Oddíl</td>
+	    <td>Rok</td>
+	    <td>Meřítko</td>
+	    <td>Disciplína</td>
+	    <td>Odkaz na mapu</td>
+	    <td></td>
+	</tr>
+	{foreach $form['mapy_pokryvajici_prostor']->getContainers() as $i_mpp}
+	    
+	    <tr>
+		    <td>{input $i_mpp['mapa']}</td>
+		    <td>{input $i_mpp['oddil']}</td>
+		    <td>{input $i_mpp['rok']}</td>
+		    <td>{input $i_mpp['meritko']}</td>
+		    <td>{input $i_mpp['disciplina']}</td>
+		    <td>{input $i_mpp['odkaz']}</td>
+		    <td>{input $i_mpp['remove'], class=>"btn btn-remove"}</td>
+	    </tr>
+	    
+	{/foreach}
+</table>
+
+{input $form['mapy_pokryvajici_prostor']['add'], class=>"btn small"}
+
+
+
+
+<h3 id="toc-predchozi-aktivity-prostoru">Předchozí aktivity prostoru</h3>
+
+<table class="table">
+	<tr>
+    	<td></td>
+    	<td>Datum</td>
+    	<td>Typ závodu</td>
+    	<td></td>
+	</tr>
+	{foreach $form['probehle_zavody']->getContainers() as $i_pp}
+	    <tr>
+	    	<td>{$iterator->counter}</td>
+	    	<td>{input $i_pp['datum']}</td>
+	    	<td>{input $i_pp['typ_zavodu']}</td>
+	    	<td>{input $i_pp['remove'], class=>"btn btn-remove"}</td>
+	    </tr>
+	{/foreach}
+</table>
+
+{input $form['probehle_zavody']['add'], class=>"btn small"}
+
+
+
+<h3 id="toc-vlastnici-pozemku-a-organy-statni-spravy">Vlastníci pozemků a orgány státní správy</h3>
+
+<table class="table">
+	<tr>
+		<td width="25%">{label $form['vlastnici_pozemku_zavod'] /}</td>
+		<td>{input $form['vlastnici_pozemku_zavod']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['vlastnici_pozemku_shromazdiste'] /}</td>
+		<td>{input $form['vlastnici_pozemku_shromazdiste']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['vlastnici_pozemku_parkovani'] /}</td>
+		<td>{input $form['vlastnici_pozemku_parkovani']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['katastr_zavod'] /}</td>
+		<td>{input $form['katastr_zavod']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['organy_ochrany_lesa'] /}</td>
+		<td>{input $form['organy_ochrany_lesa']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['organy_ochrany_prirody'] /}</td>
+		<td>{input $form['organy_ochrany_prirody']}</td>
+	</tr>
+</table>
+
+
+
+<h3 id="toc-chranena-uzemi">Chráněná území</h3>
+
+<p>Informace, zda se uvažovaný prostor nachází v chráněných územích (pokud ano, specifikujte)</p>
+
+<table class="table">
+	<tr>
+		<td width="25%">{label $form['np'] /}</td>
+		<td>{input $form['np']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['chko'] /}</td>
+		<td>{input $form['chko']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['narodni_prirodni_rezervace'] /}</td>
+		<td>{input $form['narodni_prirodni_rezervace']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['prirodni_rezervace'] /}</td>
+		<td>{input $form['prirodni_rezervace']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['narodni_prirodni_pamatka'] /}</td>
+		<td>{input $form['narodni_prirodni_pamatka']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['prirodni_pamatka'] /}</td>
+		<td>{input $form['prirodni_pamatka']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['prirodni_park'] /}</td>
+		<td>{input $form['prirodni_park']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['natura2000_ptaci_oblast'] /}</td>
+		<td>{input $form['natura2000_ptaci_oblast']}</td>
+	</tr>
+	<tr>
+		<td>{label $form['natura2000_evropsky_vyznamna_lokalita'] /}</td>
+		<td>{input $form['natura2000_evropsky_vyznamna_lokalita']}</td>
+	</tr>
+</table>
+
+
+
+
+
+<h3 id="toc-poznamky">Poznámky</h3>
+
+
+<table class="table">
+	<tr>
+		<td>{label $form['poznamky'] /}</td>
+		<td>{input $form['poznamky']}</td>
+	</tr>
+</table>
+
+
+
+
+<h3 id="toc-prilohy">Přiložené soubory</h3>
+
+<fieldset id="section-files">
+<legend>Nahrát přílohu</legend>
+
+{snippet files}
+
+	{if count($soubory)>0}
+	<table class="table">
+		<tr><td class="cols1">ID</td><td class="cols4">název</td><td class="cols2">smazat soubor</td></tr>
+		{foreach $soubory as $soubor}
+			<tr>
+				<td>#{$soubor->id|padLeft:4,'0'}</td>
+				<td><a href="{$basePath}{$soubor->url}" class="t-file" target="_blank">{$soubor->nazev}</a></td>
+				<td><a n:href="deleteFile! file_id => $soubor->id">smazat</a></td>
+			</tr>
+		{/foreach}
+	</table>
+	{else}
+	<p><i>Žádná příloha nebyla nahrána.</i></p>
+	{/if}
+
+{/snippet}
+
+	<div id="uploader">
+		<p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
+	</div>
+	<a href="#uploader" class="fancybox btn small">Nahrát soubory</a>
+
+</fieldset>
+
+
+
+<h3>Prohlášení</h3>
+
+<p>Odesláním formuláře souhlasíte s následujícím prohlášením:</p>
+
+<ol>
+	<li><p>uspořádání závodu v tomto terénu nebrání vážné majetkové a legislativní důvody (zónace CHKO, apod.),</p></li>
+	<li><p>výše uvedené osoby (osoba odpovědná za zpracování mapy, ředitel závodu, hlavní rozhodčí a stavitel tratí) s převzetím úkolu souhlasí a jsou ochotny daný úkol realizovat,</p></li>
+	<li><p>k prostoru závodu nemá žádný jiný subjekt (klub, oddíl) právo k využití pro pořádání závodů, pokud ano, tento subjekt s pořádáním uvažovaného závodu souhlasí.</p></li>
+</ol>
+
+<p></p>
+
+
+<div class="controls-panel">
+<div class="controls-panel-inner">
+{input send class=>'btn'}
+</div>
+</div>
+
+
+
+
+{/form}

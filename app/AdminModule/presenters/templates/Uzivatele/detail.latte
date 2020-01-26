@@ -1,0 +1,48 @@
+{block content}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link"><a n:href=":Admin:Dashboard:">Administrace</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link"><a n:href=":Admin:Uzivatele:">Uživatelé</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link breadcumb-current"><a n:href=":Admin:Uzivatele:Detail, id => $presenter->getParam('id')">Detail</a></span>
+</div>
+
+
+
+<fieldset>
+	<legend>Přehled</legend>
+	<table class="table">
+		<tbody>
+			<tr>
+				<td class="cols2">ID</td>
+				<td class="cols7">{$uzivatel['id']}</td>
+			</tr>
+			<tr>
+				<td class="cols2">Uživatel. nick</td>
+				<td class="cols7">{$uzivatel['user_name']}</td>
+			</tr>
+			<tr>
+				<td class="cols2">Jméno</td>
+				<td class="cols7">{$uzivatel['first_name']}</td>
+			</tr>
+			<tr>
+				<td class="cols2">Příjmení</td>
+				<td class="cols7">{$uzivatel['last_name']}</td>
+			</tr>
+			<tr>
+				<td class="cols2">E-mail</td>
+				<td class="cols7">{$uzivatel['mail']}</td>
+			</tr>
+			<tr>
+				<td class="cols2">Role</td>
+				<td class="cols7">{$uzivatel['role']}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a n:href=":Admin:Uzivatele:Edit, id => $uzivatel['id']" class="btn small">Upravit</a>
+	<a n:if="$user->id == $uzivatel['id']" n:href=":User:PasswordRequest" class="btn small">Obnovit heslo</a>
+</fieldset>
+
+{/block}

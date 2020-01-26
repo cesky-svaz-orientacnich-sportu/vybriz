@@ -1,0 +1,76 @@
+{block content}
+{var $k_id = $presenter->getParam('kolo_id')}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link"><a n:href=":Admin:Dashboard:">Administrace</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link"><a n:href=":Admin:Kola:">Kola</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link"><a n:href=":Admin:Kola:Detail, id => $k_id">Detail</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link"><a n:href=":Admin:Prihlasky:MultiOris, id => $k_id">Nastavit OrisId</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link breadcumb-current"><a n:href="this">Data z ORISu</a></span>
+</div>
+
+
+<fieldset n:if="$data2" n:snippet="orisprihlasky">
+	<legend>Nalezené shody{if $kolo} pro {$kolo['kolo']}. kolo VŘ na rok {$kolo['rok']}{/if}</legend>
+	<table id="tavr-table" class="table" style="width:100%;">
+		<thead>
+			<tr>
+				<td>ID</td>
+				<td>OrisId</td>
+				<td style="text-align:center;">Odd.</td>
+				<td>Datum</td>
+				<td>Druh / Závod</td>
+				<td>Nastavit OrisId</td>
+			</tr>
+		</thead>
+		{var $count = 0}
+		<tbody>
+		{var $prev_date}
+		{var $odd_date = 0}
+
+		{foreach $data2 as $d}
+			{if isset($data1[$d['termin']->format("Y-m-d")][$d['poradatel_zkratka']]) || isset($data1[$d['termin']->format("Y-m-d")][$d['dalsi_poradatele']])}
+				{if $prev_date != $d['termin']}
+					{var $odd_date = $odd_date && 1 ? 0 : 1}
+					{var $prev_date = $d['termin']}
+				{/if}
+				{var $count += 1}
+				{var $r = @$data1[$d['termin']->format("Y-m-d")][$d['poradatel_zkratka']] ?: $data1[$d['termin']->format("Y-m-d")][$d['dalsi_poradatele']]}
+				
+				<tr class="{$odd_date==1?'odd':'even'}-row" n:snippet="orisprihlaska-$d->id">
+					<td>{$d['id']}</td>
+					<td><span class="soft">&nbsp;{$d['oris_id']?:'-'}</span></td>
+					<td rowspan="2"><p class="blank-holder" style="text-align:center;">{$d['poradatel_zkratka']}</p></td>
+					<td rowspan="2"><p class="blank-holder">{$d['termin']|date:'j. n. Y'}</p></td>
+					<td class="event-type-{$d['druh_id']}">{$d['druh']}</td>
+					<td rowspan="2">
+						{if $r['ID'] != $d['oris_id']}
+						{form "multiOrisIdForm-$d->id" class=>'ajax'}
+							{label oris_id}{input oris_id, size => 5, style => 'width:70px;', value => $r['ID'], placeholder => $r['ID']}{/label}
+							{input send, class => [btn, small]}
+						{/form}
+						{else}
+							<p class="blank-holder soft">shodují se | <a n:href=":Admin:Prihlasky:Oris, id => $d['id']" target="_blank">Změnit</a></p>
+						{/if}
+					</td>
+				</tr>
+				<tr class="{$odd_date==1?'odd':'even'}-row">
+					<td><span class="icon-oris{if $d['oris_id'] != NULL}-confirmed{/if}">ORIS</span></td>
+					<td><span class="orisId-highlight">{$r['ID']}</span></td>
+					<td><a href="http://oris.orientacnisporty.cz/Zavod?id={$r['ID']}" class="hidden-link" target="_blank">{$r['Name']}</a></td>
+				</tr>
+			{else}
+			{/if}
+		{/foreach}
+
+		</tbody>
+	</table>
+
+	<p><br>Celkem nalezeno {$count} shod z ORISu.<br>
+	<span class="soft">Nástroj prohledává data pouze na základě shody primárního pořadatele a termínu závodu.</span></p>
+
+</fieldset>

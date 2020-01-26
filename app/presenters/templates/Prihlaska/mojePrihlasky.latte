@@ -1,0 +1,25 @@
+{block content}
+
+<h2 n:block=title>Přihlášky</h2>
+
+<h3>Aktivní přihlášky</h3>
+<p>Na této relaci jsou přihlášky, které nebyly dokončeny:</p>
+<table class="table">
+<tr>
+	<td class="cols1">ID</td>
+	<td class="cols2">stav</td>
+	<td class="cols4" colspan="2">akce</td>
+</tr>
+{* {foreach $aktivni_prihlasky as $aktivni_prihlaska}
+<tr>
+	<td>#{$aktivni_prihlaska['id']|padLeft:4,'0'}</td>
+	<td>nedokončeno</td>
+	<td><a n:href="nova krok => @$aktivni_prihlaska[step], pId => @$aktivni_prihlaska[id], hash => @$aktivni_prihlaska[hash]">pokračovat v přihlášce</a></td>
+	<td><a n:href="removePendingApplication! pId => $aktivni_prihlaska[id], hash => $aktivni_prihlaska[hash]">odstranit přihlášku</a></td>
+</tr>
+{/foreach} *}
+</table>
+
+
+
+{/block}

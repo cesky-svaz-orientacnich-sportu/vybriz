@@ -1,0 +1,169 @@
+{block content}
+
+<h2 n:block=title>Přihlášky</h2>
+
+{if $kolo}
+	{var $allow_applications = ( $kolo->od->getTimestamp() <= time()) ? 1 : 0}
+
+		<h3>Aktuální kolo VŘ</h3>
+
+		<table class="table">
+			<tr>
+				<td>Aktuální kolo:</td>
+				<td class="cols2">{$kolo->rok} - <b>{$kolo->kolo}. kolo</b></td>
+			</tr>
+			<tr>
+				<td>Začátek kola:</td>
+				<td>{$kolo->od|date:'j.n. Y'}</td>
+			</tr>
+			<tr>
+				<td>Konec kola:</td>
+				<td>{$kolo->do|date:'j.n. Y'}</td>
+			</tr>
+		</table>
+
+		{if count($aktivni_prihlasky) > 0 && $allow_applications}
+
+			<h3>Aktivní přihlášky</h3>
+			<p>Na této relaci jsou přihlášky, které nebyly dokončeny:</p>
+			<table class="table">
+			<tr>
+				<td class="cols1">ID</td>
+				<td class="cols2">stav</td>
+				<td class="cols4" colspan="2">akce</td>
+			</tr>
+			{foreach $aktivni_prihlasky as $aktivni_prihlaska}
+			<tr>
+				<td>#{$aktivni_prihlaska['id']|padLeft:4,'0'}</td>
+				<td>nedokončeno</td>
+				<td><a n:href="nova krok => @$aktivni_prihlaska[step], pId => @$aktivni_prihlaska[id], hash => @$aktivni_prihlaska[hash]">pokračovat v přihlášce</a></td>
+				<td><a n:href="removePendingApplication! pId => $aktivni_prihlaska[id], hash => $aktivni_prihlaska[hash]">odstranit přihlášku</a></td>
+			</tr>
+			{/foreach}
+			</table>
+		{/if}
+
+	{if $last_application && $allow_applications}
+		<h3>Zkopírovat údaje z poslední přihlášky</h3>
+		{dump $prihlaska}
+
+		{if $allow_duplication}
+		
+		
+			<fieldset>
+			<legend>Výběr termínu a preference</legend>
+			{form duplicateApplicationForm}
+
+				<p>Předvyplní formulář daty z poslední odeslané přihlášky (#{$last_application[0]['id']|padLeft:4,'0'}, {$druh->druh_zkratka}, {$termin->termin|date:'j.n. Y'}).</p>
+
+				
+
+				<div class="form-notification warning" n:foreach="$form->ownErrors as $error">{$error}</div>
+
+				<table>
+					<tr>
+						<td>{label termin /}</td>
+						<td>
+							{input termin}
+							<div class="cols6 form-item-description" n:if="$prihlaska->sdruzit_prihlasku">
+								Data pro sdružený termín se analogicky doplní podle předchozí vyplněné žádosti. Termín označený (*) je termín poslední přihlášky.
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>{label preference /}</td>
+						<td>
+							{input preference}
+							<div class="cols6 form-item-description">{$form['preference']->getOption('description')}</div>
+						</td>
+					</tr>
+				</table>
+
+				{input send class=>'btn small'}
+				<a n:href="removeLastApplication!" class="btn small">Přestat zobrazovat</a>
+
+			{/form}
+			</fieldset>
+		{else}
+			<p>Přihlášku bude možné zkopírovat po odeslání rozpracované žádosti.</p>
+		{/if}
+	{/if}
+
+
+
+	{if count($aktivni_prihlasky) == 0 }
+
+		<h3>Podat přihlášku</h3>
+
+		{if $allow_applications}
+			<a n:href="Prihlaska:Nova" class="btn">Podat novou přihlášku</a>
+		{else}
+			<div class="flash error">Nyní nelze podat přihlášku. Počkejte do otevření kola.</div>
+		{/if}
+
+	{/if}
+
+
+	{if FALSE}
+		{if $accessRequest}
+			<h3>Přehled přihlášek od {$accessRequest['mail']}</h3>
+			<p><a n:href="deleteAccessRequest!" class="btn small">Zrušit přístup k seznamu</a></p>
+			{if $all_applications}
+				<table class="table" id="tavr-table" style="width:100%;">
+					<tr>
+						<td>ID</td>
+						<td>Stav</td>
+						<td>Rok</td>
+						<td>Kolo</td>
+						<td>Datum</td>
+						<td>Odd.</td>
+						<td>Vytvořeno</td>
+						<td class="cols2">Druh závodu</td>
+						<td class="cols3">Prostor závodu</td>
+						<td class="cols3">Popis terénu</td>
+					</tr>
+					{var $prev_date}
+					{var $odd_date = 0}
+					{foreach $all_applications as $application}
+						{if $prev_date != $application->termin}
+							{var $odd_date = $odd_date && 1 ? 0 : 1}
+							{var $prev_date = $application->termin}
+						{/if}
+						<tr id="tavr-pi-{$application->id}" {*if $allow_view}class="tavr-state-{$application->stav} {$odd_date==1?'odd':'even'}-row"{/if*} class="{$odd_date==1?'odd':'even'}-row">
+							<td><a n:tag-if="$kolo->id != $application->kolo && $application->stav != 'draft'" n:href="Archiv:detail id=>$application->id">#{$application->id|padLeft:4,'0'}</a></td>
+							<td>{$application->stav == 'draft' ? 'Koncept' : 'Odeslána'}</td>
+							<td>{$application->ref('termin')->termin|date:'Y'}</td>
+							<td>{$application->ref('kolo')->kolo}.</td>
+							<td>{$application->ref('termin')->termin|date:'j.n.'}</td>
+							<td>{$application->poradatel_zkratka}</td>
+							<td>{$application->created_at|date:'j.n. Y'}</td>
+							<td class="event-type-{$application->druh_zavodu}">{$application->ref('druh_zavodu')->druh_zkratka}</td>
+							<td title={$application->prostor_zavodu}>{$application->prostor_zavodu|truncate:60}</td>
+							<td title={$application->popis_terenu}>{$application->popis_terenu|truncate:68}</td>
+						</tr>
+					{/foreach}
+				</table>	
+			{else}
+				<p>Z tohoto e-mailu nebyly odeslány žádné přihlášky.</p>
+			{/if}
+		{else}
+			<h3>Požádat o přístup k zobrazení odeslaných přihlášek</h3>
+			{control accessRequestForm}
+		{/if}
+	{/if}
+
+
+{else}
+
+<h3>Aktuální kolo VŘ</h3>
+
+<div class="flash error">Nyní nelze podávat přihlášky, aktuálně není vypsáno žádné kolo VŘ.</div>
+
+{/if}{*if $kolo*}
+
+{* 
+<h3>Přístup k odeslaným přihláškám</h3>
+<a n:href="Prihlaska:MojePrihlasky" class="btn-small">Přehled přihlášek</a>
+ *}
+
+{/block}

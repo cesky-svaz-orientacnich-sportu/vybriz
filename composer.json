@@ -1,0 +1,7 @@
+{
+    "require": {
+        "Nette/Nette": "^2.4",
+        "nextras/mail-panel": "^2.3",
+        "kdyby/forms-replicator": "~1.1"
+    }
+}

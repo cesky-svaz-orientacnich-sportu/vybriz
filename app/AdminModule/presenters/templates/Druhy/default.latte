@@ -1,0 +1,35 @@
+{block content}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link"><a n:href=":Admin:Dashboard:">Administrace</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link breadcumb-current"><a n:href=":Admin:Druhy:">Druhy</a></span>
+</div>
+
+
+<table class="table" style="width:100%;" n:if="$druhy">
+	<thead>
+		<tr>
+			<td><a n:href="this, sort => ($sort == App\AdminModule\Presenters\DruhyPresenter::SORT_ASC) ? App\AdminModule\Presenters\DruhyPresenter::SORT_DESC : App\AdminModule\Presenters\DruhyPresenter::SORT_ASC, order => App\AdminModule\Presenters\DruhyPresenter::COLUMN_ID">ID</a></td>
+			<td><a n:href="this, sort => ($sort == App\AdminModule\Presenters\DruhyPresenter::SORT_ASC) ? App\AdminModule\Presenters\DruhyPresenter::SORT_DESC : App\AdminModule\Presenters\DruhyPresenter::SORT_ASC, order => App\AdminModule\Presenters\DruhyPresenter::COLUMN_ZKR">zkratka</a></td>
+			<td><a n:href="this, sort => ($sort == App\AdminModule\Presenters\DruhyPresenter::SORT_ASC) ? App\AdminModule\Presenters\DruhyPresenter::SORT_DESC : App\AdminModule\Presenters\DruhyPresenter::SORT_ASC, order => App\AdminModule\Presenters\DruhyPresenter::COLUMN_DRUH">druh závodu</a></td>
+			<td>akce</td>
+		</tr>
+	</thead>
+	<tbody>
+	{foreach $druhy as $druh}		
+		<tr class="{$iterator->isOdd()?'odd-row':'even-row'}">
+			<td>{$druh['id']}</td>
+			<td class="event-type-{$druh['id']}">{$druh['druh_zkratka']}</td>
+			<td>{$druh['druh']}</td>
+			<td><a n:href=":Admin:Druhy:Edit, $druh['id']">Upravit</a></td>
+		</tr>
+	{/foreach}
+	</tbody>
+</table>
+
+<a n:href=":Admin:Druhy:Novy" class="btn small">Přidat druh</a>
+
+
+
+{/block}

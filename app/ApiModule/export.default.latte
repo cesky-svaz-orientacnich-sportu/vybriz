@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>API Dokumentace | Výběrová řízení OB</title>
+	<style>
+		body {
+			line-height: 1.6;
+			font-size: 16px;
+			margin: 30px auto;
+			width: 90%;
+			font-family: serif;
+		}
+		.footer, .footer a {
+			margin: 80px 0 20px;
+			color: #AAA;
+		}
+		.param, .method {
+			font-weight: bold;
+		}
+		.label-warn,
+		.label-info,
+		.link-example {
+			font-size: 72%;
+			border-radius: 3px;
+			padding: 3px 5px;
+			margin: 0 3px;
+			font-family: sans-serif;
+		}
+		.label-warn {
+			color: #C42E26;
+			background-color: #F8DDDC;
+		}
+		.label-info {
+			color: #1FA9C7;
+			background-color: #DAEDF1;
+		}
+		.link-example {
+			background-color: #F8F8F8;
+			color: #888;
+			text-decoration: none;
+		}
+		.link-example:hover {
+			color: #666;
+			text-decoration: underline;
+		}
+	</style>
+</head>
+<body>
+<div class="page">
+
+	<h1>Výběrová řízení OB - API Lite Dokumentace</h1>
+
+	<h2>Parametry</h2>
+
+	<p>Parametry pro všechny GET požadavky.</p>
+
+	<ul>
+		<li><span class="param">'method'</span> - název metody <span class="label-warn">povinný</span></li>
+		<li><span class="param">'format'</span> - formát výstupu dat (json, xml) <span class="label-info">volitelný</span></li>
+	</ul>
+
+
+	<h2>Dostupné metody</h2>
+
+	<ul>
+		<li><span class="method">'getEventCoordsList'</span> - seznam souřadnic centra a prostoru závodů</li>
+
+		<ul>
+			<li>Parametry:</li>
+			<ul>
+				<li><span class="param">'year'</span> - rok, pro který byly přihlášky do VŘ podány <span class="label-warn">povinný</span></li>
+				<li><span class="param">'round'</span> - kolo přihlášek <span class="label-info">volitelný</span></li>
+				<li><span class="param">'orisonly'</span> - vybrat pouze přihlášky, které byly spárovány s ORISem <span class="label-info">volitelný</span></li>
+			</ul>
+			<li>Příklad: <a n:href="//:Api:Export:Default, method => 'getEventCoordsList', year => date('Y', time()) + 1, orisonly => TRUE" target="_blank" class="link-example">{link //:Api:Export:Default, method => 'getEventCoordsList', year => date('Y', time()) + 1, orisonly => TRUE}</a></li>
+		</ul>
+
+	</ul>
+
+</div>
+<footer class="footer">
+	
+	<p><a n:href=":Homepage:" target="_blank">Výběrová řízení OB</a> | 2015</p>
+
+</footer>
+
+
+</body>
+</html>

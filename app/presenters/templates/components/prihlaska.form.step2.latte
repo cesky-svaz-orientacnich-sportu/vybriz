@@ -1,0 +1,464 @@
+{form prihlaskaForm}
+{*var $prevStep = $form['krok0']*}
+{var $step = $form['krok2']}
+<div class="form-notification warning" n:foreach="$form->ownErrors as $error">{$error}</div>
+
+
+
+<fieldset>
+<legend>Osobní údaje</legend>
+
+		<table>
+			<tr>
+				<td class="cols2">Registrační číslo:</td>
+				<td class="cols7"><i>{$formValues->registracni_cislo}</i></td>
+			</tr>
+			<tr>
+				<td>Jméno:</td>
+				<td><i>{$formValues->jmeno}</i></td>
+			</tr>
+			<tr>
+				<td>E-mail:</td>
+				<td><i>{$formValues->mail}</i></td>
+			</tr>
+			<tr>
+				<td>Pozice v klubu/oddíle:</td>
+				<td><i>{$formValues->pozice_v_oddile}</i></td>
+			</tr>
+		</table>
+<a n:href="Prihlaska:Nova krok=>0" class="btn small">Upravit údaje</a>
+</fieldset>
+
+
+<fieldset>
+<legend>Termín a druh závodu</legend>
+<table>
+	<tr>
+		<td class="cols2">Druh závodu:</td>
+		<td class="cols7"><b>{$druh->druh}</b></td>
+	</tr>
+	<tr>
+		<td>Termín závodu:</td>
+		<td><b>{$termin->termin|niceDate}</b></td>
+	</tr>
+	<tr>
+		<td>Pořadí preference:</td>
+		<td>
+			{if $formValues->preference}{$formValues->preference}{else}<i>Nenastavena</i>{/if}
+			<div class="cols7 form-item-description">(Preference v případě více podaných přihlášek jedním pořadatelem. Menší hodnota značí větší preferenci.)</div>
+		</td>
+	</tr>
+	<tr>
+		{var $kolo = $formValues->ref('kola', 'kolo')}
+		<td>Kolo přihlášek:</td>
+		<td>{$kolo->rok} - {$kolo->kolo}. kolo</td>
+	</tr>
+	<tr n:if="$formValues->sdruzit_prihlasku">
+		<td>Sdružený termín:</td>
+		<td><i>Po odeslání přihlášky bude automaticky vytvořen nový formulář pro termín {$termin->ref('terminy', 'souvisejici_termin')->termin|date:'j.n. Y'}</i></td>
+	</tr>
+</table>
+<a n:href="Prihlaska:Nova krok=>1" class="btn small">Upravit druh a termín</a>
+</fieldset>
+
+
+    	
+
+
+		<fieldset>
+		<legend>Pořadatel</legend>
+    	<table>
+    		<tr>
+    			<td class="cols2">{label $step['poradatel'] /}</td>
+    			<td>{input $step['poradatel'] required => ''}</td>
+    		</tr>
+    		<tr>
+    			<td>{label $step['poradatel_zkratka'] /}</td>
+    			<td>{input $step['poradatel_zkratka'] required => ''}</td>
+    		</tr>
+    	</table>
+		</fieldset>
+
+
+
+		<fieldset>
+		<legend>Další pořadatelé</legend>
+		<p class="form-item-description">Zapište pouze zkratku oddílu.</p>
+		
+    	<table >
+    		{*<tr>
+    			<td style="width:120px;"></td>
+    			<td style="width:100px;">Oddíl</td>
+    			<td></td>
+    			{*<td class="cols5"></td>}
+    		</tr>*}
+
+			{foreach $step['dalsi_poradatele']->getContainers() as $key => $dalsi_poradatele}
+			    <tr>
+			    	<td style="width:110px;"><label>{$iterator->counter+1}. pořadatel</label></td>
+				    <td style="width:100px;">{input $dalsi_poradatele['oddil_zkratka']}</td>
+			    	<td>{input $dalsi_poradatele['remove'], class=>"btn btn-remove"}</td>
+				    {*<td><span id="dalsi-poratatel-{$key}-nazev-oddilu">{$key}</span></td>*}
+			    </tr>
+			{/foreach}
+
+    	</table>
+		{input $step['dalsi_poradatele']['add'], class=>"btn small"}
+		</fieldset>
+    	
+
+
+		<fieldset>
+		<legend>Informace o prostoru závodu</legend>
+		<table>
+			<tr>
+				<td class="cols2">{label $step['prostor_zavodu'] /}</td>
+				<td>{input $step['prostor_zavodu'] required => ''}</td>
+			</tr>
+			<tr>
+				<td>{label $step['popis_terenu'] /}</td>
+				<td>{input $step['popis_terenu'] required => ''}</td>
+			</tr>
+			{*<tr>
+				<td>{label $step['prostor_odkaz'] /}</td>
+				<td>{input $step['prostor_odkaz']}</td>
+			</tr>*}
+		</table>
+
+		</fieldset>
+    	
+
+
+		<fieldset>
+		<legend>Prostor a centrum závodu</legend>
+			<p><img id="map-preview" alt="Náhled prostoru" src="{$basePath}/images/map-preview.gif"" width="320px" height="200px"><br><a href="#map-modal" class="fancybox fancybox.inline btn small">Zakreslit mapu prostoru</a></p>
+		</table>
+
+		</fieldset>
+    	
+    	
+		<fieldset>
+		<legend>Organizátoři</legend>
+
+		<table>
+			<tr>
+				<td class="cols2">{label $step['reditel_zavodu'] /}</td>
+				<td style="width:190px;">
+					{input $step['reditel_zavodu'] required => ''}
+					<div class="form-item-description">Jméno</div>
+				</td>
+				<td colspan='2'></td>
+			</tr>
+			<tr>
+				<td>{label $step['hlavni_rozhodci'] /}</td>
+				<td>
+					{input $step['hlavni_rozhodci_registracni_cislo'] required => ''}
+					<div class="form-item-description">Registrační číslo</div>
+				</td>
+				<td>
+					{input $step['hlavni_rozhodci'] required => ''}
+					<div class="form-item-description">Jméno</div>
+				</td>
+				<td>
+					{input $step['hlavni_rozhodci_trida'] required => ''}
+					<div class="form-item-description">Třída rozhodčího</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					{label $step['stavitel_trati'] /}
+				</td>
+				<td>
+					{input $step['stavitel_trati_registracni_cislo'] required => ''}
+					<div class="form-item-description">Registrační číslo</div>
+				</td>
+				<td>
+					{input $step['stavitel_trati'] required => ''}
+					<div class="form-item-description">Jméno</div>
+				</td>
+				<td>
+					{input $step['stavitel_trati_trida'] required => ''}
+					<div class="form-item-description">Třída rozhodčího</div>
+				</td>
+			</tr>
+		</table>
+		</fieldset>
+
+    	
+		<fieldset>
+		<legend>Další stavitelé tratí</legend>
+
+		<table>
+
+			{foreach $step['dalsi_stavitele']->getContainers() as $key => $dalsi_stavitel}
+			    <tr>
+			    	<td class="cols2"><label>{$iterator->counter+1}. stavitel tratí</label></td>
+					<td style="width:190px;">
+						{input $dalsi_stavitel['stavitel_trati_registracni_cislo']}
+						<div class="form-item-description">Registrační číslo</div>
+					</td>
+					<td>
+						{input $dalsi_stavitel['stavitel_trati']}
+						<div class="form-item-description">Jméno</div>
+					</td>
+					<td>
+						{input $dalsi_stavitel['stavitel_trati_trida']}
+						<div class="form-item-description">Třída rozhodčího</div>
+					</td>
+			    	<td>{input $dalsi_stavitel['remove'], class=>"btn btn-remove"}</td>
+				    {*<td><span id="dalsi-poratatel-{$key}-nazev-oddilu">{$key}</span></td>*}
+			    </tr>
+			{/foreach}
+		</table>
+
+		{input $step['dalsi_stavitele']['add'], class=>"btn small"}
+
+		</fieldset>
+    	
+    	
+		<fieldset>
+		<legend>Webové stránky závodu</legend>
+
+		<table>
+			<tr>
+				<td class="cols2">{label $step['web'] /}</td>
+				<td>
+					{input $step['web']}
+					<div class="cols7 form-item-description">{$step['web']->getOption('description')}</div>
+				</td>
+			</tr>
+		</table>
+		</fieldset>
+
+    	
+    	
+
+		<fieldset>
+		<legend>Mapa</legend>
+		<table>
+	    	<tr>
+	    		<td class="cols3">{label $step['km_lesa'] /}</td>
+	    		<td>{input $step['km_lesa']}</td>
+	    	</tr>
+	    	<tr>
+	    		<td>{label $step['km_celkem'] /}</td>
+	    		<td>{input $step['km_celkem']}</td>
+	    	</tr>
+	    	<tr>
+	    		<td>{label $step['km_nezmapovaneho_lesa'] /}</td>
+	    		<td>{input $step['km_nezmapovaneho_lesa']}</td>
+	    	</tr>
+	    	<tr>
+	    		<td>{label $step['odpovedny_zpracovatel_mapy'] /}</td>
+	    		<td>{input $step['odpovedny_zpracovatel_mapy']}</td>
+	    	</tr>
+		</table>
+		</fieldset>
+
+
+		<fieldset>
+		<legend>Mapy pokrývající prostor</legend>
+		<table>
+			<tr>
+		    <td>Mapa</td>
+		    <td>Oddíl</td>
+		    <td>Rok</td>
+		    <td>Meřítko</td>
+		    <td>Disciplína</td>
+		    <td>Odkaz na mapu</td>
+		    </tr>
+		{foreach $step['mapy_pokryvajici_prostor']->getContainers() as $mapy_pokryvajici_prostor}
+		    
+		    <tr>
+			    <td>{input $mapy_pokryvajici_prostor['mapa']}</td>
+			    <td>{input $mapy_pokryvajici_prostor['oddil']}</td>
+			    <td>{input $mapy_pokryvajici_prostor['rok']}</td>
+			    <td>{input $mapy_pokryvajici_prostor['meritko']}</td>
+			    <td>{input $mapy_pokryvajici_prostor['disciplina']}</td>
+			    <td>{input $mapy_pokryvajici_prostor['odkaz']}</td>
+			    <td>{input $mapy_pokryvajici_prostor['remove'], class=>"btn btn-remove"}</td>
+		    </tr>
+		    
+		{/foreach}
+		</table>
+		{input $step['mapy_pokryvajici_prostor']['add'], class=>"btn small"}
+		</fieldset>
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<fieldset>
+		<legend>Předchozí aktivity prostoru</legend>
+		<p>Výpis všech závodů konaných v uvažovaném prostoru (i jeho části) za posledních 6 let</p>
+		<table>
+		    <tr>
+		    	<td></td>
+		    	<td>Datum</td>
+		    	<td>Typ závodu</td>
+		    	<td></td>
+		    </tr>
+		{foreach $step['probehle_zavody']->getContainers() as $probehle_zavody}
+		    <tr>
+		    	<td>{$iterator->counter}</td>
+		    	<td>{input $probehle_zavody['datum']}</td>
+		    	<td>{input $probehle_zavody['typ_zavodu']}</td>
+		    	<td>{input $probehle_zavody['remove'], class=>"btn btn-remove"}</td>
+		    </tr>
+		{/foreach}
+		</table>
+		{input $step['probehle_zavody']['add'], class=>"btn small"}
+		</fieldset>
+
+
+
+
+
+		<fieldset>
+		<legend>Vlastníci pozemků a orgány státní správy</legend>
+		<table>
+			<tr>
+				<td width="25%">{label $step['vlastnici_pozemku_zavod'] /}</td>
+				<td>{input $step['vlastnici_pozemku_zavod']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['vlastnici_pozemku_shromazdiste'] /}</td>
+				<td>{input $step['vlastnici_pozemku_shromazdiste']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['vlastnici_pozemku_parkovani'] /}</td>
+				<td>{input $step['vlastnici_pozemku_parkovani']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['katastr_zavod'] /}</td>
+				<td>{input $step['katastr_zavod']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['organy_ochrany_lesa'] /}</td>
+				<td>{input $step['organy_ochrany_lesa']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['organy_ochrany_prirody'] /}</td>
+				<td>{input $step['organy_ochrany_prirody']}</td>
+			</tr>
+		</table>
+		</fieldset>
+
+
+
+
+
+
+		<fieldset>
+		<legend>Informace, zda se uvažovaný prostor nachází v chráněných územích (pokud ano, specifikujte)</legend>
+		<table>
+			<tr>
+				<td width="25%">{label $step['np'] /}</td>
+				<td>{input $step['np']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['chko'] /}</td>
+				<td>{input $step['chko']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['narodni_prirodni_rezervace'] /}</td>
+				<td>{input $step['narodni_prirodni_rezervace']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['prirodni_rezervace'] /}</td>
+				<td>{input $step['prirodni_rezervace']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['narodni_prirodni_pamatka'] /}</td>
+				<td>{input $step['narodni_prirodni_pamatka']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['prirodni_pamatka'] /}</td>
+				<td>{input $step['prirodni_pamatka']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['prirodni_park'] /}</td>
+				<td>{input $step['prirodni_park']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['natura2000_ptaci_oblast'] /}</td>
+				<td>{input $step['natura2000_ptaci_oblast']}</td>
+			</tr>
+			<tr>
+				<td>{label $step['natura2000_evropsky_vyznamna_lokalita'] /}</td>
+				<td>{input $step['natura2000_evropsky_vyznamna_lokalita']}</td>
+			</tr>
+		</table>
+		</fieldset>
+
+
+
+
+
+<fieldset>
+<legend>Prohlášení</legend>
+
+
+<table>
+	<tr><td>{input $step['p1']}{label $step['p1'] /}</td></tr>
+	<tr><td>{input $step['p2']}{label $step['p2'] /}</td></tr>
+	<tr><td>{input $step['p3']}{label $step['p3'] /}</td></tr>
+</table>
+
+
+</fieldset>
+
+
+<fieldset id="section-files">
+<legend>Přílohy</legend>
+
+{snippet files}
+
+	{if count($soubory)>0}
+	<table class="table">
+		<tr><td>název</td><td>smazat soubor</td></tr>
+		{foreach $soubory as $soubor}
+			<tr>
+				<td class="cols4"><a href="{$basePath}{$soubor->url}" target="_blank">{$soubor->nazev}</a></td>
+				<td class="cols2"><a n:href="deleteFile! file_id => $soubor->id">smazat</a></td>
+			</tr>
+		{/foreach}
+	</table>
+	{else}
+	<p><i>Žádná příloha nebyla nahrána.</i></p>
+	{/if}
+
+{/snippet}
+
+	<div id="uploader">
+		<p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
+	</div>
+	<a href="#uploader" class="fancybox btn small">Nahrát soubory</a>
+
+</fieldset>
+
+<fieldset>
+<legend>Poznámky</legend>
+<table>
+	<tr>
+		<td>{label $step['poznamky'] /}</td>
+		<td>{input $step['poznamky']}</td>
+	</tr>
+</table>
+</fieldset>
+
+<div class="controls-panel">
+<div class="controls-panel-inner">
+{input send class=>'btn'}
+</div>
+</div>
+
+{/form}

@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+	<script src="http://api4.mapy.cz/loader.js"></script>
+	<script>Loader.load()</script>
+	<title>Mapa</title>
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body style="width:800px;">
+
+
+<div id="mapa" style="width:100%; height:520px; margin:0px auto 10px;"></div>
+
+<div class="" style="display:block; padding:20px; margin:0 auto; background-color: #F2F2F2;">
+    <select onchange="setMapAction(this.value)">
+        <option value="none">Vyberte akci</option>
+        <option value="drawRaceArea">Zakreslit prostor závodu</option>
+        <option value="drawCentre">Vyznačit centrum závodu</option>
+    </select>
+	<input type="button" onclick="stepBack()" value="Smazat poslední uzel">
+</div>
+
+
+<script type="text/javascript">
+
+
+
+
+var m = new SMap(JAK.gel("mapa"), SMap.Coords.fromWGS84(15.45, 49.83));
+m.addControl(new SMap.Control.Sync()); /* Aby mapa reagovala na změnu velikosti průhledu */
+m.addDefaultLayer(SMap.DEF_BASE).enable();
+m.addDefaultControls();	  
+
+var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
+m.addControl(mouse);
+
+//signály
+var signals = m.getSignals();
+signals.addListener(window, "map-click", mapClick); /* Při signálu kliknutí volat tuto funkci */    
+signals.addListener(window, "marker-drag-stop", markerDragStop); 
+
+
+
+
+
+var layer = {};
+var action = 'none';
+
+
+//přidání vrstvy MARKERS
+layer['raceArea-markers'] = new SMap.Layer.Marker();
+m.addLayer(layer['raceArea-markers']);
+layer['raceArea-markers'].disable();
+
+//přidání vrstvy POLYLINE
+layer['raceArea-polyline'] = new SMap.Layer.Geometry();
+m.addLayer(layer['raceArea-polyline']);
+layer['raceArea-polyline'].disable();
+
+//přidání vrstvy POLYGON
+layer['raceArea-polygon'] = new SMap.Layer.Geometry();
+m.addLayer(layer['raceArea-polygon']);
+layer['raceArea-polygon'].enable();
+
+//přidání vrstvy POLYGON
+layer['centre-marker'] = new SMap.Layer.Marker();
+m.addLayer(layer['centre-marker']);
+layer['centre-marker'].disable();
+
+//VÝCHOZÍ NASTAVENÍ
+var points = [];
+var options = {
+    color: "#F5270A", {*"#E98F16",*}
+    width: 3
+};
+
+//PŘIDÁNÍ GEOMETRIE DO VRSTVY
+var polyline = new SMap.Geometry(SMap.GEOMETRY_POLYLINE, null, points, options);
+layer['raceArea-polyline'].addGeometry(polyline);
+
+//PŘIDÁNÍ GEOMETRIE DO VRSTVY
+var polygon = new SMap.Geometry(SMap.GEOMETRY_POLYGON, null, points, options);
+layer['raceArea-polygon'].addGeometry(polygon);
+
+
+
+function mapClick(e, elm) { /* Došlo ke kliknutí, spočítáme kde */
+    var coords = SMap.Coords.fromEvent(e.data.event, m);
+
+
+    //is polyline enabled?
+    if(action=='drawRaceArea'){
+        //add and redraw polyline
+        points.push(coords);
+        layer['raceArea-polygon'].redraw();
+        layer['raceArea-polyline'].redraw();
+
+        //add and redraw markers
+        var polylineMarker = new SMap.Marker(coords, "pm-"+points.length, { /*url:''*/ });
+        polylineMarker.decorate(SMap.Marker.Feature.Draggable);
+        layer['raceArea-markers'].addMarker(polylineMarker);
+        layer['raceArea-markers'].redraw();
+    }
+
+    if(action=='drawCentre'){
+        layer['centre-marker'].removeAll();
+        var centreMarker = new SMap.Marker(coords, "centre-marker", { /*url:''*/ color: "#000" });
+        //centreMarker.decorate(SMap.Marker.Feature.Draggable);
+        layer['centre-marker'].addMarker(centreMarker);
+        layer['centre-marker'].redraw();
+    }
+
+}
+
+function markerDragStop(e) {
+    var coords = e.target.getCoords();
+    var i = e.target.getId().substring(3);
+    points[i-1] = coords;
+    layer['raceArea-polyline'].redraw();
+    layer['raceArea-polygon'].redraw();
+}
+
+
+
+
+
+
+
+//vrátit poslední krok
+function stepBack(){
+	points.pop();
+    layer['raceArea-polyline'].redraw();
+    layer['raceArea-polygon'].redraw();
+    var markerToRemove = layer['raceArea-markers'].getMarkers().pop();
+    layer['raceArea-markers'].removeMarker(markerToRemove);
+}
+
+
+function setMapAction(newAction){
+    //if(action=='none'){
+        action = 'none';
+        layer['raceArea-markers'].disable();
+        layer['raceArea-polyline'].disable();
+        layer['raceArea-polygon'].enable();
+        layer['centre-marker'].enable();
+    //}
+    if(newAction=='drawRaceArea'){
+        layer['raceArea-markers'].enable();
+        layer['raceArea-polyline'].enable();
+        layer['raceArea-polygon'].disable();
+        layer['centre-marker'].disable();
+        action = 'drawRaceArea';
+    }
+    if(newAction=='drawCentre'){
+        action = 'drawCentre';
+    }
+}
+
+
+
+</script>
+
+
+
+
+</body>
+</html>

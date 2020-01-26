@@ -1,0 +1,47 @@
+{form $form}
+<fieldset>
+	<legend n:if="$name">{$name}</legend>
+	<div class="form-notification warning" n:foreach="$form->ownErrors as $error">{$error}</div>
+
+	<table>
+	{foreach $form->controls as $input}
+			
+		{if $input instanceof Nette\Forms\Controls\Button && $input->name !== 'send'}
+			
+			<tr>
+				<td class="cols2">&nbsp;</td><td class="cols7">
+					{input $input class=>[btn, small]} <span class=error n:ifcontent>{$input->error}</span> <p class="text-muted" n:ifcontent>{$input->getOption('description')}</p>
+				</td>
+			</tr>
+
+		{elseif $input instanceof Nette\Forms\Controls\TextBase || $input instanceof Nette\Forms\Controls\SelectBox || $input instanceof Nette\Forms\Controls\MultiSelectBox}
+
+			<tr>
+				<td class="cols2">{label $input /}</td>
+				<td class="cols7">{input $input class=>$input->getControl()->appendAttribute('class', 'form-control')->getAttribute('class')} <span class=error n:ifcontent>{$input->error}</span> <p class="text-muted" n:ifcontent>{$input->getOption('description')}</p></td>
+			</tr>
+
+		{elseif $input instanceof Nette\Forms\Controls\Checkbox || $input instanceof Nette\Forms\Controls\CheckboxList || $input instanceof Nette\Forms\Controls\RadioList}
+		    
+			<tr>
+			    <td class="cols2">&nbsp;</td><td class="cols7">
+					<div class="checkbox">
+						{label $input}{input $input}{/label} <span class=error n:ifcontent>{$input->error}</span> <p class="text-muted" n:ifcontent>{$input->getOption('description')}</p>
+					</div>
+				</td>
+			</tr>
+
+		{/if}
+		
+	{/foreach}
+	</table>
+
+	<div class="controls-panel">
+		<div class="controls-panel-inner">
+			{*<a href="#" class="btn">Zpět</a>*}
+			{input send class=>'btn'}
+		</div>
+	</div>
+
+</fieldset>
+{/form}

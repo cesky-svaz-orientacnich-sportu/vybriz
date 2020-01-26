@@ -1,0 +1,12 @@
+{block content}
+<div class="breadcumb">
+{*<span class="breadcumb-number">1.</span>*}
+<span class="breadcumb-link"><a n:href=":Admin:Dashboard:">Administrace</a></span>
+<span class="breadcumb-separator">&gt;</span>
+<span class="breadcumb-link breadcumb-current"><a n:href=":Admin:Kola:Edit, id => $presenter->getParam('id')">Nastavit OrisId</a></span>
+</div>
+
+{include '../components/defaultFormLayout.latte', name => 'Nastavit OrisId', form => orisIdForm}
+
+
+{/block}

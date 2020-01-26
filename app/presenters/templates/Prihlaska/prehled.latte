@@ -1,0 +1,74 @@
+{block content}
+
+
+
+	{dump $accessRequest}
+
+	{if $accessRequest}
+		<h3>Přehled přihlášek</h3>
+		<p>TODO: Výpis přihlášek v daném kole.</p>
+		{if $all_applications}
+
+			<table class="table" id="tavr-table" style="width:100%;">
+				<tr>
+					<td>ID</td>
+					<td>Rok</td>
+					<td>Kolo</td>
+					<td>Datum</td>
+					<td>Odd.</td>
+					<td class="cols2">Druh závodu</td>
+					<td class="cols3">Prostor závodu</td>
+					<td class="cols3">Popis terénu</td>
+				</tr>
+				{var $prev_date}
+				{var $odd_date = 0}
+				{foreach $all_applications as $prihlaska}
+
+					{if $prihlaska->centrum_zavodu_mapa && $prihlaska->prostor_zavodu_mapa}
+						{var $prostor_zavodu = Nette\Utils\Json::decode($prihlaska->prostor_zavodu_mapa, 1)}
+						{var $centrum_zavodu = Nette\Utils\Json::decode($prihlaska->centrum_zavodu_mapa, 1)}
+						{var $prihlasky_data['map_points'][] = array('centrum_zavodu'=>$centrum_zavodu,'prostor_zavodu'=>$prostor_zavodu)}
+						{var $prihlasky_data['data'][] = array('id'=>$prihlaska->id,'druh_zavodu'=>$prihlaska->druh_zavodu)}
+					{/if}
+					
+
+					{var $ref_kolo = $ref_kola[$prihlaska->kolo]}
+					{var $termin = $ref_terminy[$prihlaska->termin]->termin}
+					{var $druh_zavodu = $ref_druhy[$prihlaska->druh_zavodu]->druh_zkratka}
+					
+
+					{if $prev_date != $termin}
+						{var $odd_date = $odd_date && 1 ? 0 : 1}
+						{var $prev_date = $termin}
+					{/if}
+
+
+					{* tavr-pi-<id> = tabulka aktuálních VŘ - přihláška id - <id>*}
+					<tr id="tavr-pi-{$prihlaska->id}" {*if $allow_view}class="tavr-state-{$prihlaska->stav} {$odd_date==1?'odd':'even'}-row"{/if*} class="{$odd_date==1?'odd':'even'}-row" {*onclick="prihlaskaData({$prihlaska->id});" onmouseenter="highlightRaceArea({$prihlaska->id});" onmouseleave="unsetHighlightRaceArea();"*} style="cursor:default;">
+
+						
+
+
+						<td><a {*n:tag-if="$allow_view"*} n:href="Archiv:detail id=>$prihlaska->id">#{$prihlaska->id|padLeft:4,'0'}</a></td>
+						<td>{$termin|date:'Y'}</td>
+						<td>{$ref_kolo->kolo}.</td>
+						<td>{$termin|date:'j.n.'}</td>
+						<td>{$prihlaska->poradatel_zkratka}</td>
+						<td class="event-type-{$prihlaska->druh_zavodu}">{$druh_zavodu}</td>
+						<td title={$prihlaska->prostor_zavodu}>{$prihlaska->prostor_zavodu|truncate:60}</td>
+						<td title={$prihlaska->popis_terenu}>{$prihlaska->popis_terenu|truncate:68}</td>
+					</tr>
+				{/foreach}
+			</table>
+			
+		{/if}
+
+	{else}
+		{control accessRequestForm}
+	{/if}
+
+
+
+
+
+{/block}

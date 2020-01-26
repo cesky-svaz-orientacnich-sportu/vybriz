@@ -1,0 +1,45 @@
+{block content}
+<h2>Potvrzení přihlášky</h2>
+
+
+<p>Přihláška byla úspěšně odeslána ke zpracování.</p>
+
+
+
+{if $last_application}
+	<h3>Zkopírovat údaje z poslední přihlášky</h3>
+
+	<fieldset>
+	<legend>Výběr termínu a preference</legend>
+	{form duplicateApplicationForm}
+
+		<p>Předvyplní formulář daty z poslední odeslané přihlášky.</p>
+
+		<div class="form-notification warning" n:foreach="$form->ownErrors as $error">{$error}</div>
+
+		<table>
+			<tr>
+				<td>{label termin /}</td>
+				<td>
+					{input termin}
+				</td>
+			</tr>
+			<tr>
+				<td>{label preference /}</td>
+				<td>
+					{input preference}
+					<div class="cols6 form-item-description">{$form['preference']->getOption('description')}</div>
+				</td>
+			</tr>
+		</table>
+
+		{input send class=>'btn'}
+
+	{/form}
+	</fieldset>
+
+{/if}
+
+
+
+
