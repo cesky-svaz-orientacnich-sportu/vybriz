@@ -77,8 +77,7 @@ class UserPresenter extends BasePresenter
 				->addTo($user->mail)
 				->setHtmlBody($template);
 
-			$mailer = new Nette\Mail\SendmailMailer;
-			$mailer->send($mail);
+			$this->mailer->send($mail);
 
 			$this->flashMessage('žádost o obnovu hesla byla úspěšně odeslána. Zkontrolujte si prosím e-mailovou schránku.');
 			$this->redirect('this');

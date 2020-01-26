@@ -1228,9 +1228,6 @@ class PrihlaskaPresenter extends BasePresenter
 
 				$file = Utils\FileSystem::write(  __DIR__ . '/../../mp/' . $attachment_file_name, $attachment );
 
-
-				//$mailer = new Nette\Mail\SendmailMailer;
-				//$this->mailer->send($mail);
 				try {
 					$this->mailer->send($mail);
 				} catch (\Exception $e) {
