@@ -1,0 +1,14 @@
+parameters:
+
+
+database:
+	dsn: 'mysql:host=127.0.0.1;dbname=vybriz'
+	user: root
+	password: root
+	options:
+		lazy: yes
+
+services:
+	nette.mailer:
+		class: Nette\Mail\IMailer
+		factory: Nextras\MailPanel\FileMailer(%tempDir%/mail-panel-mails)
