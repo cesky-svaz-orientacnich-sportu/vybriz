@@ -1134,48 +1134,12 @@ class PrihlaskaPresenter extends BasePresenter
 		}
 	}
 
-
-
-
 	public function handleUpdatelist()
 	{
 		$this->template->soubory = $this->database->table('soubory')->where('prihlaska_id',$this->pId);
 		$this->redrawControl('files'); // invaliduje snippet 'header'
 		$this->redrawControl('ajaxSnippetFormArea'); // invaliduje snippet 'header'
 	}
-
-
-
-//	public function renderPotvrzeni($pId, $hash)
-//	{
-//
-//		if($this->verifyHash($hash))
-//		{
-//			$prihlaska = $this->database->table('prihlasky')->get($pId);
-//			if($prihlaska->hash === $hash && $prihlaska->stav === "draft"){
-//				$dalsi_preferovane_terminy = Utils\Json::decode($prihlaska->dalsi_preferovane_terminy);
-//				$this->template->prihlaska = $prihlaska;
-//
-//				$this->template->prihlaska_id = $pId;
-//
-//				$soubory = $this->database->table('soubory')->where('prihlaska_id',$pId)->fetchAll();
-//				$this->template->soubory = $soubory;
-//			}elseif($prihlaska->hash === $hash && $prihlaska->stav != "draft"){
-//				$this->flashMessage('Tato přihláška již byla odeslána ke zpracování.');
-//		        $this->redirect('Prihlaska:');
-//			}elseif($prihlaska->hash != $hash){
-//				$this->flashMessage('Neplatný odkaz.');
-//		        $this->redirect('Prihlaska:');
-//			}else{
-//				$this->flashMessage('Neznámá chyba, zkuste to prosím znovu.');
-//		        $this->redirect('Prihlaska:');
-//			}
-//		}else{
-//
-//			$this->redirect('Prihlaska:', array('hash' => NULL));
-//		}
-//		
-//	}
 
 	public function handleConfirmSubmit($pId, $hash)
 	{
