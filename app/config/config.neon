@@ -20,6 +20,11 @@ session:
 	expiration: 14 days
 
 
+tracy:
+	email: david.pustai@gmail.com
+	fromEmail: 'tracy@metodika <noreply@orientacnisporty.cz>'
+
+
 services:
 	- App\Model\SessionControler
 	- App\Model\UserManager
