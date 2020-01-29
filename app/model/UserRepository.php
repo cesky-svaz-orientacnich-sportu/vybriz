@@ -52,11 +52,9 @@ class UsersRepository
             'first_name' => $values['first_name'],
             'last_name' => $values['last_name'],
             'mail' => $values['mail'],
+            'role' => $values['role'],
+            'password' => ''
         ];
-
-        if (isset($values['role'])) {
-        	$data = $data + ['role' => $values['role']];
-        }
 
 		return $this->database->table('users')->insert($data);
 	}
