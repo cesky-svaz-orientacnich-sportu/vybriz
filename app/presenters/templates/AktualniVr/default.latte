@@ -11,7 +11,7 @@
 {/if}
 <p n:if="$kolo">Právě probíhá {$kolo->kolo}. kolo VŘ ({$kolo->od|date:'j. n.'} - {$kolo->do|date:'j. n. Y'})</p>
 
-{* 
+{*
 <h3>Výsledky 2. kola VŘ na rok 2016</h3>
 <p>Výsledky kola jsou zveřejněny v oficiálním <a href="http://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/sdeleni-sekceob03-15.pdf" target="_blank">sdělení sekce OB 3/2015</a>. (Výsledky 1. kola - <a href="http://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/sdeleniob1421_20141201073723.pdf" target="_blank">21/2014</a> a 1 A. kola - <a href="http://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/sdelenisekceob215_20150201114258.pdf" target="_blank"> 2/2015</a>)</p>
  *}
@@ -45,7 +45,7 @@
 				{var $prihlasky_data['map_points'][] = array('centrum_zavodu'=>$centrum_zavodu,'prostor_zavodu'=>$prostor_zavodu)}
 				{var $prihlasky_data['data'][] = array('id'=>$prihlaska->id,'druh_zavodu'=>$prihlaska->druh_zavodu)}
 			{/if}
-			
+
 
 			{var $kolo = $prihlaska->ref('kola', 'kolo')->kolo}
 			{var $termin = $prihlaska->ref('terminy', 'termin')->termin}
@@ -61,7 +61,7 @@
 			{* tavr-pi-<id> = tabulka aktuálních VŘ - přihláška id - <id>*}
 			<tr id="tavr-pi-{$prihlaska->id}" {*if $allow_view}class="tavr-state-{$prihlaska->stav} {$odd_date==1?'odd':'even'}-row"{/if*} class="{$odd_date==1?'odd':'even'}-row" onclick="prihlaskaData({$prihlaska->id});" onmouseenter="highlightRaceArea({$prihlaska->id});" onmouseleave="unsetHighlightRaceArea();" style="cursor:default;">
 
-				
+
 
 
 				<td><a {*n:tag-if="$allow_view"*} n:href="AktualniVr:detail id=>$prihlaska->id">#{$prihlaska->id|padLeft:4,'0'}</a></td>
@@ -145,9 +145,9 @@ m.setZoomRange(5,15);
 
 //signály
 var signals = m.getSignals();
-signals.addListener(window, "geometry-click", geometryClick); /* Při signálu kliknutí volat tuto funkci */  
-signals.addListener(window, "marker-click", markerClick); /* Při signálu kliknutí volat tuto funkci */    
-signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */  
+signals.addListener(window, "geometry-click", geometryClick); /* Při signálu kliknutí volat tuto funkci */
+signals.addListener(window, "marker-click", markerClick); /* Při signálu kliknutí volat tuto funkci */
+signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */
 
 
 //Pole vrstev se zákresy prostorů a center závodů
@@ -239,7 +239,7 @@ function prihlaskaData(pid) {
 		layer['raceArea-polygon'].redraw(highlightedGeometry['geometry']);
 	}
 
-	
+
 	var pg = layer['raceArea-polygon'].getGeometries()['m-prostor-'+pid];
 	prev['geometry-options'] = { color: pg.getOptions().color, outlineColor: pg.getOptions().outlineColor };
 	pg.setOptions({
@@ -283,12 +283,12 @@ var highlightedGeometry = { 'geometry' : false };
 function highlightRaceArea(pid) {
 
 	var pg = layer['raceArea-polygon'].getGeometries()['m-prostor-'+pid];
-	
+
 	if(pg === prev['geometry']){ return ; }
 
 	highlightedGeometry['geometry'] = pg;
 	highlightedGeometry['geometry-options'] = { color: pg.getOptions().color, outlineColor: pg.getOptions().outlineColor };
-	
+
 	pg.setOptions({
 		color:'#1BB9F5',
     	outlineColor: "#1BB9F5"
@@ -313,7 +313,7 @@ function highlightRaceArea(pid) {
 
 
 function unsetHighlightRaceArea() {
-	
+
 	if(highlightedGeometry['geometry'] === prev['geometry']){ return ; }
 
 	highlightedGeometry['geometry'].setOptions(highlightedGeometry['geometry-options']);
@@ -348,55 +348,4 @@ function unsetHighlightRaceArea() {
 {* Mapy.cz API *}
 <script src="http://api4.mapy.cz/loader.js"></script>
 <script>Loader.load()</script>
-
-{*
-<link href="{$basePath}/ext/jquery-ui/css/theme/jquery-ui-1.10.4.custom.css" rel="stylesheet">
-
-  <style>
-  .ui-tooltip {
-    background: #FFF59D;
-    padding: 4px 8px;
-    color: #666;
-    border: 1px solid #FFF59D;
-    border-radius: 2px;
-    font-size: 11px;
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.3);
-    cursor: default;
-  }
-
-  </style>
-
-*}
-
 {/block}
-
-
-{*{block scripts}
-{include parent}
-
-<script src="{$basePath}/ext/jquery-ui/js/jquery-ui-1.10.4.custom.js"></script>
-
-  <script>
-  $(function() {
-
-
-    $( 'td' ).tooltip({
-
-		position: {
-			my: "left+6 top+1",
-			at: "left bottom"
-		},
-		show: {
-			duration: 10
-		},
-		hide: {
-			duration: 80
-		}
-
-   	});
-
-  });
-  </script>
-
-
-{/block}*}
