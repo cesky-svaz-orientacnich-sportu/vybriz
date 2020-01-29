@@ -78,7 +78,8 @@ class UzivatelePresenter extends BaseAdminPresenter
         $form->addText('mail', 'E-mail')
             ->setRequired('Zadejte e-mail');
 
-        $form->addSelect('role', 'Role', ['supervisor' => 'Supervizor', 'admin' => 'Administrátor', 'komise' => 'Člen komise', 'registered' => 'Registrovaný'])->setPrompt('-');
+        $form->addSelect('role', 'Role', ['supervisor' => 'Supervizor', 'admin' => 'Administrátor', 'komise' => 'Člen komise', 'registered' => 'Registrovaný'])->setPrompt('-')
+            ->setRequired('Vyberte roli');
 
         $form->addHidden('edit', FALSE);
         $form->addHidden('u_id', NULL);
@@ -128,7 +129,12 @@ class UzivatelePresenter extends BaseAdminPresenter
             }
         }else{
             if (!$values['u_id'] && $this->user->isAllowed('admin/uzivatele', 'add')) {
-                $this->usersRepository->add($data);
+                try {
+                    $this->usersRepository->add($data);
+                } catch (Nette\Database\UniqueConstraintViolationException $e) {
+                    $this->flashMessage('Nebylo možné přidat uživatele. Daná přezdívka je již zabrána.', 'error');
+                    return;
+                }
                 $this->flashMessage('Uživatel byl úspěšně přidán!', 'info');
             }else{
                 $this->flashMessage('Nemáte dostatečná oprávnění pro přidání nových uživatelů.', 'error');
@@ -137,7 +143,4 @@ class UzivatelePresenter extends BaseAdminPresenter
 
         $this->redirect(':Admin:Uzivatele:');
     }
-
-
-
 }
