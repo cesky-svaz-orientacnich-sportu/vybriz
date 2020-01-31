@@ -39,7 +39,7 @@
 				<td class="cols2">Podmínky</td>
 				<td class="cols7">
 				{if $kolo['podminky_link']}
-					<a href="{$kolo['podminky_link']}" target="_blank">Sdělení sekce {$kolo['podminky_cislo_sdeleni']?:'???'}</a>
+					<a href="{$kolo['podminky_link']}" target="_blank" rel="noopener noreferrer">Sdělení sekce {$kolo['podminky_cislo_sdeleni']?:'???'}</a>
 				{else}
 					<span class="soft">není nastaveno</span>
 				{/if}
@@ -49,7 +49,7 @@
 				<td class="cols2">Výsledky</td>
 				<td class="cols7">
 				{if $kolo['vysledky_link']}
-					<a href="{$kolo['vysledky_link']}" target="_blank">Sdělení sekce {$kolo['vysledky_cislo_sdeleni']?:'???'}</a>
+					<a href="{$kolo['vysledky_link']}" target="_blank" rel="noopener noreferrer">Sdělení sekce {$kolo['vysledky_cislo_sdeleni']?:'???'}</a>
 				{else}
 					<span class="soft">není nastaveno</span>
 				{/if}
@@ -121,7 +121,7 @@
 				{/if}
 				{dump $prihlaska}
 				<tr class="{$odd_date==1?'odd':'even'}-row{if $prihlaska['stav'] == 'draft'} soft{/if}{if $prihlaska['oris_id'] !== NULL} oris-confirmed{/if}">
-					<td><a n:href=":Archiv:Detail, id => $prihlaska['id']" target="_blank" n:tag-if="$prihlaska['stav'] != 'draft'">{$prihlaska['id']}</a></td>
+					<td><a n:href=":Archiv:Detail, id => $prihlaska['id']" target="_blank" rel="noopener noreferrer" n:tag-if="$prihlaska['stav'] != 'draft'">{$prihlaska['id']}</a></td>
 					<td>{$prihlaska['sdruzena_prihlaska_id']?:"-"}</td>
 					<td>{$prihlaska['poradatel_zkratka']}</td>
 					<td>{$prihlaska['termin']|date:"j. n."}</td>
@@ -144,7 +144,7 @@
 					</td>
 					{*<td>
 						{if $prihlaska['stav'] != "draft"}
-						<a n:href=":Archiv:Detail, id => $prihlaska['id']" target="_blank">Zobrazit</a>
+						<a n:href=":Archiv:Detail, id => $prihlaska['id']" target="_blank" rel="noopener noreferrer">Zobrazit</a>
 						{else}-
 						{/if}
 					</td>*}
@@ -158,7 +158,7 @@
 
 
 	<br>
-	<a n:href=":Admin:Prihlasky:Vypis, kolo_id => $kolo['id'], rok => $kolo['rok']" target="_blank" class="btn small">Výpis přihlášek</a>
+	<a n:href=":Admin:Prihlasky:Vypis, kolo_id => $kolo['id'], rok => $kolo['rok']" target="_blank" rel="noopener noreferrer" class="btn small">Výpis přihlášek</a>
 	<a n:href=":Admin:Prihlasky:MultiOris, id => $kolo['id']" class="btn small">Nastavit OrisId</a>
 	<a n:href="refreshAll!" class="btn small">Načíst z databáze</a>
 </fieldset>

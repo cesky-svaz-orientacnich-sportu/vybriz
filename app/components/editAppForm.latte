@@ -191,7 +191,7 @@
 	    <td></td>
 	</tr>
 	{foreach $form['mapy_pokryvajici_prostor']->getContainers() as $i_mpp}
-	    
+
 	    <tr>
 		    <td>{input $i_mpp['mapa']}</td>
 		    <td>{input $i_mpp['oddil']}</td>
@@ -201,7 +201,7 @@
 		    <td>{input $i_mpp['odkaz']}</td>
 		    <td>{input $i_mpp['remove'], class=>"btn btn-remove"}</td>
 	    </tr>
-	    
+
 	{/foreach}
 </table>
 
@@ -337,7 +337,7 @@
 		{foreach $soubory as $soubor}
 			<tr>
 				<td>#{$soubor->id|padLeft:4,'0'}</td>
-				<td><a href="{$basePath}{$soubor->url}" class="t-file" target="_blank">{$soubor->nazev}</a></td>
+				<td><a href="{$basePath}{$soubor->url}" class="t-file" target="_blank" rel="noopener noreferrer">{$soubor->nazev}</a></td>
 				<td><a n:href="deleteFile! file_id => $soubor->id">smazat</a></td>
 			</tr>
 		{/foreach}

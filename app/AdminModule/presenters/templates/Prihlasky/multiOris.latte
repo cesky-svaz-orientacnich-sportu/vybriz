@@ -67,7 +67,7 @@
 			{dump $prihlaska}
 			<tr class="{$odd_date==1?'odd':'even'}-row{if $prihlaska['stav'] == 'draft'} soft{/if}" n:snippet="orisprihlaska-$prihlaska->id">
 				<td>
-					<a n:href=":Archiv:Detail, id => $prihlaska['id']" target="_blank" n:tag-if="$prihlaska['stav'] != 'draft'">{$prihlaska['id']}</a><br>
+					<a n:href=":Archiv:Detail, id => $prihlaska['id']" target="_blank" rel="noopener noreferrer" n:tag-if="$prihlaska['stav'] != 'draft'">{$prihlaska['id']}</a><br>
 					<span class="soft">({$prihlaska['sdruzena_prihlaska_id']?:"-"})</span>
 				</td>
 				<td>

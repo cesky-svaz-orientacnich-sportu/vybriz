@@ -54,14 +54,14 @@
 							{input send, class => [btn, small]}
 						{/form}
 						{else}
-							<p class="blank-holder soft">shodují se | <a n:href=":Admin:Prihlasky:Oris, id => $d['id']" target="_blank">Změnit</a></p>
+							<p class="blank-holder soft">shodují se | <a n:href=":Admin:Prihlasky:Oris, id => $d['id']" target="_blank" rel="noopener noreferrer">Změnit</a></p>
 						{/if}
 					</td>
 				</tr>
 				<tr class="{$odd_date==1?'odd':'even'}-row">
 					<td><span class="icon-oris{if $d['oris_id'] != NULL}-confirmed{/if}">ORIS</span></td>
 					<td><span class="orisId-highlight">{$r['ID']}</span></td>
-					<td><a href="https://oris.orientacnisporty.cz/Zavod?id={$r['ID']}" class="hidden-link" target="_blank">{$r['Name']}</a></td>
+					<td><a href="https://oris.orientacnisporty.cz/Zavod?id={$r['ID']}" class="hidden-link" target="_blank" rel="noopener noreferrer">{$r['Name']}</a></td>
 				</tr>
 			{else}
 			{/if}

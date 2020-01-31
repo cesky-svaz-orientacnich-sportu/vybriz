@@ -118,7 +118,7 @@
 		</tr>
 		<tr>
 			<td>Web. prezentace</td>
-			<td><a n:tag-if="$prihlaska['web']" href="{$prihlaska['web']}" target="_blank">{$prihlaska['web'] ? $prihlaska['web'] : 'neurčena'}</a></td>
+			<td><a n:tag-if="$prihlaska['web']" href="{$prihlaska['web']}" target="_blank" rel="noopener noreferrer">{$prihlaska['web'] ? $prihlaska['web'] : 'neurčena'}</a></td>
 		</tr>
 	</table>
 
@@ -198,7 +198,7 @@
 			<td class="cols1">Disciplína</td>
 		</tr>
 		<tr n:foreach="$mapy_pokryvajici_prostor as $mapa">
-			<td><a href="{$mapa->odkaz}" target="_blank">{$mapa->mapa}</a></td>
+			<td><a href="{$mapa->odkaz}" target="_blank" rel="noopener noreferrer">{$mapa->mapa}</a></td>
 			<td>{$mapa->oddil}</td>
 			<td>{$mapa->meritko}</td>
 			<td>{$mapa->rok}</td>
@@ -321,7 +321,7 @@
 		</tr>
 		<tr n:foreach="$soubory as $soubor">
 			<td>#{$soubor->id|padLeft:4,'0'}</td>
-			<td><a href="{$basePath}{$soubor->url}" class="t-file" target="_blank">{$soubor->nazev}</a></td>
+			<td><a href="{$basePath}{$soubor->url}" class="t-file" target="_blank" rel="noopener noreferrer">{$soubor->nazev}</a></td>
 		</tr>
 	</table>
 
