@@ -169,11 +169,11 @@
 		<td class="cols1">Disciplína</td>
 	</tr>
 	<tr n:foreach="$mapy_pokryvajici_prostor as $mapa">
-		<td><a href="{$mapa->odkaz}" target="_blank">{$mapa->mapa}</a></td>
-		<td>{$mapa->oddil}</td>
-		<td>{$mapa->meritko}</td>
-		<td>{$mapa->rok}</td>
-		<td>{$mapa->disciplina}</td>
+		<td><a href="{$mapa[odkaz]}" target="_blank" rel="noopener noreferrer">{$mapa[mapa]}</a></td>
+		<td>{$mapa[oddil]}</td>
+		<td>{$mapa[meritko]}</td>
+		<td>{$mapa[rok]}</td>
+		<td>{$mapa[disciplina]}</td>
 	</tr>
 </table>
 {else}
@@ -191,8 +191,8 @@
 		<td class="cols6">Typ závodu</td>
 	</tr>
 	<tr n:foreach="$probehle_zavody as $zavod">
-		<td>{$zavod->datum}</td>
-		<td>{$zavod->typ_zavodu}</td>
+		<td>{$zavod[datum]}</td>
+		<td>{$zavod[typ_zavodu]}</td>
 	</tr>
 </table>
 {else}
@@ -426,7 +426,7 @@ m.setZoomRange(5,15);
 
 //signály
 var signals = m.getSignals();
-signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */  
+signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */
 
 
 var layer = {};
@@ -479,20 +479,4 @@ function resetZoomRange() {
 	<div class="flash error">Mapa prostoru není k dispozici.</div>
 </div>
 {/if}
-
-
-
-
-
-
-
-
-{/block}
-
-
-
-{block head}
-{* Mapy.cz API *}
-<script src="http://api4.mapy.cz/loader.js"></script>
-<script>Loader.load()</script>
 {/block}

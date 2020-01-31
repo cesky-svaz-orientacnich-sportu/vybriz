@@ -6,7 +6,7 @@
 	<link rel="shortcut icon" type="image/png" href="{$basePath}/favicon.png">
 
 	{* Mapy.cz API *}
-	<script src="http://api4.mapy.cz/loader.js"></script>
+	<script src="https://api4.mapy.cz/loader.js"></script>
 	<script>Loader.load()</script>
 
 	<style>
@@ -418,7 +418,7 @@
 
 	//signály
 	var signals = m.getSignals();
-	signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */  
+	signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */
 
 
 	var layer = {};

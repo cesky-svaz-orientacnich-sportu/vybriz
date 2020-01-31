@@ -62,7 +62,7 @@ class PrihlaskaPresenter extends BasePresenter
 			}else{
 				$allow_duplication = TRUE;
 			}
-			
+
 			$this->template->allow_duplication = $allow_duplication;
 
 			$this->template->termin		 = $termin 		= $this->database->table('terminy')->get($prihlaska->termin);
@@ -117,13 +117,12 @@ class PrihlaskaPresenter extends BasePresenter
 			}
 		}
 
-		
+
 	}
 
 
 	public function renderNova()
 	{
-
 		//Pokud není otevřeno žádné kolo
 		$kolo = $this->database->table('kola')->where('od <= CURDATE() AND do >= CURDATE()')->limit(1)->count();
 		if(!$kolo){
@@ -137,7 +136,6 @@ class PrihlaskaPresenter extends BasePresenter
 			$this->redirect('Prihlaska:');
 		}
 
-		
 		if(!$this->hash)
 			{
 				$this->pId = $this->krok = NULL;
@@ -176,13 +174,12 @@ class PrihlaskaPresenter extends BasePresenter
 
 		//předání kroku v proměnné do šablony
 		$this->template->krok = $this->krok;
-		
+
 		//nejvyšší krok
 		$this->template->highest_step = $highest_step = $this->pId ? $this->sessionControler->highestStep() : 0;
 		if($highest_step>2){
 			$this['prihlaskaForm-krok2']->setDefaults(array('p1'=>TRUE,'p2'=>TRUE,'p3'=>TRUE));
 		}
-
 
 		if($this->pId)
 		{
@@ -197,15 +194,11 @@ class PrihlaskaPresenter extends BasePresenter
 				$this->redirect('Prihlaska:');
 			}
 
-
-
 			if($this->krok > 1 && (is_null($formValues->termin) || is_null($formValues->druh_zavodu))){
 				$this->krok = 1;
 				$this->sessionControler->setStep(1);
 				$this->redirect('this');
 			}
-
-
 
 			if($this->krok == 0){
 				$this['prihlaskaForm']['krok0']->setDefaults(array(
@@ -235,11 +228,7 @@ class PrihlaskaPresenter extends BasePresenter
 							'druh' => $formValues->druh_zavodu
 						));
 				}
-				
-				
 			}elseif($this->krok == 2){
-
-
 				$mapy_pokryvajici_prostor = $formValues->mapy_pokryvajici_prostor ? Utils\Json::decode($formValues->mapy_pokryvajici_prostor,1) : array();
 				$probehle_zavody = $formValues->probehle_zavody ? Utils\Json::decode($formValues->probehle_zavody,1) : array();
 				$dalsi_stavitele = $formValues->dalsi_stavitele ? Utils\Json::decode($formValues->dalsi_stavitele,1) : array();
@@ -249,7 +238,6 @@ class PrihlaskaPresenter extends BasePresenter
 				foreach ($dalsi_poradatele_db as $dalsi_poradatel) {
 					$dalsi_poradatele[] = array('oddil_zkratka' => $dalsi_poradatel);
 				}
-
 
 				$this['prihlaskaForm']['krok2']->setDefaults(array(
 						'poradatel' 							=> $formValues->poradatel,
@@ -305,8 +293,10 @@ class PrihlaskaPresenter extends BasePresenter
 				$this->template->termin	= $this->database->table('terminy')->get($formValues->termin);
 				$this->template->druh	= $this->database->table('druhy')->get($formValues->druh_zavodu);
 			}
+
+			$this->template->loadMapsAPI = true;
 		}
-		
+
 	}
 
 
@@ -423,7 +413,7 @@ class PrihlaskaPresenter extends BasePresenter
 			$druhy = $this->database->table('terminy')->select('druh_id.id AS id, druh_id.druh AS druh')->where('kolo_id',$kolo->id)->fetchPairs('id','druh');
 			$step[1]['druh']->setItems($druhy);
 		}
-		
+
 
 
 
@@ -434,7 +424,7 @@ class PrihlaskaPresenter extends BasePresenter
 
 
 		$step[2] = $form->addContainer('krok2');
-	
+
 
 
 		/////Pořadatel
@@ -560,7 +550,7 @@ class PrihlaskaPresenter extends BasePresenter
 			->setAttribute('class', 'cols4')
 			->setOption('description', 'Vyplní pořadatel v případě, že připravil pro VŘ i další prezentaci svého závodu.');
 
-		
+
 
 		/////Mapa a předchozí aktivity prostoru
 		$step[2]->addText('km_lesa', $html::el()->setHtml('km<sup>2</sup> lesa') )
@@ -735,13 +725,13 @@ class PrihlaskaPresenter extends BasePresenter
 					$labels[] = Nette\Utils\Strings::lower($control->label->getText());
 				}
 			}
-			
+
 
 			if($labels){
 				$form->addError("Následující pole nebyla správně vyplněna: ".implode(', ', $labels));
 			}
 		}
-		
+
 
 	}
 
@@ -768,14 +758,14 @@ class PrihlaskaPresenter extends BasePresenter
 					$kolo = $this->database->table('kola')->select('id')->where('do >= CURDATE()')->order('od ASC')->limit(1)->fetch();
 
 					//Nahraje data o oddíle z ORISu
-					$json_data = Utils\Json::decode(file_get_contents('http://oris.orientacnisporty.cz/API/?format=json&method=getClub&id='.$odd_abbr), TRUE);
+					$json_data = Utils\Json::decode(file_get_contents('https://oris.orientacnisporty.cz/API/?format=json&method=getClub&id='.$odd_abbr), TRUE);
 					$odd = ($json_data && @$json_data['Status'] === 'OK') ? $json_data['Data']['Name'] : '?';
 
 					$prihlasky_table = $this->database->table('prihlasky');
 
 					//vytvoří záznam přihlášky v databázi
 					$inserted = $prihlasky_table->insert($values['krok0']+array('poradatel_zkratka' => $odd_abbr, 'kolo' => $kolo->id, 'poradatel' => $odd));
-					
+
 					//nastavení parametrů pro session ověřování
 					$this->sessionControler->setId($inserted->id);
 					$h = $this->sessionControler->newHash();
@@ -789,7 +779,7 @@ class PrihlaskaPresenter extends BasePresenter
 				}else{
 					$updated = $this->database->table('prihlasky')->get($pId)->update($values['krok0']);
 				}
-				
+
 				$this->krok = 1;
 			}elseif($step == 1){
 
@@ -910,7 +900,7 @@ class PrihlaskaPresenter extends BasePresenter
 
 				$this->krok = 3;
 			}
-			
+
 			$this->redirect('this');
 		}
 	}
@@ -1083,7 +1073,7 @@ class PrihlaskaPresenter extends BasePresenter
 
 
 				$filePath2 = $wwwDir.$ds.'files'.$ds.$folder_name.$ds.$this->pId.'-'.$t.'-'.$sanitized;
-				// Strip the temp .part suffix off 
+				// Strip the temp .part suffix off
 				Nette\Utils\FileSystem::rename("{$filePath}.part", $filePath2);
 
 
@@ -1119,17 +1109,17 @@ class PrihlaskaPresenter extends BasePresenter
 			$file = $this->database->table('soubory')->get($file_id);
 
 			if($file->prihlaska_id == $this->pId){
-				
+
 				//pokud nejde o kopii záznamu db (kopie != 1), smaže soubor z disku
 				if($file->kopie === 0){
 					Nette\Utils\FileSystem::delete($file->cesta);
 				}
-				
+
 
 				$file->delete();
 				$this->flashMessage('Soubor „'.$file->nazev.'“ byl úspěšně odstraněn.');
 			}
-			
+
 			$this->redirect('this#section-files');
 		}
 	}
@@ -1261,7 +1251,7 @@ class PrihlaskaPresenter extends BasePresenter
 							'druh_zavodu' 							=> $sdruzeny_termin->druh_id,
 							'termin' 								=> $sdruzeny_termin->id
 						));
-					
+
 					//ID nové přihlášky
 					$nova_prihlaska_id = $inserted->id;
 
@@ -1310,7 +1300,7 @@ class PrihlaskaPresenter extends BasePresenter
 							$inserted_files = $this->database->table('soubory')->insert($kopie);
 						}
 					}
-					
+
 					//změna identifikačních údajů nové přihlášky
 					$this->pId = $nova_prihlaska_id;
 					$this->krok = is_null($prihlaska->predloha_sdruzene_prihlasky) ? 2 : 3;
@@ -1410,7 +1400,7 @@ class PrihlaskaPresenter extends BasePresenter
 //			->setAttribute('class', 'cols1')
 //			->setPrompt('-')
 //    		->setOption('description', 'Zadá pořadatel, pokud podává více přihlášek do výběrového řízení současně a o některý závod má větší zájem (menší číslo = větší preference).');
-//    	
+//
 //		$form->addSubmit('send','Zkopírovat');
 //		$form->addProtection('Vypršel časový limit, odešlete formulář znovu');
 //		$form->onSuccess[] = [$this, 'prihlaskaFormSubmitted'];
@@ -1530,7 +1520,7 @@ class PrihlaskaPresenter extends BasePresenter
 		$prihlasky_table->wherePrimary($nova_prihlaska_id)->update(array(
 			'hash' => $this->hash
 		));
-		
+
 		//zkopírování souborů
 		$soubory = $this->database->table('soubory')->select('nazev, cesta, url')->where('prihlaska_id ?', $prihlaska->id);
 		if(count($soubory)>0){
@@ -1590,7 +1580,7 @@ class PrihlaskaPresenter extends BasePresenter
 
 		$prihlaska_id = ($pId) ? $pId : NULL;
 		$this->sessionControler->clearPrihlaskySection($prihlaska_id);
-		
+
 		$this->pId = $this->hash = $this->krok = NULL;
 		$this->flashMessage('Přihláška byla odstraněna.','info');
 		$this->redirect('Prihlaska:');
@@ -1604,7 +1594,7 @@ class PrihlaskaPresenter extends BasePresenter
 	{
 		$this->sessionControler->removeLastApplication();
 
-		
+
 		$this->pId = $this->hash = $this->krok = NULL;
 
 		$this->flashMessage('Příkaz byl úspěšně proveden.','info');
@@ -1646,7 +1636,7 @@ class PrihlaskaPresenter extends BasePresenter
 			//$this->redirect('AktualniVr:Detail',array('id'=>$id));
 			$this->redirect('AktualniVr:');
 		}
-		
+
 		#$this->template->allow_view = $allow_view;
 		$this->template->prihlaska = $prihlaska;
 
@@ -1713,6 +1703,11 @@ class PrihlaskaPresenter extends BasePresenter
 		$this->redirect('this');
 	}
 
+	public function renderUpravit()
+	{
+		$this->template->loadMapsAPI = true;
+	}
+
 	/**
 	 * Zkontroluje, jestli lze prihlasku upravit
 	 * a nastavi vychozi hodnoty editacniho formulare
@@ -1720,7 +1715,6 @@ class PrihlaskaPresenter extends BasePresenter
 	public function actionUpravit($pId, $secret)
 	{
 
-		# code...
 		//Získáme přihlášku z Databáze
 		$prihlaska = $this->database->table('prihlasky')->where('prihlasky.id ?', $pId)->limit(1);
 
@@ -1829,7 +1823,7 @@ class PrihlaskaPresenter extends BasePresenter
 
 
 	/**
-	 * 
+	 *
 	 * TODO
 	 */
 	protected function createComponentAccessRequestForm()

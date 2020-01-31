@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<script src="http://api4.mapy.cz/loader.js"></script>
+	<script src="https://api4.mapy.cz/loader.js"></script>
 	<script>Loader.load()</script>
 	<title>Mapa</title>
     <style type="text/css">
@@ -35,15 +35,15 @@
 var m = new SMap(JAK.gel("mapa"), SMap.Coords.fromWGS84(15.45, 49.83));
 m.addControl(new SMap.Control.Sync()); /* Aby mapa reagovala na změnu velikosti průhledu */
 m.addDefaultLayer(SMap.DEF_BASE).enable();
-m.addDefaultControls();	  
+m.addDefaultControls();
 
 var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
 m.addControl(mouse);
 
 //signály
 var signals = m.getSignals();
-signals.addListener(window, "map-click", mapClick); /* Při signálu kliknutí volat tuto funkci */    
-signals.addListener(window, "marker-drag-stop", markerDragStop); 
+signals.addListener(window, "map-click", mapClick); /* Při signálu kliknutí volat tuto funkci */
+signals.addListener(window, "marker-drag-stop", markerDragStop);
 
 
 

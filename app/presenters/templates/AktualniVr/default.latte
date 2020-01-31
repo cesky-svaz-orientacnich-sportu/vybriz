@@ -2,7 +2,6 @@
 
 {block content}
 
-
 <h2 n:block=title>Aktuální výběrové řízení</h2>
 
 {if $kolo}
@@ -11,17 +10,9 @@
 {/if}
 <p n:if="$kolo">Právě probíhá {$kolo->kolo}. kolo VŘ ({$kolo->od|date:'j. n.'} - {$kolo->do|date:'j. n. Y'})</p>
 
-{*
-<h3>Výsledky 2. kola VŘ na rok 2016</h3>
-<p>Výsledky kola jsou zveřejněny v oficiálním <a href="http://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/sdeleni-sekceob03-15.pdf" target="_blank">sdělení sekce OB 3/2015</a>. (Výsledky 1. kola - <a href="http://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/sdeleniob1421_20141201073723.pdf" target="_blank">21/2014</a> a 1 A. kola - <a href="http://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/sdelenisekceob215_20150201114258.pdf" target="_blank"> 2/2015</a>)</p>
- *}
-
 {control content 'aktualni-vr'}
 
 <h3>Přehled přihlášek pro rok {$rok}</h3>
-
-{*control filtr*}
-
 
 {if count($vr) > 0}
 	{var $prihlasky_data = []}
@@ -313,7 +304,6 @@ function highlightRaceArea(pid) {
 
 
 function unsetHighlightRaceArea() {
-
 	if(highlightedGeometry['geometry'] === prev['geometry']){ return ; }
 
 	highlightedGeometry['geometry'].setOptions(highlightedGeometry['geometry-options']);
@@ -321,11 +311,8 @@ function unsetHighlightRaceArea() {
 	layer['raceArea-polygon'].redraw();
 	layer['centre-marker'].redraw();
 
-	//m.setCenterZoom(highlightedGeometry['center'], highlightedGeometry['zoom']);
-
 	$('.tavr-p-highlighted2').removeClass('tavr-p-highlighted2');
 }
-
 
 </script>
 {else}
@@ -340,12 +327,4 @@ function unsetHighlightRaceArea() {
 <div class="flash info">Přehled přihlášek bude zveřejněn po ukončení kola</div>
 {/if}
 
-{/block}
-
-
-
-{block head}
-{* Mapy.cz API *}
-<script src="http://api4.mapy.cz/loader.js"></script>
-<script>Loader.load()</script>
 {/block}

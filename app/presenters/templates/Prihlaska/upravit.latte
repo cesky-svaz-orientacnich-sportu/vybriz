@@ -1,73 +1,38 @@
 {block content}
-
-{if $access_gained}
-
-	<h2>Upravit data přihlášky</h2>
-	{control editAppControl}
-
-{else}
-
-	<h2>Ověření přístupu k editaci</h2>
-	<p>Pro úpravu dat přihlášky prosím zadejte údaje, které jste vyplnil(a) při podání žádosti.</p>
-	{control gainAccessForm}
-
-{/if}
-
-
-
-
-
-
-
+	{if $access_gained}
+		<h2>Upravit data přihlášky</h2>
+		{control editAppControl}
+	{else}
+		<h2>Ověření přístupu k editaci</h2>
+		<p>Pro úpravu dat přihlášky prosím zadejte údaje, které jste vyplnil(a) při podání žádosti.</p>
+		{control gainAccessForm}
+	{/if}
 {/block}
 
-
-
-
-
-
-
-{*
-	Bloky obsluhy
-*}
-
-
 {block head}
-
-{* plUpload *}
-<link rel="stylesheet" href="{$basePath}/ext/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css" type="text/css" media="screen" />
-<link href="{$basePath}/ext/jquery-ui/css/theme/jquery-ui-1.10.4.custom.css" rel="stylesheet">
-
-{* Mapy.cz API *}
-<script src="http://api4.mapy.cz/loader.js"></script>
-<script>Loader.load()</script>
+	{* plUpload *}
+	<link rel="stylesheet" href="{$basePath}/ext/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css" type="text/css" media="screen" />
+	<link href="{$basePath}/ext/jquery-ui/css/theme/jquery-ui-1.10.4.custom.css" rel="stylesheet">
 {/block}
 
 {block scripts}
 {include parent}
-
 <script type="text/javascript" src="{$basePath}/ext/plupload/js/plupload.full.min.js"></script>
 <script type="text/javascript" src="{$basePath}/ext/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js"></script>
 <script type="text/javascript" src="{$basePath}/ext/plupload/js/i18n/cs.js"></script>
-
 
 <!-- Add fancyBox -->
 <link rel="stylesheet" href="{$basePath}/ext/fancybox/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
 <script type="text/javascript" src="{$basePath}/ext/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
 
-
 <script type="text/javascript">
 $(function() {
-
-
-
 	$(".fancybox").fancybox({
 		padding: '5px'
 	});
 
-
 	{*  SOUBORY  *}
-	
+
 	//array
 	var files = [];
 
@@ -78,7 +43,7 @@ $(function() {
 		url : {$control['editAppControl']->link('uploadFile!')},
 		chunk_size: '1mb',
 		dragdrop: true,
-		
+
 		filters : {
 			// Maximum file size
 			max_file_size : '10mb',
@@ -115,18 +80,12 @@ $(function() {
 		}
 	});
 
-
-
-
 	//{*Zabránění vrácení zpět pomocí BACKSPACE*}
 	$(document).keydown(function(event){
 	    if (event.which === 8 && !$(event.target).is("input, textarea"))  {
 	        event.preventDefault();
 	    }
 	});
-
-	
-
 });
 
 

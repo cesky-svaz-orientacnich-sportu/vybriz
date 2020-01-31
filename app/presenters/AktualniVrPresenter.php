@@ -37,26 +37,14 @@ class AktualniVrPresenter extends BasePresenter
 	{
 		$rok = $this->database->table('kola')->select('rok')->order('rok DESC')->limit(1)->fetch()->rok;
 		$kola = $this->database->table('kola')->select('id')->where('do < CURDATE() AND rok = ?', $rok)->order('id DESC')->fetchPairs(NULL, 'id');
-
-/*		$vr = $this->database->table('prihlasky')->where('stav ? AND kolo IN (?)', 'confirmed', $kola);
-
-*/
 		$allow_view = $this->user->isAllowed('aktualni-vr', 'view');
-
-//		if($allow_view){
-			$vr = $kola ? $this->database->table('prihlasky')->where('stav ? AND kolo IN (?)', array('confirmed','submitted'), $kola[0]) : NULL;
-//		}
-
-//		if (count($this->filtrKola)>0) {
-//			$vr->where('kolo',$this->filtrKola);
-//		}
-		
-		
+		$vr = $kola ? $this->database->table('prihlasky')->where('stav ? AND kolo IN (?)', array('confirmed','submitted'), $kola[0]) : NULL;
 
 		$this->template->allow_view = $allow_view;
 		$this->template->rok = $rok;
 		$this->template->vr = $vr ? $vr->order('termin.termin ASC') : NULL;
     	$this->template->kolo = $this->database->table('kola')->where('do >= CURDATE()')->order('od ASC')->limit(1)->fetch();
+    	$this->template->loadMapsAPI = true;
 	}
 
 //	public function actionDefault()
@@ -94,10 +82,9 @@ class AktualniVrPresenter extends BasePresenter
 			$this->setView('nahled');
 		}
 	}
-	
+
 	public function renderDetail($id)
 	{
-
 		$allow_view = $this->user->isAllowed('aktualni-vr', 'view');
 
 		if(!$allow_view){
@@ -123,7 +110,7 @@ class AktualniVrPresenter extends BasePresenter
 			$this->flashMessage('Přihláška byla podána v kole, které ještě neskončilo.','error');
 			$this->redirect('AktualniVr:');
 		}
-		
+
 		#$this->template->allow_view = $allow_view;
 		$this->template->prihlaska = $prihlaska;
 
@@ -143,17 +130,14 @@ class AktualniVrPresenter extends BasePresenter
     	$rel_druhy = $sdruzeny_termin ? array($sdruzeny_termin['druh'], $prihlaska->druh_zavodu) : $prihlaska->druh_zavodu;
 
 		$this->template->soubory = $this->database->table('soubory')->where('prihlaska_id', $id)->fetchAll();
-
-
 		$this->template->relevant = $this->database->table('prihlasky')->select('prihlasky.id AS id, druh_zavodu.druh_zkratka AS druh, prihlasky.preference AS preference, prihlasky.prostor_zavodu AS prostor, termin.termin AS termin')->where('prihlasky.poradatel_zkratka ? AND prihlasky.stav ? AND kolo.do < CURDATE()', $prihlaska->poradatel_zkratka, $stav)->order('termin.termin DESC');
-
 		$this->template->relevant2 = $this->database->table('prihlasky')->select('prihlasky.id AS id, druh_zavodu.druh_zkratka AS druh, prihlasky.poradatel_zkratka AS poradatel, prihlasky.prostor_zavodu AS prostor, termin.termin AS termin')->where('termin.druh_id ? AND prihlasky.stav ? AND kolo.do < CURDATE()', $rel_druhy , $stav)->order('termin.termin ASC');
+		$this->template->loadMapsAPI = true;
 	}
 
 
 	public function renderNahled($id)
 	{
-
 		$prihlaska = $this->database->table('prihlasky')->where('prihlasky.id ? AND stav ? AND kolo.do < CURDATE()', $id, array('confirmed','submitted'))->limit(1)->fetch();
 
 		if(!$prihlaska){
@@ -166,7 +150,7 @@ class AktualniVrPresenter extends BasePresenter
 			$this->flashMessage('Přihláška byla podána v kole, které ještě neskončilo.','error');
 			$this->redirect('AktualniVr:');
 		}
-		
+
 		$this->template->prihlaska = $prihlaska;
 		$this->template->prostor_zavodu_mapa = Nette\Utils\Json::decode($prihlaska['prostor_zavodu_mapa']);
 		$this->template->centrum_zavodu_mapa = Nette\Utils\Json::decode($prihlaska['centrum_zavodu_mapa']);
@@ -175,6 +159,8 @@ class AktualniVrPresenter extends BasePresenter
     		$this->template->termin	= $termin	= $this->database->table('terminy')->get($prihlaska->termin);
     		$this->template->druh	= $druh 	= $this->database->table('druhy')->get($prihlaska->druh_zavodu);
     	}
+
+    	$this->template->loadMapsAPI = true;
 	}
 
 

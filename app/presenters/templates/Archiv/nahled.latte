@@ -110,7 +110,7 @@ m.setZoomRange(5,15);
 
 //signály
 var signals = m.getSignals();
-signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */  
+signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */
 
 
 var layer = {};
@@ -163,20 +163,4 @@ function resetZoomRange() {
 	<div class="flash error">Mapa prostoru není k dispozici.</div>
 </div>
 {/if}
-
-
-
-
-
-
-
-
-{/block}
-
-
-
-{block head}
-{* Mapy.cz API *}
-<script src="http://api4.mapy.cz/loader.js"></script>
-<script>Loader.load()</script>
 {/block}

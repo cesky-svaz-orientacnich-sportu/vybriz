@@ -11,20 +11,23 @@
 	<title>Administrace{ifset #title}: {include title|striptags}{/ifset} | Výběrová řízení OB</title>
 
 	<link rel="stylesheet" href="{$basePath}/css/reset.css">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css">
 	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/admin.css">
 	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
 	<link rel="shortcut icon" type="image/png" href="{$basePath}/favicon.png">
 
-  <link rel="prefetch" href="http://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin">
-  <link rel="prefetch" href="http://api4.mapy.cz/loader.js">
+	<link rel="prefetch" href="https://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin">
+	<link rel="prefetch" href="https://api4.mapy.cz/loader.js">
 
-	<style>
-	</style>
+	<style></style>
 
-	{*<script src="http://api4.mapy.cz/loader.js"></script>*}
-	{*<script>Loader.load()</script>*}
+	{ifset $loadMapsAPI}
+		{if $loadMapsAPI}
+			<script src="https://api4.mapy.cz/loader.js"></script>
+			<script>Loader.load()</script>
+		{/if}
+	{/ifset}
 
 	{block head}{/block}
 
@@ -63,27 +66,6 @@
 <div id="wrapper">
 
 	<ul id="menu">
-		<!--<li {ifCurrent :Homepage:*}class="current"{/ifCurrent}>
-			<a n:href=":Homepage:">Úvod</a>
-		</li>
-		<li {ifCurrent :Prihlaska:*}class="current"{/ifCurrent}>
-			<a n:href=":Prihlaska:">Přihlášky</a>
-		</li>
-		<li {ifCurrent :AktualniVr:*}class="current"{/ifCurrent}>
-			<a n:href=":AktualniVr:">Aktuální VŘ</a>
-		</li>
-		<li {ifCurrent :Archiv:*}class="current"{/ifCurrent}>
-			<a n:href=":Archiv:">Archiv</a>
-		</li>
-		<li {ifCurrent :Vr:Podminky}class="current"{/ifCurrent}>
-			<a n:href=":Vr:Podminky">Podmínky VŘ</a>
-		</li>
-		<li {ifCurrent :Vr:Faq}class="current"{/ifCurrent}>
-			<a n:href=":Vr:Faq">FAQ</a>
-		</li>
-		<li {ifCurrent :Kontakt:}class="current"{/ifCurrent}>
-			<a n:href=":Kontakt:">Kontakt</a>
-		</li>-->
 		<li {ifCurrent :Admin:Dashboard:*}class="current"{/ifCurrent}>
 			<a n:href=":Admin:Dashboard:">Administrace</a>
 		</li>
@@ -100,31 +82,24 @@
 			<a n:href=":Admin:Uzivatele:">Uživatelé</a>
 		</li>
 		<li>
-			<a n:href=":Api:Export:" target="_blank">API</a>
+			<a n:href=":Api:Export:" target="_blank" rel="noopener noreferrer">API</a>
 		</li>
 	</ul>
 
 	<div id="content">
-	
+
 		<div n:if="$flashes" class="flashes">
 			<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
 		</div>
 
 		{include content}
 
-		
+
 
 	</div>
-	
-	<footer>{*PHP {=PHP_VERSION} |
-		{ifset $_SERVER['SERVER_SOFTWARE']}Server {$_SERVER['SERVER_SOFTWARE']}{/ifset} |
-		Nette Framework {=Nette\Framework::VERSION}*}<endora></footer>
 
+	<footer></footer>
 </div>
-
-
-
-	
 
 {block scripts}
 <script src="{$basePath}/js/jquery.js"></script>
