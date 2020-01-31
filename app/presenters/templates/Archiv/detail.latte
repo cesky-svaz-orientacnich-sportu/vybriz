@@ -392,8 +392,6 @@
 {if $centrum_zavodu_mapa && $prostor_zavodu_mapa}
 
 <div id="mapa" style="width:100%; height:520px; margin:0px auto 20px;"></div>
-
-
 <script type="text/javascript">
 
 var stred = {$centrum_zavodu_mapa ? $centrum_zavodu_mapa : array(49.83, 15.45)};
@@ -403,14 +401,10 @@ m.addControl(new SMap.Control.Sync()); /* Aby mapa reagovala na změnu velikosti
 m.addDefaultControls();
 m.setCursor('');
 
-//přidání kontrolního prvku pro ovládání myši
-var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
-m.addControl(mouse);
-
 //přidání podkladových vrstev do mapy
 m.addDefaultLayer(SMap.DEF_OPHOTO);
-m.addDefaultLayer(SMap.DEF_TURIST);
-m.addDefaultLayer(SMap.DEF_BASE).enable();
+m.addDefaultLayer(SMap.DEF_TURIST).enable();
+m.addDefaultLayer(SMap.DEF_BASE);
 
 //přidání ovládacího prvku řídícího změnu podkladů
 var layerSwitch = new SMap.Control.Layer();
