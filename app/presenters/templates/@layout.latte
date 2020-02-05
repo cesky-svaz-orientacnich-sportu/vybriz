@@ -11,28 +11,29 @@
 	<title>{ifset #title}{include title|striptags} | {/ifset}Výběrová řízení OB</title>
 
 	<link rel="stylesheet" href="{$basePath}/css/reset.css">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css">
 	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
 	<link rel="shortcut icon" type="image/png" href="{$basePath}/favicon.png">
 
-  <link rel="prefetch" href="http://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin">
-  <link rel="prefetch" href="http://api4.mapy.cz/loader.js">
+	<link rel="prefetch" href="https://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin">
+	<link rel="prefetch" href="https://api4.mapy.cz/loader.js">
 
-	<style>
-	</style>
+	<style></style>
 
-	{*<script src="http://api4.mapy.cz/loader.js"></script>*}
-	{*<script>Loader.load()</script>*}
+	{ifset $loadMapsAPI}
+		{if $loadMapsAPI}
+			<script src="https://api4.mapy.cz/loader.js"></script>
+			<script>Loader.load()</script>
+		{/if}
+	{/ifset}
 
 	{block head}{/block}
-
-	{block google_analytics}
-	{/block}
+	{block google_analytics}{/block}
 </head>
 
 <body>
-	<script> document.documentElement.className+=' js' </script>
+	<script>document.documentElement.className+=' js'</script>
 
 <div id="userbar-wrapper">
 	<div id="userbar">
@@ -45,13 +46,11 @@
 	</div>
 </div>
 
-
 <div id="banner">
 	<h1>Výběrová řízení OB</h1>
 </div>
 
 <div id="wrapper">
-
 	<ul id="menu">
 		<li {ifCurrent Homepage:*}class="current"{/ifCurrent}>
 			<a n:href="Homepage:">Úvod</a>
@@ -77,26 +76,19 @@
 	</ul>
 
 	<div id="content">
-	
 		<div n:if="$flashes" class="flashes">
 			<div n:foreach="$flashes as $flash" class="flash {$flash->type}">{$flash->message}</div>
 		</div>
 
 		{include content}
-
-		
-
 	</div>
-	
-	<footer>{*PHP {=PHP_VERSION} |
-		{ifset $_SERVER['SERVER_SOFTWARE']}Server {$_SERVER['SERVER_SOFTWARE']}{/ifset} |
-		Nette Framework {=Nette\Framework::VERSION}*}<endora></footer>
 
+	<footer></footer>
 </div>
 
 
 
-	
+
 
 {block scripts}
 <script src="{$basePath}/js/jquery.js"></script>

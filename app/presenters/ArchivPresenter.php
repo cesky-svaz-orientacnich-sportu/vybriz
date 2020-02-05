@@ -2,8 +2,9 @@
 
 namespace App\Presenters;
 
-use Nette,
-	App\Model;
+use Nette;
+use Nette\Utils\Json;
+use App\Model;
 
 /**
  * Archiv presenter.
@@ -53,15 +54,15 @@ class ArchivPresenter extends BasePresenter
 //		if (count($this->filtrKola)>0) {
 //			$vr->where('kolo',$this->filtrKola);
 //		}
-//		
-//				
+//
+//
 
 
 		$this->template->allow_view = $allow_view;
 		$this->template->rok = $rok;
 		$this->template->vr = $vr->order('termin.termin ASC');
     	$this->template->kolo = $this->database->table('kola')->where('do >= CURDATE()')->order('od ASC')->limit(1)->fetch();
-		
+
 
 		/**
 		 * Náhrada za $vr[..]->ref() tabulky v šabloně
@@ -88,7 +89,7 @@ class ArchivPresenter extends BasePresenter
 			$this->setView('nahled');
 		}
 	}
-	
+
 	public function renderDetail($id)
 	{
 
@@ -120,15 +121,13 @@ class ArchivPresenter extends BasePresenter
 			$this->flashMessage('Přihláška byla podána v kole, které ještě neskončilo.','error');
 			$this->redirect('AktualniVr:');
 		}
-		
-		#$this->template->allow_view = $allow_view;
-		$this->template->prihlaska = $prihlaska;
 
-		$this->template->dalsi_stavitele = Nette\Utils\Json::decode($prihlaska['dalsi_stavitele']);
-		$this->template->prostor_zavodu_mapa = Nette\Utils\Json::decode($prihlaska['prostor_zavodu_mapa']);
-		$this->template->centrum_zavodu_mapa = Nette\Utils\Json::decode($prihlaska['centrum_zavodu_mapa']);
-		$this->template->probehle_zavody = Nette\Utils\Json::decode($prihlaska['probehle_zavody']);
-		$this->template->mapy_pokryvajici_prostor = Nette\Utils\Json::decode($prihlaska['mapy_pokryvajici_prostor']);
+		$this->template->prihlaska = $prihlaska;
+		$this->template->dalsi_stavitele = Json::decode($prihlaska['dalsi_stavitele'], Json::FORCE_ARRAY);
+		$this->template->prostor_zavodu_mapa = Json::decode($prihlaska['prostor_zavodu_mapa']);
+		$this->template->centrum_zavodu_mapa = Json::decode($prihlaska['centrum_zavodu_mapa']);
+		$this->template->probehle_zavody = Json::decode($prihlaska['probehle_zavody'], Json::FORCE_ARRAY);
+		$this->template->mapy_pokryvajici_prostor = Json::decode($prihlaska['mapy_pokryvajici_prostor'], Json::FORCE_ARRAY);
 
     	if ($prihlaska->termin && $prihlaska->druh_zavodu) {
     		$this->template->termin	= $termin	= $this->database->table('terminy')->get($prihlaska->termin);
@@ -136,21 +135,17 @@ class ArchivPresenter extends BasePresenter
     	}
 
     	$sdruzeny_termin = $this->database->table('terminy')->select('druh_id AS druh')->where('id ? OR souvisejici_termin ?', $termin->souvisejici_termin, $termin->id)->fetch();
-
     	$rel_druhy = $sdruzeny_termin ? array($sdruzeny_termin['druh'], $prihlaska->druh_zavodu) : $prihlaska->druh_zavodu;
 
 		$this->template->soubory = $this->database->table('soubory')->where('prihlaska_id', $id)->fetchAll();
-
-
 		$this->template->relevant = $this->database->table('prihlasky')->select('prihlasky.id AS id, druh_zavodu.druh_zkratka AS druh, prihlasky.preference AS preference, prihlasky.prostor_zavodu AS prostor, termin.termin AS termin')->where('prihlasky.poradatel_zkratka ? AND prihlasky.stav ? AND kolo.do < CURDATE()', $prihlaska->poradatel_zkratka, $stav)->order('termin.termin DESC');
-
 		$this->template->relevant2 = $this->database->table('prihlasky')->select('prihlasky.id AS id, druh_zavodu.druh_zkratka AS druh, prihlasky.poradatel_zkratka AS poradatel, prihlasky.prostor_zavodu AS prostor, termin.termin AS termin')->where('termin.druh_id ? AND prihlasky.stav ? AND kolo.do < CURDATE()', $rel_druhy , $stav)->order('termin.termin ASC');
+		$this->template->loadMapsAPI = true;
 	}
 
 
 	public function renderNahled($id)
 	{
-
 		$prihlaska = $this->database->table('prihlasky')->where('prihlasky.id ? AND stav ? AND kolo.do < CURDATE()', $id, array('confirmed','submitted'))->limit(1)->fetch();
 
 		if(!$prihlaska){
@@ -163,16 +158,16 @@ class ArchivPresenter extends BasePresenter
 			$this->flashMessage('Přihláška byla podána v kole, které ještě neskončilo.','error');
 			$this->redirect('AktualniVr:');
 		}
-		
+
 		$this->template->prihlaska = $prihlaska;
-		$this->template->prostor_zavodu_mapa = Nette\Utils\Json::decode($prihlaska['prostor_zavodu_mapa']);
-		$this->template->centrum_zavodu_mapa = Nette\Utils\Json::decode($prihlaska['centrum_zavodu_mapa']);
+		$this->template->prostor_zavodu_mapa = Json::decode($prihlaska['prostor_zavodu_mapa']);
+		$this->template->centrum_zavodu_mapa = Json::decode($prihlaska['centrum_zavodu_mapa']);
 
     	if ($prihlaska->termin && $prihlaska->druh_zavodu) {
     		$this->template->termin	= $termin	= $this->database->table('terminy')->get($prihlaska->termin);
     		$this->template->druh	= $druh 	= $this->database->table('druhy')->get($prihlaska->druh_zavodu);
     	}
+
+		$this->template->loadMapsAPI = true;
 	}
-
-
 }

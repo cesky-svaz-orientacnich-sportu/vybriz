@@ -29,8 +29,8 @@ m.addControl(new SMap.Control.Sync()); /* Aby mapa reagovala na změnu velikosti
 
 //přidání podkladových vrstev do mapy
 m.addDefaultLayer(SMap.DEF_OPHOTO);
-m.addDefaultLayer(SMap.DEF_TURIST);
-m.addDefaultLayer(SMap.DEF_BASE).enable();
+m.addDefaultLayer(SMap.DEF_TURIST).enable();
+m.addDefaultLayer(SMap.DEF_BASE);
 
 //přidání ovládacího prvku řídícího změnu podkladů
 var layerSwitch = new SMap.Control.Layer();
@@ -45,14 +45,11 @@ m.addDefaultControls();
 m.setCursor('');
 m.setZoomRange(5,15);
 
-var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
-m.addControl(mouse);
-
 //signály
 var signals = m.getSignals();
-signals.addListener(window, "map-click", mapClick); /* Při signálu kliknutí volat tuto funkci */    
-signals.addListener(window, "marker-drag-stop", markerDragStop); 
-signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu změny zoomu volat tuto funkci */    
+signals.addListener(window, "map-click", mapClick); /* Při signálu kliknutí volat tuto funkci */
+signals.addListener(window, "marker-drag-stop", markerDragStop);
+signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu změny zoomu volat tuto funkci */
 
 
 
@@ -151,7 +148,7 @@ function mapClick(e) { /* Došlo ke kliknutí, spočítáme kde */
                 //nastavení obrýzku předposledního markeru
                 setNextToLastMarkerImage();
                 setLastMarkerImage();
-                
+
                 //překreslení pomocné čáry
                 redrawConnectionLine();
 
@@ -167,7 +164,7 @@ function mapClick(e) { /* Došlo ke kliknutí, spočítáme kde */
         //centreMarker.decorate(SMap.Marker.Feature.Draggable);
         layer['centre-marker'].addMarker(centreMarker);
         layer['centre-marker'].redraw();
-        
+
         //Reverzní geokódování = vrácení textové interpretace polohy značky v mapě
         //new SMap.Geocoder.Reverse(coords, geocoderCallback);
     }
@@ -227,7 +224,7 @@ function stepBack(){
     layer['raceArea-polygon'].redraw();
     var markerToRemove = layer['raceArea-markers'].getMarkers().pop();
     layer['raceArea-markers'].removeMarker(markerToRemove);
-    
+
     setLastMarkerImage();
     redrawConnectionLine();
     enableSaveBtn();
@@ -250,7 +247,7 @@ function eraseAll(){
         redrawConnectionLine();
         enableSaveBtn();
     }
-    
+
 }
 
 

@@ -87,14 +87,10 @@ m.addControl(new SMap.Control.Sync()); /* Aby mapa reagovala na změnu velikosti
 m.addDefaultControls();
 m.setCursor('');
 
-//přidání kontrolního prvku pro ovládání myši
-var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); /* Ovládání myší */
-m.addControl(mouse);
-
 //přidání podkladových vrstev do mapy
 m.addDefaultLayer(SMap.DEF_OPHOTO);
-m.addDefaultLayer(SMap.DEF_TURIST);
-m.addDefaultLayer(SMap.DEF_BASE).enable();
+m.addDefaultLayer(SMap.DEF_TURIST).enable();
+m.addDefaultLayer(SMap.DEF_BASE);
 
 //přidání ovládacího prvku řídícího změnu podkladů
 var layerSwitch = new SMap.Control.Layer();
@@ -110,7 +106,7 @@ m.setZoomRange(5,15);
 
 //signály
 var signals = m.getSignals();
-signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */  
+signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */
 
 
 var layer = {};
@@ -163,20 +159,4 @@ function resetZoomRange() {
 	<div class="flash error">Mapa prostoru není k dispozici.</div>
 </div>
 {/if}
-
-
-
-
-
-
-
-
-{/block}
-
-
-
-{block head}
-{* Mapy.cz API *}
-<script src="http://api4.mapy.cz/loader.js"></script>
-<script>Loader.load()</script>
 {/block}

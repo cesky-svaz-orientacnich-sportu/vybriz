@@ -29,7 +29,7 @@
 
 		{dump $kolo}
 
-		
+
 
 		<tr class="{$iterator->isOdd()?'odd-row':'even-row'}">
 			<td>{$kolo['id']}</td>
@@ -39,21 +39,21 @@
 			<td>{$kolo['do']|date:'j. n. Y'}</td>
 			<td>
 				{if $kolo['podminky_link']}
-					<a href="{$kolo['podminky_link']}" target="_blank">{$kolo['podminky_cislo_sdeleni']?:'???'}</a>
+					<a href="{$kolo['podminky_link']}" target="_blank" rel="noopener noreferrer">{$kolo['podminky_cislo_sdeleni']?:'???'}</a>
 				{else}
 					<span class="soft">není</span>
 				{/if}
 			</td>
 			<td>
 				{if $kolo['vysledky_link']}
-					<a href="{$kolo['vysledky_link']}" target="_blank">{$kolo['vysledky_cislo_sdeleni']?:'???'}</a>
+					<a href="{$kolo['vysledky_link']}" target="_blank" rel="noopener noreferrer">{$kolo['vysledky_cislo_sdeleni']?:'???'}</a>
 				{else}
 					<span class="soft">není</span>
 				{/if}
 			</td>
 		</tr>
 
-		
+
 
 
 	{/foreach}

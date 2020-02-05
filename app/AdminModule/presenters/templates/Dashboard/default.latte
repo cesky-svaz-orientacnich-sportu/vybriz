@@ -121,7 +121,7 @@
 <script>
 var MapArchiveLoader = function(el_id) {
 	this.suffixes = ['a', 'b', 'c', 'x', 'n'];
-	this.baselink = 'http://csos.tmapserver.cz/data/jpg/';
+	this.baselink = 'https://csos.tmapserver.cz/data/jpg/';
 	this.lastId = null;
 	this.pending = -1;//Nasatvíme výchozí stav
 	var _this = this;
@@ -169,7 +169,7 @@ var MapArchiveLoader = function(el_id) {
 	    timer = setTimeout(function() {
 	        timedOut = true;
 	        _this.callback(img, url, "timeout");
-	    }, timeout); 
+	    }, timeout);
 	}
 
 

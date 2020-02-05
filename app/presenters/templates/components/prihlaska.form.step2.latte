@@ -62,7 +62,7 @@
 </fieldset>
 
 
-    	
+
 
 
 		<fieldset>
@@ -84,7 +84,7 @@
 		<fieldset>
 		<legend>Další pořadatelé</legend>
 		<p class="form-item-description">Zapište pouze zkratku oddílu.</p>
-		
+
     	<table >
     		{*<tr>
     			<td style="width:120px;"></td>
@@ -105,7 +105,7 @@
     	</table>
 		{input $step['dalsi_poradatele']['add'], class=>"btn small"}
 		</fieldset>
-    	
+
 
 
 		<fieldset>
@@ -126,7 +126,7 @@
 		</table>
 
 		</fieldset>
-    	
+
 
 
 		<fieldset>
@@ -135,8 +135,8 @@
 		</table>
 
 		</fieldset>
-    	
-    	
+
+
 		<fieldset>
 		<legend>Organizátoři</legend>
 
@@ -184,7 +184,7 @@
 		</table>
 		</fieldset>
 
-    	
+
 		<fieldset>
 		<legend>Další stavitelé tratí</legend>
 
@@ -214,8 +214,8 @@
 		{input $step['dalsi_stavitele']['add'], class=>"btn small"}
 
 		</fieldset>
-    	
-    	
+
+
 		<fieldset>
 		<legend>Webové stránky závodu</legend>
 
@@ -230,8 +230,8 @@
 		</table>
 		</fieldset>
 
-    	
-    	
+
+
 
 		<fieldset>
 		<legend>Mapa</legend>
@@ -268,7 +268,7 @@
 		    <td>Odkaz na mapu</td>
 		    </tr>
 		{foreach $step['mapy_pokryvajici_prostor']->getContainers() as $mapy_pokryvajici_prostor}
-		    
+
 		    <tr>
 			    <td>{input $mapy_pokryvajici_prostor['mapa']}</td>
 			    <td>{input $mapy_pokryvajici_prostor['oddil']}</td>
@@ -278,7 +278,7 @@
 			    <td>{input $mapy_pokryvajici_prostor['odkaz']}</td>
 			    <td>{input $mapy_pokryvajici_prostor['remove'], class=>"btn btn-remove"}</td>
 		    </tr>
-		    
+
 		{/foreach}
 		</table>
 		{input $step['mapy_pokryvajici_prostor']['add'], class=>"btn small"}
@@ -427,7 +427,7 @@
 		<tr><td>název</td><td>smazat soubor</td></tr>
 		{foreach $soubory as $soubor}
 			<tr>
-				<td class="cols4"><a href="{$basePath}{$soubor->url}" target="_blank">{$soubor->nazev}</a></td>
+				<td class="cols4"><a href="{$basePath}{$soubor->url}" target="_blank" rel="noopener noreferrer">{$soubor->nazev}</a></td>
 				<td class="cols2"><a n:href="deleteFile! file_id => $soubor->id">smazat</a></td>
 			</tr>
 		{/foreach}

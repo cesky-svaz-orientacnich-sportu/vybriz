@@ -60,10 +60,6 @@ Pro správné fungování formuláře je třeba mít povolený javascript!
 {* plUpload *}
 <link rel="stylesheet" href="{$basePath}/ext/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css" type="text/css" media="screen" />
 <link href="{$basePath}/ext/jquery-ui/css/theme/jquery-ui-1.10.4.custom.css" rel="stylesheet">
-
-{* Mapy.cz API *}
-<script src="http://api4.mapy.cz/loader.js"></script>
-<script>Loader.load()</script>
 {/block}
 
 {block scripts}
@@ -124,7 +120,7 @@ $(function() {
 			console.log('check 2');
 			$el_output.val('Načítám data...');
 			var rn = $el_input.val();
-			$.getJSON("http://oris.orientacnisporty.cz/API/?callback=?", { format: 'json', method: 'getUser', rgnum: rn }, function( data ) {
+			$.getJSON("https://oris.orientacnisporty.cz/API/?callback=?", { format: 'json', method: 'getUser', rgnum: rn }, function( data ) {
 				if(typeof data['Data']['FirstName'] != 'undefined' && typeof data['Data']['LastName'] != 'undefined'){
 					$el_output.val(data['Data']['FirstName']+' '+data['Data']['LastName']);
 					$el_send.removeAttr('disabled');
@@ -144,7 +140,7 @@ $(function() {
 	SOUBORY
 
 	*}
-	
+
 	//array
 	var files = [];
 
@@ -155,7 +151,7 @@ $(function() {
 		url : {link UploadFile!},
 		chunk_size: '1mb',
 		dragdrop: true,
-		
+
 		filters : {
 			// Maximum file size
 			max_file_size : '10mb',
@@ -205,14 +201,14 @@ $(function() {
 				 [	'input' => '#' . $control['prihlaskaForm']['krok2']['stavitel_trati_registracni_cislo']->htmlId,
 					'output_name' => '#' . $control['prihlaskaForm']['krok2']['stavitel_trati']->htmlId,
 					'output_licence' => '#' . $control['prihlaskaForm']['krok2']['stavitel_trati_trida']->htmlId]]}
-	
+
 	{foreach $control['prihlaskaForm']['krok2']['dalsi_stavitele']->getContainers() as $dalsi_stavitel}
 		{var $list[] = [
 						'input' => '#' . $dalsi_stavitel['stavitel_trati_registracni_cislo']->htmlId,
 						'output_name' => '#' . $dalsi_stavitel['stavitel_trati']->htmlId,
 						'output_licence' => '#' . $dalsi_stavitel['stavitel_trati_trida']->htmlId
 			]}
-	
+
 	{/foreach}
 
 
@@ -251,7 +247,7 @@ $(function() {
 			$el_output_licence.val('...');
 			var rn = $el_input.val();
 
-			$.getJSON("http://oris.orientacnisporty.cz/API/?callback=?", { format: 'json', method: 'getUser', rgnum: rn }, function( data ) {
+			$.getJSON("https://oris.orientacnisporty.cz/API/?callback=?", { format: 'json', method: 'getUser', rgnum: rn }, function( data ) {
 				if(typeof data['Data']['FirstName'] != 'undefined' && typeof data['Data']['LastName'] != 'undefined'){
 					$el_output_name.val(data['Data']['FirstName']+' '+data['Data']['LastName']);
 					if(data['Data']['RefLicenceOB'] != ""){
@@ -279,7 +275,7 @@ $(function() {
 	    }
 	});
 
-	
+
 
 });
 

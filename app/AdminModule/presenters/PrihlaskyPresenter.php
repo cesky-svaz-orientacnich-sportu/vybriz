@@ -14,7 +14,7 @@ use Nette,
  */
 class PrihlaskyPresenter extends BaseAdminPresenter
 {
-    
+
     /** @var int */
     public $kolo_id = 0;
 
@@ -42,11 +42,16 @@ class PrihlaskyPresenter extends BaseAdminPresenter
         $this->storage = $storage;
     }
 
+    public function renderEdit($id)
+    {
+    	$this->template->loadMapsAPI = true;
+    }
+
     /**
      * Úprava přihlášky v administraci
      *
      * need refactoring!!
-     * 
+     *
      * @param  [type] $id    [description]
      * @return [type]         [description]
      */
@@ -54,7 +59,7 @@ class PrihlaskyPresenter extends BaseAdminPresenter
     {
         //Získáme přihlášku z Databáze
         $prihlaska = $this->database->table('prihlasky')->wherePrimary($id);
-        
+
         //
         // Pokud nemám právo na úpravu přihlášky podle ACL
         //
@@ -263,7 +268,7 @@ class PrihlaskyPresenter extends BaseAdminPresenter
             $this->flashMessage('Nemáte dostatečná práva pro úpravu OrisId.', 'error');
             $this->redirect('this');
         }
-        
+
         $this->prihlaskyRepository->updateOrisId($values['p_id'], $values['oris_id']);
         $this->storage->clean(array(
             Nette\Caching\Cache::TAGS => ['prihlasky/' . (int) $values['kolo_id']],
@@ -281,14 +286,14 @@ class PrihlaskyPresenter extends BaseAdminPresenter
 
         $control = new Multiplier(function ($pId) use ($callback) {
             $form = new Form;
-            
+
             $form->addText('oris_id', 'OrisId')
                 ->setType('number')
                 ->addCondition(Form::FILLED, FALSE)
                     ->addRule(Form::INTEGER);
-            
+
             $form->addHidden('p_id', (int) $pId);
-            
+
             $form->addSubmit('send', 'Uložit');
             $form->onSuccess[] = $callback;
 
@@ -316,7 +321,7 @@ class PrihlaskyPresenter extends BaseAdminPresenter
         }else{
             $this->flashMessage('OrisId bylo úspěšně nastaveno');
             $this->redirect('this');
-        }       
+        }
     }
 
 
@@ -335,7 +340,7 @@ class PrihlaskyPresenter extends BaseAdminPresenter
         $format = 'json';
         $method = 'getEventList';
         $oris_link = sprintf(
-            'http://oris.orientacnisporty.cz/API/?format=%s&method=%s&datefrom=%s&dateto=%s&sport=0&all=0&reg=%s',
+            'https://oris.orientacnisporty.cz/API/?format=%s&method=%s&datefrom=%s&dateto=%s&sport=0&all=0&reg=%s',
             $format,
             $method,
             $date_from,
@@ -375,7 +380,7 @@ class PrihlaskyPresenter extends BaseAdminPresenter
         $cache_name = 'PrihlaskyFinder_y'.$rok."_".$kolo_id;
         $cache = new Nette\Caching\Cache($this->storage);
         $prihlasky = $cache->call([$this, 'loadFinderData'], $rok, $kolo_id, [Nette\Caching\Cache::TAGS => 'prihlasky/' . (int) $kolo_id]);
-        
+
         $this->template->prihlasky = $prihlasky;
     }
 
@@ -389,11 +394,11 @@ class PrihlaskyPresenter extends BaseAdminPresenter
     {
         $data = [];
         $prihlasky = $this->prihlaskyRepository->getAll();
-        
+
         if ($rok) {
             $prihlasky->where('rok', (int) $rok);
         }
-        
+
         if ($kolo_id) {
             $prihlasky->where('kolo.kolo', (int) $kolo_id);
         }

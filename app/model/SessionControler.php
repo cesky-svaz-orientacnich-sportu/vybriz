@@ -14,7 +14,7 @@ use Nette,
 class SessionControler
 {
 	use Nette\SmartObject;
-	
+
 	/** @var string */
 	private $session;
 
@@ -48,7 +48,7 @@ class SessionControler
 	public function getPrihlaskySection()
 	{
 		$this->section = $this->session->getSection('prihlasky_sekce');
-		
+
 		//nastavení expirace
 		$this->section->setExpiration('2 days');
 
@@ -66,8 +66,8 @@ class SessionControler
 		$arr = array();
 		$sec_prihlasky = $this->getPrihlaskySection();
 
-		if(!$sec_prihlasky->prihlasky){ return ; }
-		
+		if(!$sec_prihlasky->prihlasky){ return $arr; }
+
 		foreach ($sec_prihlasky->prihlasky as $key => $data) {
 			if($data['state'] === $state){
 				$arr[] = $data;
@@ -96,7 +96,7 @@ class SessionControler
 
 		//vrátí sekci SESSION
 		$sec_prihlasky = $this->getPrihlaskySection();
-		
+
 		//vybere krok ze sekce SESSION
 		$highest_step = isset($sec_prihlasky->prihlasky['prihlaska-'.$this->prihlaskaId]['step']) ? $sec_prihlasky->prihlasky['prihlaska-'.$this->prihlaskaId]['step'] : 0;
 
@@ -142,7 +142,7 @@ class SessionControler
 	public function clearPrihlaskySection($pId = NULL)
 	{
 		$section = $this->session->getSection('prihlasky_sekce');
-		
+
 		if($pId){
 			unset($section->prihlasky['prihlaska-'.$pId]);
 		}else{
@@ -223,7 +223,7 @@ class SessionControler
 	public function setLastApplication(array $prihlasky_data = NULL)
 	{
 		$sec_prihlasky = $this->getPrihlaskySection();
-		
+
 		//pole IDs ze session
 		$pIds = array();
 		if($sec_prihlasky->lastApplication){
@@ -235,7 +235,7 @@ class SessionControler
 		/**
 		* pokud již ID nebylo zmíněno dříve, uloží data poslední žádosti
 		*/
-		if( !in_array($prihlasky_data[0]['id'], $pIds) ){			
+		if( !in_array($prihlasky_data[0]['id'], $pIds) ){
 			$sec_prihlasky->lastApplication = $prihlasky_data;
 		}
 	}

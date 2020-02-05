@@ -106,24 +106,24 @@ class KolaPresenter extends BaseAdminPresenter
             ->setType('number')
             ->setDefaultValue(date("Y", time())+1)
             ->setRequired('Zadejte rok');
-        
+
         $form->addText('kolo', 'Kolo (název)')
             ->setRequired('Zadejte název kola');
-        
+
         $form->addText('t_od', 'Od')
             ->setAttribute('class', 'datepicker')
             ->addRule(Form::PATTERN, 'Musí být datum!', '(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))')
             ->setRequired('Zadejte datum od');
-        
+
         $form->addText('t_do', 'Do')
             ->setAttribute('class', 'datepicker')
             ->addRule(Form::PATTERN, 'Musí být datum!', '(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))')
             ->setRequired('Zadejte datum od');
-        
+
         $form->addText('podminky_cislo_sdeleni', 'Podmínky - číslo sdělení')->setAttribute('placeholder', '23/2012');
-        $form->addText('podminky_link', 'Podmínky (URL)')->setAttribute('placeholder', 'http://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/__________.pdf');
+        $form->addText('podminky_link', 'Podmínky (URL)')->setAttribute('placeholder', 'https://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/__________.pdf');
         $form->addText('vysledky_cislo_sdeleni', 'Výsledky - číslo sdělení')->setAttribute('placeholder', '5/2013');
-        $form->addText('vysledky_link', 'Výsledky (URL)')->setAttribute('placeholder', 'http://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/__________.pdf');
+        $form->addText('vysledky_link', 'Výsledky (URL)')->setAttribute('placeholder', 'https://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/__________.pdf');
 
         $form->addHidden('edit', FALSE);
         $form->addHidden('k_id', NULL);

@@ -4,7 +4,7 @@
 
 <h2>Výběrová řízení na pořadatele závodů soutěží sekce OB</h2>
 <p>Od října 2014 soutěžní komise přijímá přihlášky do výběrového řízení na pořadatele závodů soutěží sekce OB výhradně prostřednictvím elektronického systému na těchto stránkách.</p>
-<p>V případě, že máte zájem podat přihlášku, přejděte do sekce <a n:href="Prihlaska:">Přihlášky</a> a držte se uvedených pokynů. Pokud vám nebude některá kolonka zcela jasná, podívejte se do <a n:href="Vr:Faq">FAQ</a>, kde nejspíše zjistíte odpověď. V případě velkých problémů lze omezeně využít e-mail <a href="mailto:vyberoverizeni@orientacnibeh.cz" targat="_blank">vyberoverizeni@orientacnibeh.cz</a>. V sekci <a n:href="AktualniVr:">Aktuální VŘ</a> najdete po skončení daného kola přehled přihlášek.</p>
+<p>V případě, že máte zájem podat přihlášku, přejděte do sekce <a n:href="Prihlaska:">Přihlášky</a> a držte se uvedených pokynů. Pokud vám nebude některá kolonka zcela jasná, podívejte se do <a n:href="Vr:Faq">FAQ</a>, kde nejspíše zjistíte odpověď. V případě velkých problémů lze omezeně využít e-mail <a href="mailto:vyberoverizeni@orientacnibeh.cz" targat="_blank" rel="noopener noreferrer">vyberoverizeni@orientacnibeh.cz</a>. V sekci <a n:href="AktualniVr:">Aktuální VŘ</a> najdete po skončení daného kola přehled přihlášek.</p>
 {if $kolo}
 <p n-if="$kolo">Aktuálně probíhá {$kolo->kolo}. kolo VŘ na rok {$kolo->rok}.
 	{if $kolo->od->getTimestamp() <= time()}
@@ -18,8 +18,3 @@
 {else}
 <p>Aktuálně není vypsáno žádné kolo.</p>
 {/if}
-
-{* 
-<h3>Výsledky 1., 1 A. a 2. kola VŘ na rok 2016</h3>
-<p>Výsledky jsou zveřejněny v oficiálním sdělení sekce OB - pro 1. kolo: <a href="http://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/sdeleniob1421_20141201073723.pdf" target="_blank">21/2014</a>, 1 A.: <a href="http://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/sdelenisekceob215_20150201114258.pdf" target="_blank">2/2015</a> a pro 2. kolo: <a href="http://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/sdeleni-sekceob03-15.pdf" target="_blank">3/2015</a>.</p>
- *}

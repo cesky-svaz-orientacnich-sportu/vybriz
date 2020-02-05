@@ -105,7 +105,7 @@
 					{if $oba_dny && $p1->dalsi_poradatele != $p2->dalsi_poradatele && $p2->dalsi_poradatele}, {$p2->dalsi_poradatele}{/if}
 				{/if}
 			</h3>
-			
+
 
 			<table>
 
@@ -121,7 +121,7 @@
 				</tr>
 				<tr>
 					<td>Termín</td>
-					<td><a n:href="AktualniVr:Detail $p1->id" target="_blank">{$terminy_table[$p1->termin]->termin|date:'j.n.'}</a> {if $oba_dny && $p1->termin != $p2->termin}+ <a n:href="AktualniVr:Detail $p2->id" target="_blank">{$terminy_table[$p2->termin]->termin|date:'j.n.'}</a>{/if}</td>
+					<td><a n:href="AktualniVr:Detail $p1->id" target="_blank" rel="noopener noreferrer">{$terminy_table[$p1->termin]->termin|date:'j.n.'}</a> {if $oba_dny && $p1->termin != $p2->termin}+ <a n:href="AktualniVr:Detail $p2->id" target="_blank" rel="noopener noreferrer">{$terminy_table[$p2->termin]->termin|date:'j.n.'}</a>{/if}</td>
 				</tr>
 
 				<tr>
@@ -148,7 +148,7 @@
 
 				<tr>
 					<td>Web</td>
-					<td><a href="{$p1->web}" target="_blank">{$p1->web}</a></td>
+					<td><a href="{$p1->web}" target="_blank" rel="noopener noreferrer">{$p1->web}</a></td>
 				</tr>
 			</table>
 
@@ -188,7 +188,7 @@
 				</tr>
 				<tr>
 					<td>Web</td>
-					<td><a href="{$p1->web}" target="_blank">{$p1->web}</a></td>
+					<td><a href="{$p1->web}" target="_blank" rel="noopener noreferrer">{$p1->web}</a></td>
 				</tr>
 			</table>
 

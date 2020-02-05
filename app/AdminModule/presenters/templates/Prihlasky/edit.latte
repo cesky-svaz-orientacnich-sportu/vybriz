@@ -1,33 +1,12 @@
 {block content}
-
-
 	<h2>Upravit data přihlášky</h2>
 	{control editAppControl}
-
-
-
 {/block}
 
-
-
-
-
-
-
-{*
-	Bloky obsluhy
-*}
-
-
 {block head}
-
 {* plUpload *}
 <link rel="stylesheet" href="{$basePath}/ext/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css" type="text/css" media="screen" />
 <link href="{$basePath}/ext/jquery-ui/css/theme/jquery-ui-1.10.4.custom.css" rel="stylesheet">
-
-{* Mapy.cz API *}
-<script src="http://api4.mapy.cz/loader.js"></script>
-<script>Loader.load()</script>
 {/block}
 
 {block scripts}
@@ -42,19 +21,14 @@
 <link rel="stylesheet" href="{$basePath}/ext/fancybox/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
 <script type="text/javascript" src="{$basePath}/ext/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
 
-
 <script type="text/javascript">
 $(function() {
-
-
-
 	$(".fancybox").fancybox({
 		padding: '5px'
 	});
 
-
 	{*  SOUBORY  *}
-	
+
 	//array
 	var files = [];
 
@@ -65,7 +39,7 @@ $(function() {
 		url : {$control['editAppControl']->link('uploadFile2!')},
 		chunk_size: '1mb',
 		dragdrop: true,
-		
+
 		filters : {
 			// Maximum file size
 			max_file_size : '10mb',
@@ -102,20 +76,13 @@ $(function() {
 		}
 	});
 
-
-
-
 	//{*Zabránění vrácení zpět pomocí BACKSPACE*}
 	$(document).keydown(function(event){
 	    if (event.which === 8 && !$(event.target).is("input, textarea"))  {
 	        event.preventDefault();
 	    }
 	});
-
-	
-
 });
-
 
 $('#map-modal').hide();
 </script>
