@@ -29,17 +29,6 @@ class DashboardPresenter extends BaseAdminPresenter
 
 	public function renderDefault()
 	{
-		$endora_link = 'https://webadmin.endora.cz/api/xml/key/YjJwdFkzTjhlbU11WlRrdWVtbHlZbmwy';
-		$cache = new Nette\Caching\Cache($this->storage);
-		$this->template->endora = $cache->save('EndoraApi', function() use ($endora_link) {
-			try {
-				$data = Utils\Json::decode(file_get_contents($endora_link), 1);
-				return $data;
-			} catch (\Exception $e) {
-				return [];
-			}
-		}, [Nette\Caching\Cache::EXPIRE => '48 hours']);
-
 		$rok = $this->database->table('kola')->order('rok DESC')->limit(1)->fetch()->offsetGet('rok');
 		$this->template->rok = $rok;
 		$this->template->kola = $this->database->table('kola')->where('rok', $rok);

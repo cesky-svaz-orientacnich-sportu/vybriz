@@ -56,7 +56,6 @@
 <div id="content">
 
 {if $access_gained}
-
 	<div class="noprint">
 		<p><a n:href="RejectAccess!">Zrušit ověření</a>.</p>
 	</div>
@@ -64,7 +63,6 @@
 	<h2>
 		{$druh->druh_zkratka}, <span class="date">{$termin->termin|niceDate}</span> ({$prihlaska['poradatel_zkratka']})
 	</h2>
-
 
 	<h3 id="toc-zakladni-udaje">Základní údaje a informace o přihlášce</h3>
 
@@ -122,8 +120,6 @@
 		</tr>
 	</table>
 
-
-
 	<h3 id="toc-prostor-a-centrum-závodu">Prostor a centrum závodu</h3>
 
 	<table class="table">
@@ -138,8 +134,6 @@
 			<td>{$prihlaska['popis_terenu']}</td>
 		</tr>
 	</table>
-
-
 
 	<h3 id="toc-organizatori">Organizátoři</h3>
 
@@ -158,12 +152,7 @@
 		</tr>
 	</table>
 
-	{*<h3>Webové stránky závodu</h3>*}
-
-
-
 	<h3 id="toc-udaje-o-mape">Údaje o mapě</h3>
-
 
 	<table class="table">
 		<tr>
@@ -183,8 +172,6 @@
 			<td>{$prihlaska['odpovedny_zpracovatel_mapy'] ? $prihlaska['odpovedny_zpracovatel_mapy'] : '-'}</td>
 		</tr>
 	</table>
-
-
 
 	<h3 id="toc-mapy-pokryvajici-prostor">Mapy pokrývající prostor</h3>
 
@@ -208,8 +195,6 @@
 	{else}
 		<p>Žádná předchozí mapa prostoru.</p>
 	{/if}
-
-
 
 	<h3 id="toc-predchozi-aktivity-prostoru">Předchozí aktivity prostoru</h3>
 
@@ -259,8 +244,6 @@
 		</tr>
 	</table>
 
-
-
 	<h3 id="toc-chranena-uzemi">Chráněná území</h3>
 
 	<table class="table">
@@ -302,13 +285,8 @@
 		</tr>
 	</table>
 
-
-
-
-
 	<h3 id="toc-poznamky">Poznámky</h3>
 	<p>{$prihlaska['poznamky'] ? $prihlaska['poznamky'] : 'Nevyplněno.'}</p>
-
 
 	<h3 id="toc-prilohy">Přiložené soubory</h3>
 
@@ -469,17 +447,10 @@
 	{/if}
 
 {else}
-
-<h2>Ověření přístupu</h2>
-<p>Pro zobrazení detailu přihlášky prosím zadejte e-mail a registračné číslo, které jste uvedli při vytvoření žádosti.</p>
-{control gainAccessForm}
-
-
+	<h2>Ověření přístupu</h2>
+	<p>Pro zobrazení detailu přihlášky prosím zadejte e-mail a registračné číslo, které jste uvedli při vytvoření žádosti.</p>
+	{control gainAccessForm}
 {/if}
-
 </div>
-
-<div style="opacity:0.4; margin: 10px auto; width: 400px;" class="noprint"><endora></div>
-
 </body>
 </html>
