@@ -60,23 +60,18 @@
 			margin: 14px 0 6px;
 			color: #666;
 		}
-
 	</style>
 	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
 </head>
 <body>
 
-{*dump $prihlasky*}
 {var $p2 = NULL}
 
-
 <div id="content">
-
 	<h1>Výběrové řízení na pořadatele závodů ČSOS v roce {$rok}</h1>
 	<h2 style="text-align:center;font-size: 14px;">(přehled přihlášek {$kolo}. kola)</h2>
 
 	{foreach $terminy as $termin_id => $sdruzeny_id}
-
 		<h2>
 			{$termin_id ? $terminy_table[$termin_id]->termin|date:'j.n.'}
 			{if $sdruzeny_id}+ {$terminy_table[$sdruzeny_id]->termin|date:'j.n.'}{/if}
@@ -106,9 +101,7 @@
 				{/if}
 			</h3>
 
-
 			<table>
-
 				<tr>
 					<td>Preference</td>
 					{if $p1->preference || ($oba_dny && $p2->preference)}
@@ -151,15 +144,11 @@
 					<td><a href="{$p1->web}" target="_blank" rel="noopener noreferrer">{$p1->web}</a></td>
 				</tr>
 			</table>
-
 		{/foreach}
 		{/if}
 
-
-
 		{if isset($prihlasky[$sdruzeny_id])}
 		{foreach $prihlasky[$sdruzeny_id] as $klub => $prihlaska}
-
 			{var $p1 = $prihlaska}
 			<?php unset($prihlasky[$termin_id][$klub]) ?>
 
@@ -194,16 +183,11 @@
 
 		{/foreach}
 		{/if}
-
 	{/foreach}
-
 
 {dump $prihlasky}
 
 </div>
-
-
-<div style="opacity:0.4; margin: 10px auto; width: 400px;" class="noprint"><endora></div>
 
 </body>
 </html>
