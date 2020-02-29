@@ -105,20 +105,21 @@ class KolaPresenter extends BaseAdminPresenter
         $form->addText('rok', 'Rok')
             ->setType('number')
             ->setDefaultValue(date("Y", time())+1)
-            ->setRequired('Zadejte rok');
+            ->setRequired('Zadejte rok.');
 
         $form->addText('kolo', 'Kolo (název)')
-            ->setRequired('Zadejte název kola');
+            ->setRequired('Zadejte název kola.')
+            ->addRule(Form::MAX_LENGTH, 'Název kola může být maximálně 3 znaky dlouhý.');
 
         $form->addText('t_od', 'Od')
             ->setAttribute('class', 'datepicker')
             ->addRule(Form::PATTERN, 'Musí být datum!', '(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))')
-            ->setRequired('Zadejte datum od');
+            ->setRequired('Zadejte datum od.');
 
         $form->addText('t_do', 'Do')
             ->setAttribute('class', 'datepicker')
             ->addRule(Form::PATTERN, 'Musí být datum!', '(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))')
-            ->setRequired('Zadejte datum od');
+            ->setRequired('Zadejte datum od.');
 
         $form->addText('podminky_cislo_sdeleni', 'Podmínky - číslo sdělení')->setAttribute('placeholder', '23/2012');
         $form->addText('podminky_link', 'Podmínky (URL)')->setAttribute('placeholder', 'https://www.orientacnibeh.cz/upload/dokumenty/sekce-ob/__________.pdf');
