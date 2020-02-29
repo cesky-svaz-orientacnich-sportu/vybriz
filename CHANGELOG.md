@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.0.3] - 2020-02-29
+- omezení hodnot zadávaných do některých polí vzhledem k omezení v modelu
+
 ## [1.0.2] - 2020-02-09
 - odebrána statistika webhostingu
 
