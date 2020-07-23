@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.0.4] - 2020-07-23
+- oprava zadávání nového kola
+
 ## [1.0.3] - 2020-02-29
 - omezení hodnot zadávaných do některých polí vzhledem k omezení v modelu
 
