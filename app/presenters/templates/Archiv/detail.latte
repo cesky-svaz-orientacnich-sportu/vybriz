@@ -10,36 +10,12 @@
 	{$druh->druh_zkratka}, <span class="date">{$termin->termin|niceDate}</span> ({$prihlaska['poradatel_zkratka']})
 </h2>
 
-{*
-<ol class="toc-list">
-	<li><a href="#toc-zakladni-udaje">Základní údaje a informace o přihlášce</a></li>
-	<li><a href="#toc-prostor-a-centrum-závodu">Prostor a centrum závodu</a></li>
-	<li><a href="#toc-organizatori">Organizátoři</a></li>
-	<li><a href="#toc-udaje-o-mape">Údaje o mapě</a></li>
-	<li><a href="#toc-mapy-pokryvajici-prostor">Mapy pokrývající prostor</a></li>
-	<li><a href="#toc-predchozi-aktivity-prostoru">Předchozí aktivity prostoru</a></li>
-	<li><a href="#toc-vlastnici-pozemku-a-organy-statni-spravy">Vlastníci pozemků a orgány státní správy</a></li>
-	<li><a href="#toc-chranena-uzemi">Chráněná území</a></li>
-	<li><a href="#toc-poznamky">Poznámky</a></li>
-	<li><a href="#toc-prilohy">Přiložené soubory</a></li>
-	<li><a href="#toc-mapa-prostoru">Mapa prostoru</a></li>
-</ol>
-*}
-
-
 <h3 id="toc-zakladni-udaje">Základní údaje a informace o přihlášce</h3>
-
 <table class="table">
 	<tr>
 		<td class="cols3">Identifikační číslo</td>
 		<td class="cols6">{$prihlaska['id']}</td>
 	</tr>
-	{*
-	<tr>
-		<td>stav</td>
-		<td>{$prihlaska['stav']}</td>
-	</tr>
-	*}
 	<tr>
 		<td>Autor přihlášky</td>
 		<td>{$prihlaska['jmeno']} ({$prihlaska['registracni_cislo']}), {$prihlaska['pozice_v_oddile']}</td>
@@ -83,10 +59,7 @@
 	</tr>
 </table>
 
-
-
 <h3 id="toc-prostor-a-centrum-závodu">Prostor a centrum závodu</h3>
-
 <table class="table">
 	<tr>
 		<td class="cols3">Prostor závodu</td>
@@ -100,10 +73,7 @@
 	</tr>
 </table>
 
-
-
 <h3 id="toc-organizatori">Organizátoři</h3>
-
 <table class="table">
 	<tr>
 		<td class="cols3">Ředitel závodu</td>
@@ -126,16 +96,9 @@
 			</td>
 		</tr>
 	{/if}
-
 </table>
 
-{*<h3>Webové stránky závodu</h3>*}
-
-
-
 <h3 id="toc-udaje-o-mape">Údaje o mapě</h3>
-
-
 <table class="table">
 	<tr>
 		<td class="cols3">km<sup>2</sup> lesa</td>
@@ -155,54 +118,45 @@
 	</tr>
 </table>
 
-
-
 <h3 id="toc-mapy-pokryvajici-prostor">Mapy pokrývající prostor</h3>
-
 {if count($mapy_pokryvajici_prostor)>0}
-<table class="table">
-	<tr>
-		<td class="cols3">Mapa</td>
-		<td class="cols1">Oddíl</td>
-		<td class="cols1">Měřítko</td>
-		<td class="cols1">Rok</td>
-		<td class="cols1">Disciplína</td>
-	</tr>
-	<tr n:foreach="$mapy_pokryvajici_prostor as $mapa">
-		<td><a href="{$mapa[odkaz]}" target="_blank" rel="noopener noreferrer">{$mapa[mapa]}</a></td>
-		<td>{$mapa[oddil]}</td>
-		<td>{$mapa[meritko]}</td>
-		<td>{$mapa[rok]}</td>
-		<td>{$mapa[disciplina]}</td>
-	</tr>
-</table>
+	<table class="table">
+		<tr>
+			<td class="cols3">Mapa</td>
+			<td class="cols1">Oddíl</td>
+			<td class="cols1">Měřítko</td>
+			<td class="cols1">Rok</td>
+			<td class="cols1">Disciplína</td>
+		</tr>
+		<tr n:foreach="$mapy_pokryvajici_prostor as $mapa">
+			<td><a href="{$mapa[odkaz]}" target="_blank" rel="noopener noreferrer">{$mapa[mapa]}</a></td>
+			<td>{$mapa[oddil]}</td>
+			<td>{$mapa[meritko]}</td>
+			<td>{$mapa[rok]}</td>
+			<td>{$mapa[disciplina]}</td>
+		</tr>
+	</table>
 {else}
 	<p>Žádná předchozí mapa prostoru.</p>
 {/if}
 
-
-
 <h3 id="toc-predchozi-aktivity-prostoru">Předchozí aktivity prostoru</h3>
-
 {if count($probehle_zavody)>0}
-<table class="table">
-	<tr>
-		<td class="cols2">Datum</td>
-		<td class="cols6">Typ závodu</td>
-	</tr>
-	<tr n:foreach="$probehle_zavody as $zavod">
-		<td>{$zavod[datum]}</td>
-		<td>{$zavod[typ_zavodu]}</td>
-	</tr>
-</table>
+	<table class="table">
+		<tr>
+			<td class="cols2">Datum</td>
+			<td class="cols6">Typ závodu</td>
+		</tr>
+		<tr n:foreach="$probehle_zavody as $zavod">
+			<td>{$zavod[datum]}</td>
+			<td>{$zavod[typ_zavodu]}</td>
+		</tr>
+	</table>
 {else}
 	<p>Žádný probéhlý závod.</p>
 {/if}
 
-
-
 <h3 id="toc-vlastnici-pozemku-a-organy-statni-spravy">Vlastníci pozemků a orgány státní správy</h3>
-
 <table class="table">
 	<tr>
 		<td class="cols3">Seznam vlastníků lesních a dalších pozemků, přes které povede závod</td>
@@ -230,10 +184,7 @@
 	</tr>
 </table>
 
-
-
 <h3 id="toc-chranena-uzemi">Chráněná území</h3>
-
 <table class="table">
 	<tr>
 		<td class="cols3">Národní park</td>
@@ -273,204 +224,164 @@
 	</tr>
 </table>
 
-
-
-
-
 <h3 id="toc-poznamky">Poznámky</h3>
 <p>{$prihlaska['poznamky'] ? $prihlaska['poznamky'] : 'Nevyplněno.'}</p>
 
-
 <h3 id="toc-prilohy">Přiložené soubory</h3>
-
 {if count($soubory) > 0}
-
-<table class="table">
-	<tr>
-		<td class="cols1">ID</td>
-		<td class="cols6">Název souboru</td>
-	</tr>
-	<tr n:foreach="$soubory as $soubor">
-		<td>#{$soubor->id|padLeft:4,'0'}</td>
-		<td><a href="{$basePath}{$soubor->url}" class="t-file" target="_blank" rel="noopener noreferrer">{$soubor->nazev}</a></td>
-	</tr>
-</table>
-
+	<table class="table">
+		<tr>
+			<td class="cols1">ID</td>
+			<td class="cols6">Název souboru</td>
+		</tr>
+		<tr n:foreach="$soubory as $soubor">
+			<td>#{$soubor->id|padLeft:4,'0'}</td>
+			<td><a href="{$basePath}{$soubor->url}" class="t-file" target="_blank" rel="noopener noreferrer">{$soubor->nazev}</a></td>
+		</tr>
+	</table>
 {else}
-
-<p>Nebyl přiložen žádný soubor.</p>
-
+	<p>Nebyl přiložen žádný soubor.</p>
 {/if}
-
 
 {var $rel_count = count($relevant)}
 {if $rel_count > 0}
-
-<h3 id="toc-poznamky">Přihlášky podané oddílem {$prihlaska->poradatel_zkratka}</h3>
-
-<p>
-	<span class="note">Celkem: {$rel_count} {if $rel_count == 1}přihláška{elseif $rel_count > 4}přihlášek{else}přihlášky{/if}</span>
-</p>
-
-<table class="table" style="width:100%;">
-	<tr>
-		<td style="width:26px;"></td>
-		<td class="cols1">ID</td>
-		<td style="width:100px;">Termín</td>
-		<td style="width:60px;"><abbr title="preference">pref.</abbr></td>
-		<td class="cols3">Druh závodu</td>
-		<td>Prostor</td>
-	</tr>
-	<tr n:foreach="$relevant as $rel_prihlaska">
-		<td><span class="soft">{$iterator->counter}</span></td>
-		<td>#{$rel_prihlaska->id|padLeft:4,'0'}</td>
-		<td>{$rel_prihlaska->termin|date:'j.n. Y'}</td>
-		<td>{$rel_prihlaska->preference ? $rel_prihlaska->preference : '-'}</td>
-		<td>
-			{if $rel_prihlaska->id != $prihlaska->id}
-				<a n:href="this id=>$rel_prihlaska->id">{$rel_prihlaska->druh}</a>
-			{else}
-				{$rel_prihlaska->druh}<span class="note">*</span>
-			{/if}
-		</td>
-		<td>{$rel_prihlaska->prostor}</td>
-	</tr>
-</table>
-
-<p>
-	<span class="note">* právě prohlížíte</span>
-</p>
-
+	<h3 id="toc-poznamky">Přihlášky podané oddílem {$prihlaska->poradatel_zkratka}</h3>
+	<p>
+		<span class="note">Celkem: {$rel_count} {if $rel_count == 1}přihláška{elseif $rel_count > 4}přihlášek{else}přihlášky{/if}</span>
+	</p>
+	<table class="table" style="width:100%">
+		<tr>
+			<td style="width:26px;"></td>
+			<td class="cols1">ID</td>
+			<td style="width:100px;">Termín</td>
+			<td style="width:60px;"><abbr title="preference">pref.</abbr></td>
+			<td class="cols3">Druh závodu</td>
+			<td>Prostor</td>
+		</tr>
+		<tr n:foreach="$relevant as $rel_prihlaska">
+			<td><span class="soft">{$iterator->counter}</span></td>
+			<td>#{$rel_prihlaska->id|padLeft:4,'0'}</td>
+			<td>{$rel_prihlaska->termin|date:'j.n. Y'}</td>
+			<td>{$rel_prihlaska->preference ? $rel_prihlaska->preference : '-'}</td>
+			<td>
+				{if $rel_prihlaska->id != $prihlaska->id}
+					<a n:href="this id=>$rel_prihlaska->id">{$rel_prihlaska->druh}</a>
+				{else}
+					{$rel_prihlaska->druh}<span class="note">*</span>
+				{/if}
+			</td>
+			<td>{$rel_prihlaska->prostor}</td>
+		</tr>
+	</table>
+	<p><span class="note">* právě prohlížíte</span></p>
 {/if}
-
-
-
-
 
 {var $rel_count = count($relevant2)}
 {if $rel_count > 0}
-
-<h3 id="toc-poznamky">Další související přihlášky k danému závodu</h3>
-
-<table class="table" style="width:100%;">
-	<tr>
-		<td style="width:26px;"></td>
-		<td class="cols1">ID</td>
-		<td style="width:100px;">Termín</td>
-		<td style="width:60px;">Oddíl</td>
-		<td class="cols3">Druh závodu</td>
-		<td>Prostor</td>
-	</tr>
-	<tr n:foreach="$relevant2 as $rel_prihlaska">
-		<td><span class="soft">{$iterator->counter}</span></td>
-		<td>#{$rel_prihlaska->id|padLeft:4,'0'}</td>
-		<td>{$rel_prihlaska->termin|date:'j.n. Y'}</td>
-		<td><b n:tag-if="$prihlaska->poradatel_zkratka == $rel_prihlaska->poradatel">{$rel_prihlaska->poradatel}</b></td>
-		<td>
-			{if $rel_prihlaska->id != $prihlaska->id}
-				<a n:href="this id=>$rel_prihlaska->id">{$rel_prihlaska->druh}</a>
-			{else}
-				{$rel_prihlaska->druh}<span class="note">*</span>
-			{/if}
-		</td>
-		<td>{$rel_prihlaska->prostor}</td>
-	</tr>
-</table>
-
-<p>
-	<span class="note">* právě prohlížíte</span>
-</p>
-
+	<h3 id="toc-poznamky">Další související přihlášky k danému závodu</h3>
+	<table class="table" style="width:100%;">
+		<tr>
+			<td style="width:26px;"></td>
+			<td class="cols1">ID</td>
+			<td style="width:100px;">Termín</td>
+			<td style="width:60px;">Oddíl</td>
+			<td class="cols3">Druh závodu</td>
+			<td>Prostor</td>
+		</tr>
+		<tr n:foreach="$relevant2 as $rel_prihlaska">
+			<td><span class="soft">{$iterator->counter}</span></td>
+			<td>#{$rel_prihlaska->id|padLeft:4,'0'}</td>
+			<td>{$rel_prihlaska->termin|date:'j.n. Y'}</td>
+			<td><b n:tag-if="$prihlaska->poradatel_zkratka == $rel_prihlaska->poradatel">{$rel_prihlaska->poradatel}</b></td>
+			<td>
+				{if $rel_prihlaska->id != $prihlaska->id}
+					<a n:href="this id=>$rel_prihlaska->id">{$rel_prihlaska->druh}</a>
+				{else}
+					{$rel_prihlaska->druh}<span class="note">*</span>
+				{/if}
+			</td>
+			<td>{$rel_prihlaska->prostor}</td>
+		</tr>
+	</table>
+	<p><span class="note">* právě prohlížíte</span></p>
 {/if}
-
-
-
-
-
 
 <h3 id="toc-mapa-prostoru">Mapa prostoru</h3>
 {if $centrum_zavodu_mapa && $prostor_zavodu_mapa}
+	<div id="mapa" style="width:100%; height:520px; margin:0px auto 20px;"></div>
+	<script type="text/javascript">
+		var stred = {$centrum_zavodu_mapa ? $centrum_zavodu_mapa : array(49.83, 15.45)};
 
-<div id="mapa" style="width:100%; height:520px; margin:0px auto 20px;"></div>
-<script type="text/javascript">
+		var m = new SMap(JAK.gel("mapa"), SMap.Coords.fromWGS84(stred[1], stred[0]){if $centrum_zavodu_mapa}, 10{/if});
+		m.addControl(new SMap.Control.Sync()); /* Aby mapa reagovala na změnu velikosti průhledu */
+		m.addDefaultControls();
+		m.setCursor('');
 
-var stred = {$centrum_zavodu_mapa ? $centrum_zavodu_mapa : array(49.83, 15.45)};
+		// přidání podkladových vrstev do mapy
+		m.addDefaultLayer(SMap.DEF_OPHOTO);
+		m.addDefaultLayer(SMap.DEF_TURIST).enable();
+		m.addDefaultLayer(SMap.DEF_BASE);
 
-var m = new SMap(JAK.gel("mapa"), SMap.Coords.fromWGS84(stred[1], stred[0]){if $centrum_zavodu_mapa}, 10{/if});
-m.addControl(new SMap.Control.Sync()); /* Aby mapa reagovala na změnu velikosti průhledu */
-m.addDefaultControls();
-m.setCursor('');
+		// přidání ovládacího prvku řídícího změnu podkladů
+		var layerSwitch = new SMap.Control.Layer();
+		layerSwitch.addDefaultLayer(SMap.DEF_BASE);
+		layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
+		layerSwitch.addDefaultLayer(SMap.DEF_TURIST);
 
-//přidání podkladových vrstev do mapy
-m.addDefaultLayer(SMap.DEF_OPHOTO);
-m.addDefaultLayer(SMap.DEF_TURIST).enable();
-m.addDefaultLayer(SMap.DEF_BASE);
+		// přidání ovládacího prvku pro změnu podkladu
+		m.addControl(layerSwitch, { left:"8px", top:"9px" });
 
-//přidání ovládacího prvku řídícího změnu podkladů
-var layerSwitch = new SMap.Control.Layer();
-layerSwitch.addDefaultLayer(SMap.DEF_BASE);
-layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
-layerSwitch.addDefaultLayer(SMap.DEF_TURIST);
+		// nastavení rozsahu přibližování na mapě
+		m.setZoomRange(5,15);
 
-//přidání ovládacího prvku pro změnu podkladu
-m.addControl(layerSwitch, { left:"8px", top:"9px" });
+		// signály
+		var signals = m.getSignals();
+		signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */
 
-//nastavení rozsahu přibližování na mapě
-m.setZoomRange(5,15);
+		var layer = {};
 
-//signály
-var signals = m.getSignals();
-signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */
+		// přidání vrstvy POLYGON
+		layer['raceArea-polygon'] = new SMap.Layer.Geometry();
+		m.addLayer(layer['raceArea-polygon']);
+		layer['raceArea-polygon'].enable();
 
+		// přidání vrstvy CENTRE-MARKER
+		layer['centre-marker'] = new SMap.Layer.Marker();
+		m.addLayer(layer['centre-marker']);
+		layer['centre-marker'].enable();
 
-var layer = {};
+		{if $centrum_zavodu_mapa}
+		    var centreMarker = new SMap.Marker(SMap.Coords.fromWGS84(stred[1], stred[0]), "centre-marker", { color: "#000" });
+		    layer['centre-marker'].addMarker(centreMarker);
+		    layer['centre-marker'].redraw();
+		{/if}
 
-//přidání vrstvy POLYGON
-layer['raceArea-polygon'] = new SMap.Layer.Geometry();
-m.addLayer(layer['raceArea-polygon']);
-layer['raceArea-polygon'].enable();
+		// Body
+		var points = {$prostor_zavodu_mapa ? $prostor_zavodu_mapa : array()};
+		for (var i = 0; i <= points.length - 1; i++) {
+		    var pointCoords = SMap.Coords.fromWGS84(points[i][1], points[i][0]);
+		    points[i] = pointCoords;
+		};
 
-//přidání vrstvy CENTRE-MARKER
-layer['centre-marker'] = new SMap.Layer.Marker();
-m.addLayer(layer['centre-marker']);
-layer['centre-marker'].enable();
+		// nastavení
+		var options = {
+		    color: "#F5270A", {*"#E98F16",*}
+		    width: 3
+		};
 
-{if $centrum_zavodu_mapa}
-    var centreMarker = new SMap.Marker(SMap.Coords.fromWGS84(stred[1], stred[0]), "centre-marker", { color: "#000" });
-    layer['centre-marker'].addMarker(centreMarker);
-    layer['centre-marker'].redraw();
-{/if}
+		// PŘIDÁNÍ GEOMETRIE DO VRSTVY
+		var polygon = new SMap.Geometry(SMap.GEOMETRY_POLYGON, null, points, options);
+		layer['raceArea-polygon'].addGeometry(polygon);
 
+		layer['raceArea-polygon'].redraw();
 
-
-//Body
-var points = {$prostor_zavodu_mapa ? $prostor_zavodu_mapa : array()};
-for (var i = 0; i <= points.length - 1; i++) {
-    var pointCoords = SMap.Coords.fromWGS84(points[i][1], points[i][0]);
-    points[i] = pointCoords;
-};
-
-//nastavení
-var options = {
-    color: "#F5270A", {*"#E98F16",*}
-    width: 3
-};
-
-//PŘIDÁNÍ GEOMETRIE DO VRSTVY
-var polygon = new SMap.Geometry(SMap.GEOMETRY_POLYGON, null, points, options);
-layer['raceArea-polygon'].addGeometry(polygon);
-
-layer['raceArea-polygon'].redraw();
-
-
-function resetZoomRange() {
-	m.setZoomRange(5,15);
-}
-
-</script>
+		function resetZoomRange() {
+			m.setZoomRange(5,15);
+		}
+	</script>
 {else}
-<div class="flashes">
-	<div class="flash error">Mapa prostoru není k dispozici.</div>
-</div>
+	<div class="flashes">
+		<div class="flash error">Mapa prostoru není k dispozici.</div>
+	</div>
 {/if}
 {/block}
