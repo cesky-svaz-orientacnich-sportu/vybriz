@@ -14,7 +14,7 @@
 
 <h3>Přehled přihlášek pro rok {$rok}</h3>
 
-{if count($vr) > 0}
+{if !empty($vr) && count($vr) > 0}
 	{var $prihlasky_data = []}
 	<table class="table" id="tavr-table" style="width:100%;">
 		<tr>

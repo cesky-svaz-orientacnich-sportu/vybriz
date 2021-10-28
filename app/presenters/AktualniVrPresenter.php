@@ -47,35 +47,6 @@ class AktualniVrPresenter extends BasePresenter
     	$this->template->loadMapsAPI = true;
 	}
 
-//	public function actionDefault()
-//	{
-//		if (count($this->filtrKola)>0) {
-//			$this['filtr']['kola']->setDefaultValue($this->filtrKola);
-//		}
-//	}
-//
-//	protected function createComponentFiltr()
-//	{
-//		$form = new Nette\Application\UI\Form;
-//
-//		$rok = $this->database->table('kola')->select('rok')->order('rok DESC')->limit(1)->fetch()->rok;
-//		$kola = $this->database->table('kola')->select('kola.id, kola.kolo')->where('do < CURDATE() AND rok = ?', $rok)->//having('COUNT(:prihlasky.kolo) > 0')->group('kola.id')->fetchPairs('id','kolo');
-//
-//		$form->addCheckboxList('kola','Kola',$kola)->setDefaultValue(array_keys($kola));
-//
-//		$form->addSubmit('send','Filtrovat');
-//
-//		$form->onSuccess[] = array($this, 'setFiltr');
-//		return $form;
-//	}
-//
-//	public function setFiltr($form, $values)
-//	{
-//		$this->filtr = array('kola' => $values->kola);
-//		$this->redirect('this');
-//	}
-
-
 	public function actionDetail($id)
 	{
 		if(!$this->user->isAllowed('aktualni-vr', 'view')){

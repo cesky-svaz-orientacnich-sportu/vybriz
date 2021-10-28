@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.0.5] - 2021-10-28
+- opravy chyb
+
 ## [1.0.4] - 2020-07-23
 - oprava zadávání nového kola
 
