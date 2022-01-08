@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.0.6] - 2022-01-08
+- update závislostí
+
 ## [1.0.5] - 2021-10-28
 - opravy chyb
 
