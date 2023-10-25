@@ -33,9 +33,6 @@ class ContentControl extends Control
 
 interface IContentControl
 {
-    /**
-     * @return \App\Components\ContentControl
-     */
-    public function create();
+    public function create(): ContentControl;
 }
 

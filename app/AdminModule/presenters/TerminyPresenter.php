@@ -12,13 +12,13 @@ use Nette,
 class TerminyPresenter extends BaseAdminPresenter
 {
 
-	/** @var Nette\Database\Context */
+	/** @var Nette\Database\Explorer */
 	private $database;
 	
 	/** @var int @persitent */
 	public $kolo_id = 0;
 
-	public function __construct(Nette\Database\Context $database)
+	public function __construct(Nette\Database\Explorer $database)
 	{
 		$this->database = $database;
 	}
@@ -30,7 +30,6 @@ class TerminyPresenter extends BaseAdminPresenter
 
 	public function renderManage($id)
 	{
-		//$kolo = $this->database->table('kola')->where('do >= NOW()')->order('od ASC')->limit(1)->fetch();
 		$kolo = $this->database->table('kola')->get($this->kolo_id);
 		if(!$kolo){
 			$this->flashMessage("Nelze spravovat termíny kola s daným id (".$id.").", "error");

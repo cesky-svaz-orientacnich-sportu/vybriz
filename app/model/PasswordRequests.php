@@ -24,7 +24,7 @@ class PasswordRequests
 		REQUESTS_COLLUMN_TOKEN_HASH = 'token_hash',
 		REQUESTS_COLLUMN_EXPIRATION = 'expiration';
 
-	/** @var Nette\Database\Context */
+	/** @var Nette\Database\Explorer */
 	private $database;
 
 	/** @var Nette\Database\Table\Selection */
@@ -40,7 +40,7 @@ class PasswordRequests
 	private $token_hash;
 
 
-	public function __construct(Nette\Database\Context $database)
+	public function __construct(Nette\Database\Explorer $database)
 	{
 		$this->database = $database;
 	}
@@ -85,8 +85,9 @@ class PasswordRequests
 			throw new Nette\Application\ApplicationException('Nebyl nalezen uživatel se zadaným e-mailem.');
 		}
 
+		$passwords = new Security\Passwords();
 		$this->token = Utils\Random::generate(32);
-		$this->token_hash = Security\Passwords::hash($this->token);
+		$this->token_hash = $passwords->hash($this->token);
 
 		$props = array(
 				self::REQUESTS_COLLUMN_USER_ID => $user[self::USERS_COLUMN_ID],
@@ -116,7 +117,8 @@ class PasswordRequests
 			throw new Nette\Application\ApplicationException('Vypršela platnost tokenu. Pro obnovu hesla vyplňte frormulář znovu.');
 		}
 
-		$verification = Security\Passwords::verify($token, $request[self::REQUESTS_COLLUMN_TOKEN_HASH]);
+		$passwords = new Security\Passwords();
+		$verification = $passwords->verify($token, $request[self::REQUESTS_COLLUMN_TOKEN_HASH]);
 
 		if (!$verification || Utils\DateTime::from(time()) >= $request[self::REQUESTS_COLLUMN_EXPIRATION]) {
 			$request->delete();
@@ -127,7 +129,7 @@ class PasswordRequests
 		$all_requests = $this->requestsTable()->where(self::REQUESTS_COLLUMN_USER_ID, $user_id);
 		$all_requests->delete();
 
-		$this->usersTable()->get($user_id)->update( array(self::USERS_COLUMN_PASSWORD_HASH => Security\Passwords::hash($password)) );
+		$this->usersTable()->get($user_id)->update( array(self::USERS_COLUMN_PASSWORD_HASH => $passwords->hash($password)) );
 	}
 
 }

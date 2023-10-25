@@ -16,7 +16,7 @@ use Nette,
 class EditAppControl extends UI\Control
 {
 
-    /** @var Nette\Database\Context */
+    /** @var Nette\Database\Explorer */
     private $database;
 
     /** @var $prihlaska */
@@ -40,7 +40,7 @@ class EditAppControl extends UI\Control
      * @param NetteDatabaseContext  $database         [description]
      * @param ModelSessionControler $sessionControler [description]
      */
-    public function __construct(Nette\Database\Context $database)
+    public function __construct(Nette\Database\Explorer $database)
     {
         $this->database = $database;
     }
@@ -181,11 +181,11 @@ class EditAppControl extends UI\Control
 
 
 	        $dp->addSubmit('remove', '×')
-	            ->setValidationScope(FALSE) # disables validation
+	            ->setValidationScope([]) # disables validation
 	            ->onClick[] = array($this, 'PrihlaskaFormRemoveElementClicked');
 
 	    }, 1)->addSubmit('add', 'Přidat položku')
-			->setValidationScope(FALSE)
+			->setValidationScope([])
 			->addCreateOnClick(TRUE);
 
 
@@ -251,11 +251,11 @@ class EditAppControl extends UI\Control
 
 
 	        $ds->addSubmit('remove', '×')
-	            ->setValidationScope(FALSE) # disables validation
+	            ->setValidationScope([]) # disables validation
 	            ->onClick[] = array($this, 'PrihlaskaFormRemoveElementClicked');
 
 	    }, 2)->addSubmit('add', 'Přidat položku')
-			->setValidationScope(FALSE)
+			->setValidationScope([])
 			->addCreateOnClick(TRUE);
 
 
@@ -300,11 +300,11 @@ class EditAppControl extends UI\Control
 
 
 	        $m->addSubmit('remove', '×')
-	            ->setValidationScope(FALSE) # disables validation
+	            ->setValidationScope([]) # disables validation
 	            ->onClick[] = array($this, 'PrihlaskaFormRemoveElementClicked');
 	    }, 3)->addSubmit('add', 'Přidat položku')
 			#->setAttribute('class', 'ajax')
-			->setValidationScope(FALSE)
+			->setValidationScope([])
 			->addCreateOnClick(TRUE);
 
 
@@ -319,12 +319,12 @@ class EditAppControl extends UI\Control
 
 
 	        $pz->addSubmit('remove', '×')
-	            ->setValidationScope(FALSE) # disables validation
+	            ->setValidationScope([]) # disables validation
 	            ->onClick[] = array($this, 'PrihlaskaFormRemoveElementClicked');
 	    }, 3);
 
 		$probehle_zavody->addSubmit('add', 'Přidat položku')
-	        ->setValidationScope(FALSE)
+	        ->setValidationScope([])
 	        //->onClick[] = array($this, 'PrihlaskaFormAddElementClicked');
 			->addCreateOnClick(TRUE);
 

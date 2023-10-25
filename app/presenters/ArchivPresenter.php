@@ -12,7 +12,7 @@ use App\Model;
 class ArchivPresenter extends BasePresenter
 {
 
-    /** @var Nette\Database\Context */
+    /** @var Nette\Database\Explorer */
     private $database;
 
     /** @persistent int */
@@ -22,7 +22,7 @@ class ArchivPresenter extends BasePresenter
 //    public $filtr = array();
 //
 //
-    public function __construct(Nette\Database\Context $database)
+    public function __construct(Nette\Database\Explorer $database)
     {
         $this->database = $database;
     }
@@ -92,10 +92,9 @@ class ArchivPresenter extends BasePresenter
 
 	public function renderDetail($id)
 	{
-
 		$allow_view = $this->user->isAllowed('aktualni-vr', 'view');
 
-		if(!$allow_view){
+		if (!$allow_view){
 			$this->flashMessage('Detail přihlášky může být zobrazen pouze po přihlášení uživatele.','error');
 			$this->redirect('Sign:In');
 		}
@@ -105,19 +104,19 @@ class ArchivPresenter extends BasePresenter
 
 		if ($this->user->isInRole('supervisor')) {
 			$prihlaska->wherePrimary($id);
-		}else{
+		} else {
 			$prihlaska->where('prihlasky.id ? AND stav ? AND kolo.do < CURDATE()', $id, $stav);
 		}
 
 		$prihlaska = $prihlaska->limit(1)->fetch();
 
-		if(!$prihlaska){
+		if (!$prihlaska) {
 			$this->flashMessage('Nelze zobrazit danou přihlášku.','error');
 			$this->redirect('AktualniVr:');
 		}
 
 		$k = $this->database->table('kola')->get($prihlaska->kolo);
-		if($k->do->getTimestamp() > time() && !$this->user->isInRole('supervisor')){
+		if ($k->do->getTimestamp() > time() && !$this->user->isInRole('supervisor')) {
 			$this->flashMessage('Přihláška byla podána v kole, které ještě neskončilo.','error');
 			$this->redirect('AktualniVr:');
 		}

@@ -41,7 +41,7 @@
 				{var $count += 1}
 				{var $r = @$data1[$d['termin']->format("Y-m-d")][$d['poradatel_zkratka']] ?: $data1[$d['termin']->format("Y-m-d")][$d['dalsi_poradatele']]}
 
-				<tr class="{$odd_date==1?'odd':'even'}-row" n:snippet="orisprihlaska-$d->id">
+				<tr class="{$odd_date==1?'odd':'even'}-row" n:snippet="orisprihlaska-{$d->id}">
 					<td>{$d['id']}</td>
 					<td><span class="soft">&nbsp;{$d['oris_id']?:'-'}</span></td>
 					<td rowspan="2"><p class="blank-holder" style="text-align:center;">{$d['poradatel_zkratka']}</p></td>

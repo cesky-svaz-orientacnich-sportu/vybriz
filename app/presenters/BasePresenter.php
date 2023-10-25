@@ -15,7 +15,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 	public $mailer;
 
-	public function injectMailer(Nette\Mail\IMailer $mailer) {
+	public function injectMailer(Nette\Mail\Mailer $mailer) {
 		$this->mailer = $mailer;
 	}
 
@@ -23,7 +23,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	/** @var IContentControl @inject */
 	public $contentControlFactory;
 
-	protected function createTemplate($class = NULL)
+	protected function createTemplate($class = NULL): Nette\Application\UI\Template
 	{
 	    $template = parent::createTemplate($class);
 	    $template->addFilter('json', function ($s) {
@@ -49,6 +49,12 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	protected function createComponentContent()
 	{
 		return $this->contentControlFactory->create();
+	}
+
+	public function beforeRender(): void
+	{
+		$latte = $this->template->getLatte();
+		$latte->addExtension(new \Latte\Essential\RawPhpExtension);
 	}
 
 }

@@ -66,19 +66,19 @@
 <div id="wrapper">
 
 	<ul id="menu">
-		<li {ifCurrent :Admin:Dashboard:*}class="current"{/ifCurrent}>
+		<li {if isLinkCurrent(":Admin:Dashboard:*")}class="current"{/if}>
 			<a n:href=":Admin:Dashboard:">Administrace</a>
 		</li>
-		<li {ifCurrent :Admin:Kola:*}class="current"{/ifCurrent}>
+		<li {if isLinkCurrent(":Admin:Kola:*")}class="current"{/if}>
 			<a n:href=":Admin:Kola:">Správa VŘ</a>
 		</li>
-		<li {ifCurrent :Admin:Druhy:*}class="current"{/ifCurrent}>
+		<li {if isLinkCurrent(":Admin:Druhy:*")}class="current"{/if}>
 			<a n:href=":Admin:Druhy:">Druhy závodů</a>
 		</li>
-		<li {ifCurrent :Admin:ContentManager:*}class="current"{/ifCurrent}>
+		<li {if isLinkCurrent(":Admin:ContentManager:*")}class="current"{/if}>
 			<a n:href=":Admin:ContentManager:">Správa obsahu</a>
 		</li>
-		<li {ifCurrent :Admin:Uzivatele:*}class="current"{/ifCurrent}>
+		<li {if isLinkCurrent(":Admin:Uzivatele:*")}class="current"{/if}>
 			<a n:href=":Admin:Uzivatele:">Uživatelé</a>
 		</li>
 		<li>
@@ -102,10 +102,9 @@
 </div>
 
 {block scripts}
-<script src="{$basePath}/js/jquery.js"></script>
-<script src="{$basePath}/js/netteForms.js"></script>
+<script src="{$basePath}/js/jquery.min.js"></script>
+<script src="{$basePath}/js/netteForms.min.js"></script>
 <script src="{$basePath}/js/nette.ajax.js"></script>
-<script src="{$basePath}/js/main.js"></script>
 <script>
 	$(function () {
     	$.nette.init();

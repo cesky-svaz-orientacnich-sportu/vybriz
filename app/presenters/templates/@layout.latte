@@ -52,25 +52,25 @@
 
 <div id="wrapper">
 	<ul id="menu">
-		<li {ifCurrent Homepage:*}class="current"{/ifCurrent}>
+		<li {if isLinkCurrent("Homepage:*")}class="current"{/if}>
 			<a n:href="Homepage:">Úvod</a>
 		</li>
-		<li {ifCurrent Prihlaska:*}class="current"{/ifCurrent}>
+		<li {if isLinkCurrent("Prihlaska:*")}class="current"{/if}>
 			<a n:href="Prihlaska:">Přihlášky</a>
 		</li>
-		<li {ifCurrent AktualniVr:*}class="current"{/ifCurrent}>
+		<li {if isLinkCurrent("AktualniVr:*")}class="current"{/if}>
 			<a n:href="AktualniVr:">Aktuální VŘ</a>
 		</li>
-		<li {ifCurrent Archiv:*}class="current"{/ifCurrent}>
+		<li {if isLinkCurrent("Archiv:*")}class="current"{/if}>
 			<a n:href="Archiv:">Archiv</a>
 		</li>
-		<li {ifCurrent Vr:Podminky}class="current"{/ifCurrent}>
+		<li {if isLinkCurrent("Vr:Podminky")}class="current"{/if}>
 			<a n:href="Vr:Podminky">Podmínky VŘ</a>
 		</li>
-		<li {ifCurrent Vr:Faq}class="current"{/ifCurrent}>
+		<li {if isLinkCurrent("Vr:Faq")}class="current"{/if}>
 			<a n:href="Vr:Faq">FAQ</a>
 		</li>
-		<li {ifCurrent Kontakt:}class="current"{/ifCurrent}>
+		<li {if isLinkCurrent("Kontakt:")}class="current"{/if}>
 			<a n:href="Kontakt:">Kontakt</a>
 		</li>
 	</ul>
@@ -91,10 +91,9 @@
 
 
 {block scripts}
-<script src="{$basePath}/js/jquery.js"></script>
-<script src="{$basePath}/js/netteForms.js"></script>
+<script src="{$basePath}/js/jquery.min.js"></script>
+<script src="{$basePath}/js/netteForms.min.js"></script>
 <script src="{$basePath}/js/nette.ajax.js"></script>
-<script src="{$basePath}/js/main.js"></script>
 <script>
 	$(function () {
     	$.nette.init();

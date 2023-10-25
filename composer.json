@@ -1,8 +1,8 @@
 {
     "require": {
-        "latte/latte": "^2.10.8",
-        "kdyby/forms-replicator": "~1.1",
-        "nette/nette": "^2.4",
-        "nextras/mail-panel": "^2.3"
+        "kdyby/forms-replicator": "~2.0",
+        "latte/latte": "^3.0.10",
+        "nette/nette": "^3.1",
+        "nextras/mail-panel": "^2.6"
     }
 }

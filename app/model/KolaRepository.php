@@ -13,14 +13,14 @@ class KolaRepository
 {
 	use Nette\SmartObject;
 
-	/** @var Nette\Database\Context */
+	/** @var Nette\Database\Explorer */
 	private $database;
 
 	/** @var Nette\Database\Table\Selection */
 	private $table_kola;
 
 
-	public function __construct(Nette\Database\Context $database)
+	public function __construct(Nette\Database\Explorer $database)
 	{
 		$this->database = $database;
 	}

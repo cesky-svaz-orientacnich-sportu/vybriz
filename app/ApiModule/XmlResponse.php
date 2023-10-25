@@ -16,7 +16,7 @@ use Nette,
  * @property-read array|\stdClass $payload
  * @property-read string $contentType
  */
-class XmlResponse extends Nette\SmartObject implements Nette\Application\IResponse
+class XmlResponse extends Nette\SmartObject implements Nette\Application\Response
 {
     /** @var array|\stdClass */
     private $payload;
@@ -74,7 +74,7 @@ class XmlResponse extends Nette\SmartObject implements Nette\Application\IRespon
      * Sends response to output.
      * @return void
      */
-    public function send(Nette\Http\IRequest $httpRequest, Nette\Http\IResponse $httpResponse)
+    public function send(Nette\Http\IRequest $httpRequest, Nette\Http\Response $httpResponse)
     {
         $httpResponse->setContentType($this->contentType);
         $httpResponse->setExpiration(FALSE);

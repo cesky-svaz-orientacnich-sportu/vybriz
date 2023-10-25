@@ -10,7 +10,7 @@ use Nette,
  * Users ACL.
  */
 
-class Authorizator implements Nette\Security\IAuthorizator
+class Authorizator implements Nette\Security\Authorizator
 {
     use Nette\SmartObject;
 
@@ -49,12 +49,12 @@ class Authorizator implements Nette\Security\IAuthorizator
 
     /**
      * Check if user is allowed to do stuf.
-     * @param string|Permission::ALL|IRole
-     * @param string|Permission::ALL|IResource
+     * @param string|Permission::ALL|Role
+     * @param string|Permission::ALL|Resource
      * @param string|Permission::ALL
      * @return bool
      */
-    function isAllowed($role, $resource, $privilege)
+    function isAllowed($role, $resource, $privilege): bool
     {
         return $this->acl->isAllowed($role, $resource, $privilege);
     }

@@ -57,8 +57,7 @@ class ContentManagerPresenter extends BaseAdminPresenter
 			->setRequired('Zadejte titulek / název sekce.');
 
 		$form->addTextArea('content', 'Obsah')
-			->setAttribute('class', 'texarea-wide-high tinymce')
-			->setRequired(FALSE);
+			->setAttribute('class', 'texarea-wide-high tinymce');
 
 		$form->addProtection('Vypršela platnost formuláře, vyplňte jej prosím znovu.');
 

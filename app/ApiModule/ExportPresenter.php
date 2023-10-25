@@ -14,14 +14,14 @@ class ExportPresenter extends BaseApiPresenter
     const FORMAT_JSON = 'json';
     const FORMAT_XML = 'xml';
 
-    /** @var Nette\Database\Context */
+    /** @var Nette\Database\Explorer */
     private $database;
 
     private $methods = [
         'getEventCoordsList'
     ];
 
-    public function __construct(Nette\Database\Context $database)
+    public function __construct(Nette\Database\Explorer $database)
     {
         $this->database = $database;
     }
