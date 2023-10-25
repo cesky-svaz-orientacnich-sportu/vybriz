@@ -203,7 +203,7 @@ class PrihlaskaPresenter extends BasePresenter
 
 
 					foreach ($terminy as $termin_id => $termin){
-						$terminy[$termin_id] = $this::dateNiceFormat(array($termin, NULL));
+						$terminy[$termin_id] = $this::dateNiceFormat($termin);
 					}
 
 
@@ -216,13 +216,13 @@ class PrihlaskaPresenter extends BasePresenter
 							'druh' => $formValues->druh_zavodu
 						));
 				}
-			}elseif($this->krok == 2){
+			} elseif ($this->krok == 2) {
 				$mapy_pokryvajici_prostor = $formValues->mapy_pokryvajici_prostor ? Utils\Json::decode($formValues->mapy_pokryvajici_prostor,1) : array();
 				$probehle_zavody = $formValues->probehle_zavody ? Utils\Json::decode($formValues->probehle_zavody,1) : array();
 				$dalsi_stavitele = $formValues->dalsi_stavitele ? Utils\Json::decode($formValues->dalsi_stavitele,1) : array();
 
-				$dalsi_poradatele_db = explode(', ', $formValues->dalsi_poradatele);
-				$dalsi_poradatele = array();
+				$dalsi_poradatele_db = $formValues->dalsi_poradatele !== null ? explode(', ', $formValues->dalsi_poradatele) : [];
+				$dalsi_poradatele = [];
 				foreach ($dalsi_poradatele_db as $dalsi_poradatel) {
 					$dalsi_poradatele[] = array('oddil_zkratka' => $dalsi_poradatel);
 				}
@@ -284,9 +284,7 @@ class PrihlaskaPresenter extends BasePresenter
 
 			$this->template->loadMapsAPI = true;
 		}
-
 	}
-
 
 	public function verifyHash($hash)
 	{
@@ -296,28 +294,26 @@ class PrihlaskaPresenter extends BasePresenter
 		return $verification;
 	}
 
-	static function dateNiceFormat($arr)
+	static function dateNiceFormat($start, $end = NULL)
 	{
-		$ev_start = strtotime($arr[0]);
-		$ev_end = strtotime($arr[1]);
+		$ev_start = strtotime((string)$start);
+		$ev_end = strtotime((string)$end);
 
 		$cz_days = array(
-				1 => 'Po',
-				2 => 'Út',
-				3 => 'St',
-				4 => 'Čt',
-				5 => 'Pá',
-				6 => 'So',
-				7 => 'Ne'
-			);
+			1 => 'Po',
+			2 => 'Út',
+			3 => 'St',
+			4 => 'Čt',
+			5 => 'Pá',
+			6 => 'So',
+			7 => 'Ne'
+		);
 
-		if($ev_start!=$ev_end && $ev_end != NULL){
-			$return = $cz_days[date("N",$ev_start)].' '.date("j.n.",$ev_start).' - '.$cz_days[date("N",$ev_end)].' '.date("j.n.",$ev_end);
+		if ($end != NULL && $ev_start != $ev_end) {
+			return $cz_days[date("N", $ev_start)].' '.date("j.n.", $ev_start).' - '.$cz_days[date("N", $ev_end)].' '.date("j.n.", $ev_end);
 		} else {
-			$return = $cz_days[date("N",$ev_start)].' '.date("j.n.",$ev_start);
+			return $cz_days[date("N", $ev_start)].' '.date("j.n.", $ev_start);
 		}
-
-		return $return;
 	}
 
 	public static function stepValidator($item, $itemStep)
@@ -358,13 +354,6 @@ class PrihlaskaPresenter extends BasePresenter
 
 
 
-
-
-
-
-
-
-
 		$step[1] = $form->addContainer('krok1');
 
 		$step[1]->addSelect('druh', 'Druh závodu')->setPrompt('Zvolte druh')
@@ -390,9 +379,7 @@ class PrihlaskaPresenter extends BasePresenter
 			->setPrompt('-')
 			->setOption('description', 'Zadá pořadatel, pokud podává více přihlášek do výběrového řízení současně a o některý závod má větší zájem (menší číslo = větší preference).');
 
-
-		if($this->krok == 1){
-			//$druhy = $this->database->table('druhy')->having('count(terminy.id)>0')->fetchPairs('id','druh');
+		if ($this->krok == 1) {
 			$kolo = $this->database->table('kola')->where('od <= CURDATE() AND do >= CURDATE()')->limit(1)->fetch();
 			$druhy = $this->database->table('terminy')->select('druh_id.id AS id, druh_id.druh AS druh')->where('kolo_id',$kolo->id)->fetchPairs('id','druh');
 			$step[1]['druh']->setItems($druhy);
@@ -400,16 +387,7 @@ class PrihlaskaPresenter extends BasePresenter
 
 
 
-
-
-
-
-
-
-
 		$step[2] = $form->addContainer('krok2');
-
-
 
 		/////Pořadatel
 		$step[2]->addText('poradatel', 'Pořadatel')
@@ -423,9 +401,6 @@ class PrihlaskaPresenter extends BasePresenter
 				->addCondition(array($this, 'stepConditionValidator'))
 				->addRule($form::LENGTH, 'Zkratka oddílu musí mít %d znaky', 3)
 				->setRequired();
-
-
-
 
 		/////Další pořadatelé
 		$dalsi_poradatele = $step[2]->addDynamic('dalsi_poradatele', function (Nette\Forms\Container $dp) {
@@ -443,10 +418,6 @@ class PrihlaskaPresenter extends BasePresenter
 			->setValidationScope([])
 			->addCreateOnClick(TRUE);
 
-
-
-
-
 		/////Informace o prostoru závodu
 		$step[2]->addText('prostor_zavodu', 'Prostor závodu')
 			->setAttribute('class', 'cols5')
@@ -460,8 +431,6 @@ class PrihlaskaPresenter extends BasePresenter
 
 		$step[2]->addText('prostor_odkaz', 'Odkaz prostor')
 			->setAttribute('class', 'cols5');
-
-
 
 		/////Organizátoři
 		$step[2]->addText('reditel_zavodu', 'Ředitel závodu')
@@ -501,13 +470,8 @@ class PrihlaskaPresenter extends BasePresenter
 				->addCondition(array($this, 'stepConditionValidator'))
 				->setRequired();
 
-
-
-
 		/////Další stavitelé
 		$dalsi_stavitele = $step[2]->addDynamic('dalsi_stavitele', function (Nette\Forms\Container $ds) {
-
-
 			$ds->addText('stavitel_trati_registracni_cislo', 'Stavitel tratí - registrační číslo')
 				->setAttribute('class', 'cols2')
 				->setAttribute('maxlength', 7);
@@ -518,23 +482,17 @@ class PrihlaskaPresenter extends BasePresenter
 			$ds->addText('stavitel_trati_trida', 'Třída rozhodčího')
 				->setAttribute('class', 'cols1 noborder');
 
-
 			$ds->addSubmit('remove', '×')
 				->setValidationScope([]) # disables validation
 				->onClick[] = array($this, 'PrihlaskaFormRemoveElementClicked');
-
 		}, 2)->addSubmit('add', 'Přidat položku')
 			->setValidationScope([])
 			->addCreateOnClick(TRUE);
-
-
 
 		/*** Web závodu **/
 		$step[2]->addText('web', 'Odkaz na web závodu')
 			->setAttribute('class', 'cols4')
 			->setOption('description', 'Vyplní pořadatel v případě, že připravil pro VŘ i další prezentaci svého závodu.');
-
-
 
 		/////Mapa a předchozí aktivity prostoru
 		$step[2]->addText('km_lesa', $html::el()->setHtml('km<sup>2</sup> lesa') )
@@ -551,8 +509,6 @@ class PrihlaskaPresenter extends BasePresenter
 
 		$step[2]->addText('odpovedny_zpracovatel_mapy', 'Odpovědný zpracovatel mapy')
 			->setAttribute('class', 'cols2');
-
-
 
 		/////Mapy pokrývající prostor
 		$mapy_pokryvajici_prostor = $step[2]->addDynamic('mapy_pokryvajici_prostor', function (Nette\Forms\Container $m) {
@@ -577,8 +533,6 @@ class PrihlaskaPresenter extends BasePresenter
 			->setValidationScope([])
 			->addCreateOnClick(TRUE);
 
-
-
 		/////Výpis všech závodů konaných v uvažovaném prostoru (i jeho části) za posledních 6 let
 
 		$probehle_zavody = $step[2]->addDynamic('probehle_zavody', function (Nette\Forms\Container $pz) {
@@ -599,8 +553,6 @@ class PrihlaskaPresenter extends BasePresenter
 			->addCreateOnClick(TRUE);
 
 
-
-
 		/////Vlastníci pozemků a orgány státní správy
 
 		$step[2]->addTextArea('vlastnici_pozemku_zavod', 'Seznam vlastníků lesních a dalších pozemků, přes které povede závod')
@@ -615,7 +567,6 @@ class PrihlaskaPresenter extends BasePresenter
 			->setAttribute('class', 'texarea-wide');
 		$step[2]->addTextArea('organy_ochrany_prirody', 'Seznam dotčených orgánů ochrany přírody dle zákona o ochraně přírody a krajiny 114/1992')
 			->setAttribute('class', 'texarea-wide');
-
 
 		/////Informace, zda se uvažovaný prostor nachází v chráněných územích (pokud ano, specifikujte)
 
@@ -638,13 +589,10 @@ class PrihlaskaPresenter extends BasePresenter
 		$step[2]->addTextArea('natura2000_evropsky_vyznamna_lokalita', 'Evropsky významná lokalita (dle Natura 2000)')
 			->setAttribute('class', 'texarea-wide');
 
-
-
 		/////Prohlášení
 		$step[2]->addCheckbox('p1', 'Uspořádání závodu v tomto terénu nebrání vážné majetkové a legislativní důvody (zónace CHKO, apod.)');
 		$step[2]->addCheckbox('p2', 'Výše uvedené osoby (osoba odpovědná za zpracování mapy, ředitel závodu, hlavní rozhodčí a stavitel tratí) s převzetím úkolu souhlasí a jsou ochotny daný úkol realizovat');
 		$step[2]->addCheckbox('p3', 'K prostoru závodu nemá žádný jiný subjekt (klub, oddíl) právo k využití pro pořádání závodů, pokud ano, tento subjekt s pořádáním uvažovaného závodu souhlasí.');
-
 
 		/////Přílohy
 		$step[2]->addTextArea('files_arr', 'Soubory');
@@ -652,8 +600,6 @@ class PrihlaskaPresenter extends BasePresenter
 		///Poznamky
 		$step[2]->addTextArea('poznamky', 'Poznámky')
 			->setAttribute('class', 'texarea-wide-high');
-
-
 
 
 
@@ -917,16 +863,13 @@ class PrihlaskaPresenter extends BasePresenter
 		$this['prihlaskaForm']->cleanErrors();
 	}
 
-
-
-
 	public function handleChangeDates($druh_id)
 	{
 		if ($this->isAjax()) {
 			$kolo = $this->database->table('kola')->select('id')->where('do >= CURDATE()')->order('od ASC')->limit(1)->fetch();
 			$terminy = $this->database->table('terminy')->select('id, termin')->where('druh_id ? AND kolo_id ?',$druh_id,$kolo->id)->order('termin ASC')->fetchPairs('id','termin');
 			foreach ($terminy as $key => $termin) {
-				$terminy[$key] = $this::dateNiceFormat(array($termin,NULL));
+				$terminy[$key] = $this::dateNiceFormat($termin);
 			}
 
 			$tControl = $this['prihlaskaForm']['krok1']['termin'];
@@ -938,21 +881,19 @@ class PrihlaskaPresenter extends BasePresenter
 		}
 	}
 
-
-
 	public function handleDateAssoc($termin_id)
 	{
 		if ($this->isAjax()) {
 			$termin = $this->database->table('terminy')->get($termin_id);
 			$sdruzeny_termin = $termin->souvisejici_termin;
 
-			if($sdruzeny_termin){
+			if ($sdruzeny_termin) {
 				$assoc = $this->database->table('terminy')->get($sdruzeny_termin);
 				$druh = $this->database->table('druhy')->get($assoc->druh_id);
-				$date = $this::dateNiceFormat(array($assoc->termin,NULL));
+				$date = $this::dateNiceFormat($assoc->termin);
 				$message = "Po odeslání přihlášky se automaticky vytvoří nový formulář pro termín <b>".$date."</b> (".$druh->druh.") s přednastavenými údaji z předchozího.";
-			}else{
-				$message = "Pro zvolený termín <i>".$this::dateNiceFormat(array($termin->termin,NULL))."</i> není přiřazen žádný sdružený termín.";
+			} else {
+				$message = "Pro zvolený termín <i>".$this::dateNiceFormat($termin->termin)."</i> není přiřazen žádný sdružený termín.";
 			}
 
 			$enable_checkbox = $sdruzeny_termin ? TRUE : FALSE;
@@ -1363,36 +1304,13 @@ class PrihlaskaPresenter extends BasePresenter
 		$posledni_terminy = array($last[0]['termin_id'], $last[count($last)-1]['termin_id']);
 
 		foreach ($terminy as $termin) {
-			$arr[$termin->id] = $this::dateNiceFormat(array($termin['termin'], NULL)).' '.$termin['termin']->format('Y');
+			$arr[$termin->id] = $this::dateNiceFormat($termin['termin']).' '.$termin['termin']->format('Y');
 			if(in_array($termin->id, $posledni_terminy)){ $arr[$termin->id] .= ' (*)'; $description = TRUE; }
 		}
 
-
 		$form->addSelect('termin', 'Termín', $arr)->setPrompt('-')->setRequired();
 
-
-//
-//		$form->addSelect('preference', 'Preference závodu', array(
-//				'1' => 1,
-//				'2' => 2,
-//				'3' => 3,
-//				'4' => 4,
-//				'5' => 5,
-//				'6' => 6,
-//				'7' => 7
-//			))
-//			->setAttribute('class', 'cols1')
-//			->setPrompt('-')
-//    		->setOption('description', 'Zadá pořadatel, pokud podává více přihlášek do výběrového řízení současně a o některý závod má větší zájem (menší číslo = větší preference).');
-//
-//		$form->addSubmit('send','Zkopírovat');
-//		$form->addProtection('Vypršel časový limit, odešlete formulář znovu');
-//		$form->onSuccess[] = [$this, 'prihlaskaFormSubmitted'];
-
-
-		//$terminy = count($last)>1 ? $last
 		$prihlaska_id = $last[0]['id'];
-
 
 		$form->addSelect('preference', 'Preference závodu', array(
 					'1' => 1,

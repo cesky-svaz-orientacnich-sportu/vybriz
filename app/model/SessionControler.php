@@ -178,8 +178,9 @@ class SessionControler
 		$prihlaskaId = !is_null($pId) ? $pId : $this->prihlaskaId;
 
 		//vygenerování náhodného řetězce
+		$passwords = new Security\Passwords();
 		$hash = Utils\Random::generate(6,'0-9a-z');
-		$hash_key = Security\Passwords::hash($hash);
+		$hash_key = $passwords->hash($hash);
 
 		//sekce přihlášek ze session
 		$sec_prihlasky = $this->getPrihlaskySection();
@@ -196,7 +197,6 @@ class SessionControler
 		return $hash;
 	}
 
-
 	/**
 	 * Ověření klíče
 	 */
@@ -206,16 +206,11 @@ class SessionControler
 		$sec_prihlasky = $this->getPrihlaskySection();
 
 		//ověření hashe a klíče ze session
-		$verification = isset($sec_prihlasky->prihlasky['prihlaska-'.$this->prihlaskaId]['hash_key']) ? Security\Passwords::verify($hash, $sec_prihlasky->prihlasky['prihlaska-'.$this->prihlaskaId]['hash_key']) : false;
+		$passwords = new Security\Passwords();
+		$verification = isset($sec_prihlasky->prihlasky['prihlaska-'.$this->prihlaskaId]['hash_key']) ? $passwords->verify($hash, $sec_prihlasky->prihlasky['prihlaska-'.$this->prihlaskaId]['hash_key']) : false;
 
 		return $verification;
 	}
-
-
-
-
-
-
 
 	/**
 	 * Nastavení poslední žádosti pro účely kopírování dat do nové přihlášky (např. se změnou preference)
