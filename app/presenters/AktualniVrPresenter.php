@@ -2,36 +2,19 @@
 
 namespace App\Presenters;
 
-use Nette,
-	App\Model;
+use Nette;
+use	App\Model;
 
-/**
- * AktualniVr presenter.
- */
 class AktualniVrPresenter extends BasePresenter
 {
 
     /** @var Nette\Database\Explorer */
     private $database;
 
-//    /** @persistent */
-//    public $filtr = array();
-//
-//
     public function __construct(Nette\Database\Explorer $database)
     {
         $this->database = $database;
     }
-//
-//    public function getFiltrKola()
-//    {
-//    	if (isset($this->filtr['kola'])) {
-//    		return $this->filtr['kola'];
-//    	}
-//
-//    	return array();
-//
-//    }
 
 	public function renderDefault()
 	{
