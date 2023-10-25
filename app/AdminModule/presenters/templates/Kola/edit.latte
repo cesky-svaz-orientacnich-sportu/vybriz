@@ -25,10 +25,10 @@
 {block scripts}
 {include parent}
 
-<script type="text/javascript" src="{$basePath}/ext/jquery-ui/js/jquery-1.10.2.js"></script>
-<script type="text/javascript" src="{$basePath}/ext/jquery-ui/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script src="{$basePath}/ext/jquery-ui/js/jquery-1.10.2.js"></script>
+<script src="{$basePath}/ext/jquery-ui/js/jquery-ui-1.10.4.custom.min.js"></script>
 
-<script type="text/javascript">
+<script>
 	$(function() {
 		$('#' + {$control['koloForm-t_od']->htmlId} + ', #' + {$control['koloForm-t_do']->htmlId}).datepicker({
 			dateFormat: "yy-mm-dd",

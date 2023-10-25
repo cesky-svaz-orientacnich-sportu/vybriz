@@ -309,7 +309,7 @@
 <h3 id="toc-mapa-prostoru">Mapa prostoru</h3>
 {if $centrum_zavodu_mapa && $prostor_zavodu_mapa}
 	<div id="mapa" style="width:100%; height:520px; margin:0px auto 20px;"></div>
-	<script type="text/javascript">
+	<script>
 		var stred = {$centrum_zavodu_mapa ? $centrum_zavodu_mapa : array(49.83, 15.45)};
 
 		var m = new SMap(JAK.gel("mapa"), SMap.Coords.fromWGS84(stred[1], stred[0]){if $centrum_zavodu_mapa}, 10{/if});
