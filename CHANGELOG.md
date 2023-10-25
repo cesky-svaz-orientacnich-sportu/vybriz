@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [1.1.0] - 2023-10-25
 - upgrade to Nette 3
 
 ## [1.0.6] - 2022-01-08
