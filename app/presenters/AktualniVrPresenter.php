@@ -11,14 +11,14 @@ use Nette,
 class AktualniVrPresenter extends BasePresenter
 {
 
-    /** @var Nette\Database\Context */
+    /** @var Nette\Database\Explorer */
     private $database;
 
 //    /** @persistent */
 //    public $filtr = array();
 //
 //
-    public function __construct(Nette\Database\Context $database)
+    public function __construct(Nette\Database\Explorer $database)
     {
         $this->database = $database;
     }

@@ -15,7 +15,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 	public $mailer;
 
-	public function injectMailer(Nette\Mail\IMailer $mailer) {
+	public function injectMailer(Nette\Mail\Mailer $mailer) {
 		$this->mailer = $mailer;
 	}
 

@@ -24,7 +24,7 @@ class KolaPresenter extends BaseAdminPresenter
 	/** @var Model\Caching\Storage */
 	private $storage;
 
-	public function __construct(Model\KolaRepository $kolaRepository, Model\PrihlaskyRepository $prihlaskyRepository, Model\TerminyRepository $terminyRepository, Nette\Caching\IStorage $storage)
+	public function __construct(Model\KolaRepository $kolaRepository, Model\PrihlaskyRepository $prihlaskyRepository, Model\TerminyRepository $terminyRepository, Nette\Caching\Storage $storage)
 	{
 		$this->kolaRepository = $kolaRepository;
 		$this->prihlaskyRepository = $prihlaskyRepository;

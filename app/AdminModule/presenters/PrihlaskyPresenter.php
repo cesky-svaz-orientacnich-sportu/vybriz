@@ -18,7 +18,7 @@ class PrihlaskyPresenter extends BaseAdminPresenter
     /** @var int */
     public $kolo_id = 0;
 
-    /** @var Nette\Database\Context */
+    /** @var Nette\Database\Explorer */
     private $database;
 
     /** @var Model\PrihlaskyRepository */
@@ -31,10 +31,10 @@ class PrihlaskyPresenter extends BaseAdminPresenter
     private $storage;
 
     public function __construct(
-        Nette\Database\Context $database,
+        Nette\Database\Explorer $database,
         Model\PrihlaskyRepository $prihlaskyRepository,
         Model\KolaRepository $kolaRepository,
-        Nette\Caching\IStorage $storage
+        Nette\Caching\Storage $storage
     ) {
         $this->database = $database;
         $this->prihlaskyRepository = $prihlaskyRepository;

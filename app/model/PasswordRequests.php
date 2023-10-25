@@ -24,7 +24,7 @@ class PasswordRequests
 		REQUESTS_COLLUMN_TOKEN_HASH = 'token_hash',
 		REQUESTS_COLLUMN_EXPIRATION = 'expiration';
 
-	/** @var Nette\Database\Context */
+	/** @var Nette\Database\Explorer */
 	private $database;
 
 	/** @var Nette\Database\Table\Selection */
@@ -40,7 +40,7 @@ class PasswordRequests
 	private $token_hash;
 
 
-	public function __construct(Nette\Database\Context $database)
+	public function __construct(Nette\Database\Explorer $database)
 	{
 		$this->database = $database;
 	}

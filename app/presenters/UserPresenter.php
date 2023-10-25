@@ -12,13 +12,13 @@ use Nette,
 class UserPresenter extends BasePresenter
 {
 
-    /** @var Nette\Database\Context */
+    /** @var Nette\Database\Explorer */
     private $database;
 
 	/** @var Model\PasswordRequests */
 	private $requests;
 
-    public function __construct(Nette\Database\Context $database, Model\PasswordRequests $requests)
+    public function __construct(Nette\Database\Explorer $database, Model\PasswordRequests $requests)
     {
         $this->database = $database;
         $this->requests = $requests;

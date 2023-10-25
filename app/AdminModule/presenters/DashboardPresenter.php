@@ -12,15 +12,15 @@ use Nette,
 class DashboardPresenter extends BaseAdminPresenter
 {
 
-	/** @var Nette\Database\Context */
+	/** @var Nette\Database\Explorer */
 	private $database;
 
 	/** @var Model\Caching\Storage */
 	private $storage;
 
 	public function __construct(
-		Nette\Database\Context $database,
-		Nette\Caching\IStorage $storage
+		Nette\Database\Explorer $database,
+		Nette\Caching\Storage $storage
 	) {
 		$this->database = $database;
 		$this->storage = $storage;

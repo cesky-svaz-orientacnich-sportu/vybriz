@@ -16,7 +16,7 @@ use Nette,
 class EditAppControl extends UI\Control
 {
 
-    /** @var Nette\Database\Context */
+    /** @var Nette\Database\Explorer */
     private $database;
 
     /** @var $prihlaska */
@@ -40,7 +40,7 @@ class EditAppControl extends UI\Control
      * @param NetteDatabaseContext  $database         [description]
      * @param ModelSessionControler $sessionControler [description]
      */
-    public function __construct(Nette\Database\Context $database)
+    public function __construct(Nette\Database\Explorer $database)
     {
         $this->database = $database;
     }

@@ -18,13 +18,13 @@ class AccessControler
 	const T_NAME = 'access_requests';
 	const SECTION_NAME = 'access-request-session';
 
-	/** @var Nette\Database\Context */
+	/** @var Nette\Database\Explorer */
 	private $database;
 
 	/** @var Nette\Http\SessionSection */
 	private $section;
 
-	public function __construct(Nette\Database\Context $database, Nette\Http\Session $session)
+	public function __construct(Nette\Database\Explorer $database, Nette\Http\Session $session)
 	{
 		$this->database = $database;
         $this->section = $session->getSection(self::SECTION_NAME);

@@ -14,7 +14,7 @@ class PrihlaskaPresenter extends BasePresenter
 {
 	private $hash_salt = "juot4QHLCABM6ZWBOUDElqZ6vNlRfVB3";
 
-	/** @var Nette\Database\Context */
+	/** @var Nette\Database\Explorer */
 	private $database;
 
 	/** @persistent */
@@ -30,7 +30,7 @@ class PrihlaskaPresenter extends BasePresenter
 	private $sessionControler;
 
 
-    /** @var Nette\Mail\IMailer @inject */
+    /** @var Nette\Mail\Mailer @inject */
     public $mailer;
 
 
@@ -38,7 +38,7 @@ class PrihlaskaPresenter extends BasePresenter
     public $accessControler;
 
 
-	public function __construct(Nette\Database\Context $database, Model\SessionControler $sessionControler)
+	public function __construct(Nette\Database\Explorer $database, Model\SessionControler $sessionControler)
 	{
 		$this->database = $database;
 		$this->sessionControler = $sessionControler;
