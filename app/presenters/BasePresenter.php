@@ -51,4 +51,10 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		return $this->contentControlFactory->create();
 	}
 
+	public function beforeRender(): void
+	{
+		$latte = $this->template->getLatte();
+		$latte->addExtension(new \Latte\Essential\RawPhpExtension);
+	}
+
 }

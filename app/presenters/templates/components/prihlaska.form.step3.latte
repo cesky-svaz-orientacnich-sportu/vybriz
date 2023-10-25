@@ -55,11 +55,9 @@
 </fieldset>
 
 
-{php
-	$mapy_pokryvajici_prostor = Nette\Utils\Json::decode($formValues->mapy_pokryvajici_prostor, 2);
-	$probehle_zavody = Nette\Utils\Json::decode($formValues->probehle_zavody, 2);
-	$dalsi_stavitele = Nette\Utils\Json::decode($formValues->dalsi_stavitele, 2);
-}
+{php $mapy_pokryvajici_prostor = Nette\Utils\Json::decode($formValues->mapy_pokryvajici_prostor, 2)}
+{php $probehle_zavody = Nette\Utils\Json::decode($formValues->probehle_zavody, 2)}
+{php $dalsi_stavitele = Nette\Utils\Json::decode($formValues->dalsi_stavitele, 2)}
 
 <fieldset>
 <legend>Pořadatel</legend>
