@@ -87,12 +87,12 @@
 		<td>Stavitel tratí</td>
 		<td>{$prihlaska['stavitel_trati']}, {$prihlaska['stavitel_trati_registracni_cislo']} (třída {$prihlaska['stavitel_trati_trida']})</td>
 	</tr>
-	{if count($dalsi_stavitele)>0}
+	{if count($dalsi_stavitele) > 0}
 		<tr n:foreach="$dalsi_stavitele as $stavitel">
 			<td>{$iterator->counter+1}. stavitel</td>
 			<td>
-				{$stavitel->stavitel_trati}, {$stavitel->stavitel_trati_registracni_cislo}
-				{$stavitel->stavitel_trati_trida?'(třída '.$stavitel->stavitel_trati_trida.')':''}
+				{$stavitel[stavitel_trati]}, {$stavitel[stavitel_trati_registracni_cislo]}
+				{$stavitel[stavitel_trati_trida] ? '(třída '.$stavitel[stavitel_trati_trida].')' : ''}
 			</td>
 		</tr>
 	{/if}
@@ -119,7 +119,7 @@
 </table>
 
 <h3 id="toc-mapy-pokryvajici-prostor">Mapy pokrývající prostor</h3>
-{if count($mapy_pokryvajici_prostor)>0}
+{if count($mapy_pokryvajici_prostor) > 0}
 	<table class="table">
 		<tr>
 			<td class="cols3">Mapa</td>
