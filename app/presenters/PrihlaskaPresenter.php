@@ -452,11 +452,11 @@ class PrihlaskaPresenter extends BasePresenter
 
 
 			$dp->addSubmit('remove', '×')
-				->setValidationScope(FALSE) # disables validation
+				->setValidationScope([]) # disables validation
 				->onClick[] = array($this, 'PrihlaskaFormRemoveElementClicked');
 
 		}, 1)->addSubmit('add', 'Přidat položku')
-			->setValidationScope(FALSE)
+			->setValidationScope([])
 			->addCreateOnClick(TRUE);
 
 
@@ -536,11 +536,11 @@ class PrihlaskaPresenter extends BasePresenter
 
 
 			$ds->addSubmit('remove', '×')
-				->setValidationScope(FALSE) # disables validation
+				->setValidationScope([]) # disables validation
 				->onClick[] = array($this, 'PrihlaskaFormRemoveElementClicked');
 
 		}, 2)->addSubmit('add', 'Přidat položku')
-			->setValidationScope(FALSE)
+			->setValidationScope([])
 			->addCreateOnClick(TRUE);
 
 
@@ -586,11 +586,11 @@ class PrihlaskaPresenter extends BasePresenter
 
 
 			$m->addSubmit('remove', '×')
-				->setValidationScope(FALSE) # disables validation
+				->setValidationScope([]) # disables validation
 				->onClick[] = array($this, 'PrihlaskaFormRemoveElementClicked');
 		}, 3)->addSubmit('add', 'Přidat položku')
 			#->setAttribute('class', 'ajax')
-			->setValidationScope(FALSE)
+			->setValidationScope([])
 			->addCreateOnClick(TRUE);
 
 
@@ -605,12 +605,12 @@ class PrihlaskaPresenter extends BasePresenter
 
 
 			$pz->addSubmit('remove', '×')
-				->setValidationScope(FALSE) # disables validation
+				->setValidationScope([]) # disables validation
 				->onClick[] = array($this, 'PrihlaskaFormRemoveElementClicked');
 		}, 3);
 
 		$probehle_zavody->addSubmit('add', 'Přidat položku')
-			->setValidationScope(FALSE)
+			->setValidationScope([])
 			//->onClick[] = array($this, 'PrihlaskaFormAddElementClicked');
 			->addCreateOnClick(TRUE);
 
