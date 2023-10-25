@@ -22,7 +22,7 @@ session:
 
 tracy:
 	email: david.pustai@gmail.com
-	fromEmail: 'tracy@csos <noreply@orientacnisporty.cz>'
+	fromEmail: noreply@orientacnisporty.cz
 
 
 services:

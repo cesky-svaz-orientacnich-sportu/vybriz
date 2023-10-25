@@ -52,16 +52,16 @@
 
 <div id="wrapper">
 	<ul id="menu">
-		<li {ifCurrent Homepage:*}class="current"{/ifCurrent}>
+		<li {ifCurrent "Homepage:*"}class="current"{/ifCurrent}>
 			<a n:href="Homepage:">Úvod</a>
 		</li>
-		<li {ifCurrent Prihlaska:*}class="current"{/ifCurrent}>
+		<li {ifCurrent "Prihlaska:*"}class="current"{/ifCurrent}>
 			<a n:href="Prihlaska:">Přihlášky</a>
 		</li>
-		<li {ifCurrent AktualniVr:*}class="current"{/ifCurrent}>
+		<li {ifCurrent "AktualniVr:*"}class="current"{/ifCurrent}>
 			<a n:href="AktualniVr:">Aktuální VŘ</a>
 		</li>
-		<li {ifCurrent Archiv:*}class="current"{/ifCurrent}>
+		<li {ifCurrent "Archiv:*"}class="current"{/ifCurrent}>
 			<a n:href="Archiv:">Archiv</a>
 		</li>
 		<li {ifCurrent Vr:Podminky}class="current"{/ifCurrent}>
@@ -92,7 +92,7 @@
 
 {block scripts}
 <script src="{$basePath}/js/jquery.js"></script>
-<script src="{$basePath}/js/netteForms.js"></script>
+<script src="{$basePath}/js/netteForms.min.js"></script>
 <script src="{$basePath}/js/nette.ajax.js"></script>
 <script src="{$basePath}/js/main.js"></script>
 <script>

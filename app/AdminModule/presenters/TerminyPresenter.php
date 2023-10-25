@@ -30,7 +30,6 @@ class TerminyPresenter extends BaseAdminPresenter
 
 	public function renderManage($id)
 	{
-		//$kolo = $this->database->table('kola')->where('do >= NOW()')->order('od ASC')->limit(1)->fetch();
 		$kolo = $this->database->table('kola')->get($this->kolo_id);
 		if(!$kolo){
 			$this->flashMessage("Nelze spravovat termíny kola s daným id (".$id.").", "error");

@@ -40,8 +40,9 @@ class AccessControler
 	public function makeRequest($mail)
 	{
 		$this->cleanDatabase();
+		$passwords = new Passwords();
 		$token = Random::generate();
-		$token_hash = Passwords::hash($token);
+		$token_hash = $passwords->hash($token);
 		$now = DateTime::from('now');
 		$expiration = DateTime::from('+30 minutes');
 
@@ -77,7 +78,7 @@ class AccessControler
 
 		if (!$request) {
 			return FALSE;
-		} elseif (!Passwords::verify($token, $request['token_hash'])) {
+		} elseif (!$passwords->verify($token, $request['token_hash'])) {
 			return FALSE;
 		}
 

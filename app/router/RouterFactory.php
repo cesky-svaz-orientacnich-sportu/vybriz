@@ -14,10 +14,7 @@ use Nette,
 class RouterFactory
 {
 
-	/**
-	 * @return \Nette\Application\IRouter
-	 */
-	public function createRouter()
+	public function createRouter(): \Nette\Application\IRouter
 	{
 		$router = new RouteList();
 		$router[] = new Route('admin/<presenter>/<action>/<id>', [

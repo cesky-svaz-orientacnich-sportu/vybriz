@@ -1,5 +1,8 @@
 # Change Log
 
+## [Unreleased]
+- upgrade to Nette 3
+
 ## [1.0.6] - 2022-01-08
 - update závislostí
 

@@ -54,7 +54,7 @@ class Authorizator implements Nette\Security\IAuthorizator
      * @param string|Permission::ALL
      * @return bool
      */
-    function isAllowed($role, $resource, $privilege)
+    function isAllowed($role, $resource, $privilege): bool
     {
         return $this->acl->isAllowed($role, $resource, $privilege);
     }

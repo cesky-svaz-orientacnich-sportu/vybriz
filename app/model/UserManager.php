@@ -2,9 +2,9 @@
 
 namespace App\Model;
 
-use Nette,
-	Nette\Utils\Strings,
-	Nette\Security\Passwords;
+use Nette;
+use Nette\Utils\Strings;
+use Nette\Security\Passwords;
 
 
 /**
@@ -44,15 +44,17 @@ class UserManager implements Nette\Security\IAuthenticator
 
 		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_NAME, $username)->fetch();
 
+		$passwords = new Passwords();
+
 		if (!$row) {
 			throw new Nette\Security\AuthenticationException('The username is incorrect.', self::IDENTITY_NOT_FOUND);
 
-		} elseif (!Passwords::verify($password, $row[self::COLUMN_PASSWORD_HASH])) {
+		} elseif (!$passwords->verify($password, $row[self::COLUMN_PASSWORD_HASH])) {
 			throw new Nette\Security\AuthenticationException('The password is incorrect.', self::INVALID_CREDENTIAL);
 
-		} elseif (Passwords::needsRehash($row[self::COLUMN_PASSWORD_HASH])) {
+		} elseif ($passwords->needsRehash($row[self::COLUMN_PASSWORD_HASH])) {
 			$row->update(array(
-				self::COLUMN_PASSWORD_HASH => Passwords::hash($password),
+				self::COLUMN_PASSWORD_HASH => $passwords->hash($password),
 			));
 		}
 
@@ -60,20 +62,4 @@ class UserManager implements Nette\Security\IAuthenticator
 		unset($arr[self::COLUMN_PASSWORD_HASH]);
 		return new Nette\Security\Identity($row[self::COLUMN_ID], $row[self::COLUMN_ROLE], $arr);
 	}
-
-
-	/**
-	 * Adds new user.
-	 * @param  string
-	 * @param  string
-	 * @return void
-	 */
-	//public function addUser($username, $password)
-	//{
-	//	$this->database->table(self::TABLE_NAME)->insert(array(
-	//		self::COLUMN_NAME => $username,
-	//		self::COLUMN_PASSWORD_HASH => Passwords::hash($password),
-	//	));
-	//}
-
 }

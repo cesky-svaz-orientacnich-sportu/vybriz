@@ -23,7 +23,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	/** @var IContentControl @inject */
 	public $contentControlFactory;
 
-	protected function createTemplate($class = NULL)
+	protected function createTemplate($class = NULL): Nette\Application\UI\Template
 	{
 	    $template = parent::createTemplate($class);
 	    $template->addFilter('json', function ($s) {
