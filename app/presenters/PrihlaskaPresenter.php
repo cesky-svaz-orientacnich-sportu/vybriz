@@ -120,12 +120,11 @@ class PrihlaskaPresenter extends BasePresenter
 
 	}
 
-
 	public function renderNova()
 	{
 		//Pokud není otevřeno žádné kolo
 		$kolo = $this->database->table('kola')->where('od <= CURDATE() AND do >= CURDATE()')->limit(1)->count();
-		if(!$kolo){
+		if (!$kolo) {
 			//Vymažeme aktivní přihlášky
 			$aktivni_prihlasky = $this->sessionControler->prihlaskyByState('draft');
 			if(count($aktivni_prihlasky)>=1){ $this->sessionControler->clearPrihlaskySection(); }
@@ -136,37 +135,26 @@ class PrihlaskaPresenter extends BasePresenter
 			$this->redirect('Prihlaska:');
 		}
 
-		if(!$this->hash)
-			{
-				$this->pId = $this->krok = NULL;
-				//$this->hash = Utils\Random::generate(6,'0-9a-z');
-				//$session = $this->getSession('prihlasky'); // = get section
-				//$session->setExpiration(0, 'serverkey');
-
-				$kolo = $this->database->table('kola')->where('od <= CURDATE() AND do >= CURDATE()')->limit(1)->count();
-				if(!$kolo){
-					$this->flashMessage('Nelze podat přihlášku do otevření kola.','info');
-					$this->krok = $this->pId = $this->hash = NULL;
-					$this->redirect('Prihlaska:');
-				}
-
-				//$session->serverkey = crypt($this->hash,"$2y$".$this->hash_salt);
-				//$this->database->table('hash')->insert(array('hash'=>$this->hash,'expiration'=>time()+3600*5));
+		if (!$this->hash) {
+			$this->pId = $this->krok = NULL;
+			$kolo = $this->database->table('kola')->where('od <= CURDATE() AND do >= CURDATE()')->limit(1)->count();
+			if (!$kolo) {
+				$this->flashMessage('Nelze podat přihlášku do otevření kola.','info');
+				$this->krok = $this->pId = $this->hash = NULL;
+				$this->redirect('Prihlaska:');
 			}
-		elseif($this->hash && !$this->verifyHash($this->hash)) {
-
+		} elseif ($this->hash && !$this->verifyHash($this->hash)) {
 			$this->flashMessage('Neplatný klíč','error');
 			$this->krok = $this->pId = $this->hash = NULL;
 			$this->redirect('Prihlaska:');
-			//$this->database->table('hash')->where('hash',$this->hash)->update(array('hash'=>$this->hash,'expiration'=>time()+3600*5));
-		}elseif($this->pId) {
+		} elseif ($this->pId) {
 			$check = $this->database->table('prihlasky')->get($this->pId);
-			if($check->hash != $this->hash){
+			if ($check->hash != $this->hash) {
 				$this->flashMessage('Daný klíč se neshoduje s klíčem v databázi','error');
 				$this->krok = $this->pId = $this->hash = NULL;
 				$this->redirect('Prihlaska:');
 			}
-		}elseif(!$this->pId && (!$this->krok || 0 < $this->krok) && !$this->hash) {
+		} elseif (!$this->pId && (!$this->krok || 0 < $this->krok) && !$this->hash) {
 			$this->flashMessage('Chybně zadané ID','error');
 			$this->krok = $this->pId = $this->hash = NULL;
 			$this->redirect('Prihlaska:Nova');
@@ -177,7 +165,7 @@ class PrihlaskaPresenter extends BasePresenter
 
 		//nejvyšší krok
 		$this->template->highest_step = $highest_step = $this->pId ? $this->sessionControler->highestStep() : 0;
-		if($highest_step>2){
+		if ($highest_step>2) {
 			$this['prihlaskaForm-krok2']->setDefaults(array('p1'=>TRUE,'p2'=>TRUE,'p3'=>TRUE));
 		}
 
@@ -342,12 +330,8 @@ class PrihlaskaPresenter extends BasePresenter
 	{
 		$html = new Utils\Html;
 		$form = new Nette\Application\UI\Form;
-		//$form->getElementPrototype()->class = 'ajax';
-
 
 		$step = array();
-
-
 
 		$step[0] = $form->addContainer('krok0');
 
