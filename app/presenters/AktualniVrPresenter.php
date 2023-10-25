@@ -21,11 +21,11 @@ class AktualniVrPresenter extends BasePresenter
 		$rok = $this->database->table('kola')->select('rok')->order('rok DESC')->limit(1)->fetch()->rok;
 		$kola = $this->database->table('kola')->select('id')->where('do < CURDATE() AND rok = ?', $rok)->order('id DESC')->fetchPairs(NULL, 'id');
 		$allow_view = $this->user->isAllowed('aktualni-vr', 'view');
-		$vr = $kola ? $this->database->table('prihlasky')->where('stav ? AND kolo IN (?)', array('confirmed','submitted'), $kola[0]) : NULL;
+		$vr = $kola ? $this->database->table('prihlasky')->where('stav ? AND kolo IN (?)', array('confirmed','submitted'), $kola[0]) : false;
 
 		$this->template->allow_view = $allow_view;
 		$this->template->rok = $rok;
-		$this->template->vr = $vr ? $vr->order('termin.termin ASC') : NULL;
+		$this->template->vr = $vr ? $vr->order('termin.termin ASC') : false;
     	$this->template->kolo = $this->database->table('kola')->where('do >= CURDATE()')->order('od ASC')->limit(1)->fetch();
     	$this->template->loadMapsAPI = true;
 	}
