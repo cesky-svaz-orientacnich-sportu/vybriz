@@ -26,4 +26,5 @@ mp
 .sass-cache
 .tmp
 
+www/js/jquery.min.js
 www/js/netteForms.min.js

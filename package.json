@@ -1,9 +1,11 @@
 {
 	"scripts": {
-		"copynetteforms": "cp node_modules/nette-forms/src/assets/netteForms.min.js www/js/netteForms.min.js",
-		"assets": "npm run copynetteforms"
+		"jquery": "cp node_modules/jquery/dist/jquery.min.js www/js/jquery.min.js",
+		"netteforms": "cp node_modules/nette-forms/src/assets/netteForms.min.js www/js/netteForms.min.js",
+		"assets": "npm run jquery && npm run netteforms"
 	},
 	"dependencies": {
+		"jquery": "3.4.1",
 		"nette-forms": "^3.3.2"
 	}
 }
