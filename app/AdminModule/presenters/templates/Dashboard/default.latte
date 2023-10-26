@@ -1,45 +1,45 @@
 {block content}
-<div class="breadcumb">
-<span class="breadcumb-link">Administrace</span>
-</div>
+	<div class="breadcumb">
+		<span class="breadcumb-link">Administrace</span>
+	</div>
 
-<ul>
-	<li><a n:href=":Admin:Kola:Default">Přehled kol</a></li>
-	<li><a n:href=":Admin:Druhy:">Druhy závodů</a></li>
-	<li><a n:href=":Admin:ContentManager:">Správa obsahu</a></li>
-	<li><a n:href=":Admin:Uzivatele:">Uživatelé</a></li>
-</ul>
+	<ul>
+		<li><a n:href=":Admin:Kola:Default">Přehled kol</a></li>
+		<li><a n:href=":Admin:Druhy:">Druhy závodů</a></li>
+		<li><a n:href=":Admin:ContentManager:">Správa obsahu</a></li>
+		<li><a n:href=":Admin:Uzivatele:">Uživatelé</a></li>
+	</ul>
 
-<br>
+	<br>
 
-<h3>Přehled kol VŘ pro rok {$rok}</h3>
-<table class="table">
-	<thead>
-		<tr>
-			<td>Kolo</td>
-			<td>Aktuální</td>
-			<td>Od</td>
-			<td>Do</td>
-			<td>Přijaté přihlášky</td>
-		</tr>
-	</thead>
-	<tbody>
-		{foreach $kola as $kolo}
-		{var $active = $kolo->od <= Nette\Utils\DateTime::from('today') && $kolo->do >= Nette\Utils\DateTime::from('today')}
-		<tr>
-			<td><a n:href=":Admin:Kola:Detail, $kolo->id">{$kolo->kolo}. kolo</a></td>
-			<td><strong n:tag-if="$active">{$active ? 'Ano' : 'Ne'}</strong></td>
-			<td>{$kolo->od|date:'j.n.Y'}</td>
-			<td>{$kolo->do|date:'j.n.Y'}</td>
-			<td>
-				{ifset $pocty_prihlasek[$kolo->id]}
-					$pocty_prihlasek[$kolo->id]
-				{else}
-					-
-				{/ifset}
-			</td>
-		</tr>
-		{/foreach}
-	</tbody>
-</table>
+	<h3>Přehled kol VŘ pro rok {$rok}</h3>
+	<table class="table">
+		<thead>
+			<tr>
+				<td>Kolo</td>
+				<td>Aktuální</td>
+				<td>Od</td>
+				<td>Do</td>
+				<td>Přijaté přihlášky</td>
+			</tr>
+		</thead>
+		<tbody>
+			{foreach $kola as $kolo}
+			{var $active = $kolo->od <= Nette\Utils\DateTime::from('today') && $kolo->do >= Nette\Utils\DateTime::from('today')}
+			<tr>
+				<td><a n:href=":Admin:Kola:Detail, $kolo->id">{$kolo->kolo}. kolo</a></td>
+				<td><strong n:tag-if="$active">{$active ? 'Ano' : 'Ne'}</strong></td>
+				<td>{$kolo->od|date:'j.n.Y'}</td>
+				<td>{$kolo->do|date:'j.n.Y'}</td>
+				<td>
+					{ifset $pocty_prihlasek[$kolo->id]}
+						$pocty_prihlasek[$kolo->id]
+					{else}
+						-
+					{/ifset}
+				</td>
+			</tr>
+			{/foreach}
+		</tbody>
+	</table>
 {/block}

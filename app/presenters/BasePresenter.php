@@ -38,8 +38,6 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	        return $return;
 	    });
 
-
-
 	    return $template;
 	}
 
@@ -56,5 +54,4 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		$latte = $this->template->getLatte();
 		$latte->addExtension(new \Latte\Essential\RawPhpExtension);
 	}
-
 }
