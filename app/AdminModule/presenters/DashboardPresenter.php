@@ -2,13 +2,10 @@
 
 namespace App\AdminModule\Presenters;
 
-use Nette,
-	Nette\Utils,
-	App\Model;
+use Nette;
+use Nette\Utils;
+use App\Model;
 
-/**
- * Dashboard presenter.
- */
 class DashboardPresenter extends BaseAdminPresenter
 {
 
@@ -26,18 +23,14 @@ class DashboardPresenter extends BaseAdminPresenter
 		$this->storage = $storage;
 	}
 
-
 	public function renderDefault()
 	{
 		$rok = $this->database->table('kola')->order('rok DESC')->limit(1)->fetch()->offsetGet('rok');
 		$this->template->rok = $rok;
 		$this->template->kola = $this->database->table('kola')->where('rok', $rok);
-		$this->template->pocty_prihasek = $this->database->table('prihlasky')
+		$this->template->pocty_prihlasek = $this->database->table('prihlasky')
 			->alias('kolo','k')->select('k.id AS id, COUNT(*) AS cnt')
 			->group('k.id')->where('stav != ?', 'draft')
 			->where('k.rok', $rok)->fetchPairs('id', 'cnt');
 	}
-
-
-
 }

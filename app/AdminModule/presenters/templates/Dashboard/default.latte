@@ -31,7 +31,13 @@
 			<td><strong n:tag-if="$active">{$active ? 'Ano' : 'Ne'}</strong></td>
 			<td>{$kolo->od|date:'j.n.Y'}</td>
 			<td>{$kolo->do|date:'j.n.Y'}</td>
-			<td>{$pocty_prihasek[$kolo->id]}</td>
+			<td>
+				{ifset $pocty_prihlasek[$kolo->id]}
+					$pocty_prihlasek[$kolo->id]
+				{else}
+					-
+				{/ifset}
+			</td>
 		</tr>
 		{/foreach}
 	</tbody>
