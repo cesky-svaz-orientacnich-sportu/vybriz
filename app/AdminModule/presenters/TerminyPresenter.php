@@ -120,7 +120,7 @@ class TerminyPresenter extends BaseAdminPresenter
 	{
 		$form = new Nette\Application\UI\Form;
 
-		$termin = $this->database->table('terminy')->get((int) $this->getParam('id'));
+		$termin = $this->database->table('terminy')->get((int) $this->getParameter('id'));
 		$sdruz_terminy = $this->database->table('terminy')->select('terminy.id AS id, concat(terminy.id, ": ", termin, " (",terminy.kolo_id,  ") - ", druh_id.druh_zkratka, IFNULL(concat(" [", terminy.souvisejici_termin, "]"), "")) AS druh')->where('kolo_id',$this->kolo_id)->order('terminy.id')->fetchPairs('id','druh');
 		$kola = $this->database->table('kola')->select('id, concat(kolo, ". ", "kolo", ", ", rok) AS kolo')->order('id DESC')->fetchPairs('id','kolo');
 		$druhy = $this->database->table('druhy')->select('id, concat(druh_zkratka, " - ", druh) AS druh')->fetchPairs('id','druh');
@@ -142,7 +142,7 @@ class TerminyPresenter extends BaseAdminPresenter
 	public function terminEditFormSucceeded($form, $values)
 	{
 		if ($this->user->isAllowed('admin/terminy', 'edit')) {
-			$this->database->table('terminy')->wherePrimary((int) $this->getParam('id'))->update($values);
+			$this->database->table('terminy')->wherePrimary((int) $this->getParameter('id'))->update($values);
 			$this->flashMessage('Termín uložen.');
 		}else{
 			$this->flashMessage('Nemáte dostatečná oprávnění pro přidávání nových termínů.', 'error');

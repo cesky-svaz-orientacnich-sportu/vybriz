@@ -31,7 +31,7 @@
 			<td><strong n:tag-if="$active">{$active ? 'Ano' : 'Ne'}</strong></td>
 			<td>{$kolo->od|date:'j.n.Y'}</td>
 			<td>{$kolo->do|date:'j.n.Y'}</td>
-			<td>{$pocty_prihasek[$kolo->id]}</td>
+			<td>{array_key_exists($kolo->id, $pocty_prihlasek) ? $pocty_prihlasek[$kolo->id] : "-"}</td>
 		</tr>
 		{/foreach}
 	</tbody>
