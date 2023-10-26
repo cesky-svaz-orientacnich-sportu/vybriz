@@ -186,13 +186,10 @@ class PrihlaskyPresenter extends BaseAdminPresenter
         $terminy_table = $this->database->table('terminy')->where('kolo_id', $kolo_id)->fetchPairs('id', NULL);
         $druhy = $this->database->table('druhy')->fetchPairs('id','druh_zkratka');
 
-
-
-        $prihlasky = array();
+        $prihlasky = [];
         foreach ($vr as $key => $prihlaska) {
             $prihlasky[$prihlaska->termin][$prihlaska->poradatel_zkratka] = $prihlaska;
         }
-
 
         /** Termíny přihlášek podaných v daném kole */
         $term_arr = $this->database->table('prihlasky')
@@ -202,30 +199,19 @@ class PrihlaskyPresenter extends BaseAdminPresenter
             ->fetchPairs('termin_id','souvisejici_termin_id');
 
         /** Termíny pro všechny data kola */
-        //$term_arr = $this->database->table('terminy')->select('id AS termin_id, souvisejici_termin AS souvisejici_termin_id')->order('termin')->group('termin_id')->where('kolo_id',$kolo_id)->fetchPairs('termin_id','souvisejici_termin_id');
-
-
-        $terminy = array();
-        $exclude_term = array();
-
+        $terminy = [];
+        $exclude_term = [];
         foreach ($term_arr as $t_id => $s_id) {
-
-            if(!in_array($t_id, $exclude_term) && $t_id != ''){
-
+            if (!in_array($t_id, $exclude_term) && $t_id != '') {
                 $terminy[$t_id] = $s_id;
-
                 $exclude_term[] = $s_id;
-
             }
         }
 
-
         $this->template->terminy_table = $terminy_table;
         $this->template->druhy = $druhy;
-
         $this->template->terminy = $terminy;
         $this->template->prihlasky = $prihlasky;
-
         $this->template->allow_view = $allow_view;
         $this->template->rok = $rok ? $rok : 'N/A';
         $this->template->kolo_id = $kolo_id ? $kolo_id : 0;
