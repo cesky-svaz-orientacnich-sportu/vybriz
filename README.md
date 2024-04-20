@@ -44,3 +44,9 @@ php -S localhost:8000 -t www
 - releasy jsou verzované podle [Semantic Versioning](https://semver.org/)
 - prosím [udržuj CHANGELOG](https://keepachangelog.com/)
 
+
+## Deploy
+On the remote server run:
+```
+git pull && ./deploy.sh
+```
