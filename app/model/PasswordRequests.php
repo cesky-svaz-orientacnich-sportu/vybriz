@@ -104,7 +104,7 @@ class PasswordRequests
 	 * @param  string
 	 * @return bool
 	 */
-	public function changePassword($request_id = 0, $user_id = 0, $token, $password)
+	public function changePassword($request_id, $user_id, $token, $password)
 	{
 		$request = $this->requestsTable()->get($request_id);
 		if (!$request) {
