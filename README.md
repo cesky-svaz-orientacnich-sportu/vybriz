@@ -48,5 +48,5 @@ php -S localhost:8000 -t www
 ## Deploy
 On the remote server run:
 ```
-./deploy.sh
+git pull && ./deploy.sh
 ```
