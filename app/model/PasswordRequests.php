@@ -2,10 +2,9 @@
 
 namespace App\Model;
 
-use Nette,
-	Nette\Security,
-	Nette\Utils;
-
+use Nette;
+use Nette\Security;
+use Nette\Utils;
 
 /**
  * Obnova hesel.
@@ -14,15 +13,14 @@ class PasswordRequests
 {
 	use Nette\SmartObject;
 	
-	const
-		USERS_TABLE = 'users',
-		USERS_COLUMN_ID = 'id',
-		USERS_COLUMN_EMAIL = 'mail',
-		USERS_COLUMN_PASSWORD_HASH = 'password',
-		REQUESTS_TABLE = 'password_reuests',
-		REQUESTS_COLLUMN_USER_ID = 'user_id',
-		REQUESTS_COLLUMN_TOKEN_HASH = 'token_hash',
-		REQUESTS_COLLUMN_EXPIRATION = 'expiration';
+	const USERS_TABLE = 'users';
+	const USERS_COLUMN_ID = 'id';
+	const USERS_COLUMN_EMAIL = 'mail';
+	const USERS_COLUMN_PASSWORD_HASH = 'password';
+	const REQUESTS_TABLE = 'password_reuests';
+	const REQUESTS_COLLUMN_USER_ID = 'user_id';
+	const REQUESTS_COLLUMN_TOKEN_HASH = 'token_hash';
+	const REQUESTS_COLLUMN_EXPIRATION = 'expiration';
 
 	/** @var Nette\Database\Explorer */
 	private $database;
@@ -45,32 +43,29 @@ class PasswordRequests
 		$this->database = $database;
 	}
 
-
 	/**
 	 * Tabulka Žádostí.
 	 */
 	public function requestsTable()
 	{
-		if(!isset($this->requests_table)){
+		if (!isset($this->requests_table)) {
 			$this->requests_table = $this->database->table(self::REQUESTS_TABLE);
 		}
 
 		return $this->requests_table;
 	}
 
-
 	/**
 	 * Tabulka uživatelů.
 	 */
 	public function usersTable()
 	{
-		if(!isset($this->users_table)){
+		if (!isset($this->users_table)) {
 			$this->users_table = $this->database->table(self::USERS_TABLE);
 		}
 
 		return $this->users_table;
 	}
-
 
 	/**
 	 * Přidání záznamu/žádosti o obnovu hesla do databáze.
@@ -101,7 +96,6 @@ class PasswordRequests
 		return $props + array('token' => $this->token, 'user' => $user, 'request_id' => $request_query->id);
 	}
 
-
 	/**
 	 * Změna hesla.
 	 * @param  int
@@ -131,5 +125,4 @@ class PasswordRequests
 
 		$this->usersTable()->get($user_id)->update( array(self::USERS_COLUMN_PASSWORD_HASH => $passwords->hash($password)) );
 	}
-
 }

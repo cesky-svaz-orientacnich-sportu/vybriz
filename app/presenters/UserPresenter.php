@@ -2,16 +2,15 @@
 
 namespace App\Presenters;
 
-use Nette,
-	Nette\Application\UI\Form,
-	App\Model;
+use Nette;
+use Nette\Application\UI\Form;
+use App\Model;
 
 /**
  * User presenter.
  */
 class UserPresenter extends BasePresenter
 {
-
     /** @var Nette\Database\Explorer */
     private $database;
 
@@ -25,10 +24,7 @@ class UserPresenter extends BasePresenter
     }
 
 
-	public function renderDefault()
-	{
-
-	}
+	public function renderDefault() {}
 
 
 	public function renderPasswordRequest($request_id = NULL, $user_id = NULL, $token = NULL)
@@ -37,12 +33,9 @@ class UserPresenter extends BasePresenter
 	}
 
 
-
-
 	/**
 	*	Formulář pro zaslání emailu na obnovu hesla
 	*/
-
 	public function createComponentAddRequestForm()
 	{
 		$form = new Form;
@@ -85,15 +78,11 @@ class UserPresenter extends BasePresenter
 		} catch (Nette\Application\ApplicationException $e) {
 			$form->addError($e->getMessage());
 		}
-
 	}
-
-
 
 	/**
 	*	Formulář zadání nového hesla
 	*/
-
 	public function createComponentChangePassForm()
 	{
 		$form = new Form;
@@ -114,12 +103,11 @@ class UserPresenter extends BasePresenter
 	public function changePassFormSubmitted($form, $values)
 	{
 
-		if($values['password'] != $values['password_check']){
+		if ($values['password'] != $values['password_check']) {
 			$form->addError('Hesla se neshodují.');
-		}elseif($values['password'] == '' || $values['password'] == NULL){
+		} elseif ($values['password'] == '' || $values['password'] == NULL) {
 			$form->addError('Zadejte heslo.');
-		}else{
-
+		} else {
 			try {
 				$user_id = $this->getParameter('user_id');
 				$token = $this->getParameter('token');
@@ -133,10 +121,6 @@ class UserPresenter extends BasePresenter
 				$this->flashMessage($e->getMessage(), 'error');
 				$this->redirect('User:PasswordRequest');
 			}
-
-
 		}
-		
 	}
-
 }
