@@ -811,7 +811,7 @@ class PrihlaskaPresenter extends BasePresenter
 
 
 				try {
-					if(count(Utils\Json::decode($prihlaska['centrum_zavodu_mapa'])) == 0 || count(Utils\Json::decode($prihlaska['prostor_zavodu_mapa'])) == 0){
+					if(count(Utils\Json::decode($prihlaska['centrum_zavodu_mapa'] ?? '{}')) == 0 || count(Utils\Json::decode($prihlaska['prostor_zavodu_mapa'] ?? '{}')) == 0){
 						$this->flashMessage('Zakreslete prosím centrum a prostor závodu do mapy.', 'error');
 						$this->redirect('this');
 					}
@@ -1096,9 +1096,9 @@ class PrihlaskaPresenter extends BasePresenter
 				$attachment->druh = $druh_zavodu;
 				$attachment->termin = $termin;
 				$attachment->kolo = $kolo;
-				$attachment->dalsi_stavitele = Nette\Utils\Json::decode($prihlaska['dalsi_stavitele']);
-				$attachment->probehle_zavody = Nette\Utils\Json::decode($prihlaska['probehle_zavody']);
-				$attachment->mapy_pokryvajici_prostor = Nette\Utils\Json::decode($prihlaska['mapy_pokryvajici_prostor']);
+				$attachment->dalsi_stavitele = Nette\Utils\Json::decode($prihlaska['dalsi_stavitele'] ?? '{}');
+				$attachment->probehle_zavody = Nette\Utils\Json::decode($prihlaska['probehle_zavody'] ?? '{}');
+				$attachment->mapy_pokryvajici_prostor = Nette\Utils\Json::decode($prihlaska['mapy_pokryvajici_prostor'] ?? '{}');
 				$attachment->soubory = $this->database->table('soubory')->where('prihlaska_id', $pId)->fetchAll();
 
 				$attachment_file_name = 'vybriz_zadost_'.$pId.'_'.Utils\Random::generate(4).'.html';
@@ -1542,10 +1542,10 @@ class PrihlaskaPresenter extends BasePresenter
 		#$this->template->allow_view = $allow_view;
 		$this->template->prihlaska = $prihlaska;
 
-		$this->template->prostor_zavodu_mapa = Nette\Utils\Json::decode($prihlaska['prostor_zavodu_mapa']);
-		$this->template->centrum_zavodu_mapa = Nette\Utils\Json::decode($prihlaska['centrum_zavodu_mapa']);
-		$this->template->probehle_zavody = Nette\Utils\Json::decode($prihlaska['probehle_zavody']);
-		$this->template->mapy_pokryvajici_prostor = Nette\Utils\Json::decode($prihlaska['mapy_pokryvajici_prostor']);
+		$this->template->prostor_zavodu_mapa = Nette\Utils\Json::decode($prihlaska['prostor_zavodu_mapa'] ?? '{}');
+		$this->template->centrum_zavodu_mapa = Nette\Utils\Json::decode($prihlaska['centrum_zavodu_mapa'] ?? '{}');
+		$this->template->probehle_zavody = Nette\Utils\Json::decode($prihlaska['probehle_zavody'] ?? '{}');
+		$this->template->mapy_pokryvajici_prostor = Nette\Utils\Json::decode($prihlaska['mapy_pokryvajici_prostor'] ?? '{}');
 
 		if ($prihlaska->termin && $prihlaska->druh_zavodu) {
 			$this->template->termin	= $termin	= $this->database->table('terminy')->get($prihlaska->termin);
