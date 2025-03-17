@@ -310,74 +310,18 @@
 {if $centrum_zavodu_mapa && $prostor_zavodu_mapa}
 	<div id="mapa" style="width:100%; height:520px; margin:0px auto 20px;"></div>
 	<script>
-		var stred = {$centrum_zavodu_mapa ? $centrum_zavodu_mapa : array(49.83, 15.45)};
+		const map = mapyCZ({
+			center: {$centrum_zavodu_mapa ?? [49.83, 15.45]},
+			zoom: {$centrum_zavodu_mapa ? 10 : 6},
+		});
 
-		var m = new SMap(JAK.gel("mapa"), SMap.Coords.fromWGS84(stred[1], stred[0]){if $centrum_zavodu_mapa}, 10{/if});
-		m.addControl(new SMap.Control.Sync()); /* Aby mapa reagovala na změnu velikosti průhledu */
-		m.addDefaultControls();
-		m.setCursor('');
-
-		// přidání podkladových vrstev do mapy
-		m.addDefaultLayer(SMap.DEF_OPHOTO);
-		m.addDefaultLayer(SMap.DEF_TURIST).enable();
-		m.addDefaultLayer(SMap.DEF_BASE);
-
-		// přidání ovládacího prvku řídícího změnu podkladů
-		var layerSwitch = new SMap.Control.Layer();
-		layerSwitch.addDefaultLayer(SMap.DEF_BASE);
-		layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
-		layerSwitch.addDefaultLayer(SMap.DEF_TURIST);
-
-		// přidání ovládacího prvku pro změnu podkladu
-		m.addControl(layerSwitch, { left:"8px", top:"9px" });
-
-		// nastavení rozsahu přibližování na mapě
-		m.setZoomRange(5,15);
-
-		// signály
-		var signals = m.getSignals();
-		signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */
-
-		var layer = {};
-
-		// přidání vrstvy POLYGON
-		layer['raceArea-polygon'] = new SMap.Layer.Geometry();
-		m.addLayer(layer['raceArea-polygon']);
-		layer['raceArea-polygon'].enable();
-
-		// přidání vrstvy CENTRE-MARKER
-		layer['centre-marker'] = new SMap.Layer.Marker();
-		m.addLayer(layer['centre-marker']);
-		layer['centre-marker'].enable();
+		const polygonLayer = L.layerGroup().addTo(map);
+		const polygon = {$prostor_zavodu_mapa ? $prostor_zavodu_mapa : []}.map(point => [point[0], point[1]]);
+		L.polygon(polygon, { color: "#f5270a", width: 3 }).addTo(polygonLayer);
 
 		{if $centrum_zavodu_mapa}
-		    var centreMarker = new SMap.Marker(SMap.Coords.fromWGS84(stred[1], stred[0]), "centre-marker", { color: "#000" });
-		    layer['centre-marker'].addMarker(centreMarker);
-		    layer['centre-marker'].redraw();
+			L.marker({$centrum_zavodu_mapa}).addTo(map);
 		{/if}
-
-		// Body
-		var points = {$prostor_zavodu_mapa ? $prostor_zavodu_mapa : array()};
-		for (var i = 0; i <= points.length - 1; i++) {
-		    var pointCoords = SMap.Coords.fromWGS84(points[i][1], points[i][0]);
-		    points[i] = pointCoords;
-		};
-
-		// nastavení
-		var options = {
-		    color: "#F5270A", {*"#E98F16",*}
-		    width: 3
-		};
-
-		// PŘIDÁNÍ GEOMETRIE DO VRSTVY
-		var polygon = new SMap.Geometry(SMap.GEOMETRY_POLYGON, null, points, options);
-		layer['raceArea-polygon'].addGeometry(polygon);
-
-		layer['raceArea-polygon'].redraw();
-
-		function resetZoomRange() {
-			m.setZoomRange(5,15);
-		}
 	</script>
 {else}
 	<div class="flashes">
