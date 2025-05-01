@@ -85,7 +85,7 @@
 		<a n:href=":Admin:Terminy:Manage, id => $kolo['id']" class="btn small">Spravovat termíny</a>
 	</fieldset>
 
-	<fieldset {* n:cache="prihlasky.$k_id, expire => '12 months', tags => ['prihlasky/' . (int) $k_id]" *}>
+	<fieldset>
 		<legend>Přihlášky <span class="soft">({count($prihlasky)})</span></legend>
 
 		{if $user->isAllowed('admin/prihlasky', 'edit') || $kolo['do'] < Nette\Utils\DateTime::from('now')}
@@ -111,7 +111,6 @@
 						{var $odd_date = $odd_date && 1 ? 0 : 1}
 						{var $prev_date = $prihlaska['termin']}
 					{/if}
-					{dump $prihlaska}
 					<tr class="{$odd_date==1?'odd':'even'}-row{if $prihlaska['stav'] == 'draft'} soft{/if}{if $prihlaska['oris_id'] !== NULL} oris-confirmed{/if}">
 						<td><a n:href=":Archiv:Detail, id => $prihlaska['id']" target="_blank" rel="noopener noreferrer" n:tag-if="$prihlaska['stav'] != 'draft'">{$prihlaska['id']}</a></td>
 						<td>{$prihlaska['sdruzena_prihlaska_id']?:"-"}</td>
@@ -141,7 +140,6 @@
 		{else}
 			<p>Přehled přihlášek bude zpřístupněn po skončení kola.</p>
 		{/if}
-
 		<br>
 		<a n:href=":Admin:Prihlasky:Vypis, kolo_id => $kolo['id'], rok => $kolo['rok']" target="_blank" rel="noopener noreferrer" class="btn small">Výpis přihlášek</a>
 		<a n:href=":Admin:Prihlasky:MultiOris, id => $kolo['id']" class="btn small">Nastavit OrisId</a>

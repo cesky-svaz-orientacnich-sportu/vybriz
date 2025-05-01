@@ -1,21 +1,12 @@
-{* This is the welcome page, you can delete it *}
-
 {block content}
 
 <h2 n:block=title>Aktuální výběrové řízení</h2>
-
-{if $kolo}
-{dump $kolo}
-
-{/if}
 <p n:if="$kolo">Právě probíhá {$kolo->kolo}. kolo VŘ ({$kolo->od|date:'j. n.'} - {$kolo->do|date:'j. n. Y'})</p>
-
 {control content 'aktualni-vr'}
-
-<h3>Přehled přihlášek pro rok {$rok}</h3>
 
 {if !empty($vr) && count($vr) > 0}
 	{var $prihlasky_data = []}
+	<h3>Přehled přihlášek pro rok {$rok}</h3>
 	<table class="table" id="tavr-table" style="width:100%;">
 		<tr>
 			<td>ID</td>
@@ -29,7 +20,6 @@
 		{var $prev_date}
 		{var $odd_date = 0}
 		{foreach $vr as $prihlaska}
-
 			{if $prihlaska->centrum_zavodu_mapa && $prihlaska->prostor_zavodu_mapa}
 				{var $prostor_zavodu = Nette\Utils\Json::decode($prihlaska->prostor_zavodu_mapa, 1)}
 				{var $centrum_zavodu = Nette\Utils\Json::decode($prihlaska->centrum_zavodu_mapa, 1)}
@@ -37,24 +27,17 @@
 				{var $prihlasky_data['data'][] = array('id'=>$prihlaska->id,'druh_zavodu'=>$prihlaska->druh_zavodu)}
 			{/if}
 
-
 			{var $kolo = $prihlaska->ref('kola', 'kolo')->kolo}
 			{var $termin = $prihlaska->ref('terminy', 'termin')->termin}
 			{var $druh_zavodu = $prihlaska->ref('druhy', 'druh_zavodu')->druh_zkratka}
-
 
 			{if $prev_date != $termin}
 				{var $odd_date = $odd_date && 1 ? 0 : 1}
 				{var $prev_date = $termin}
 			{/if}
 
-
 			{* tavr-pi-<id> = tabulka aktuálních VŘ - přihláška id - <id>*}
 			<tr id="tavr-pi-{$prihlaska->id}" {*if $allow_view}class="tavr-state-{$prihlaska->stav} {$odd_date==1?'odd':'even'}-row"{/if*} class="{$odd_date==1?'odd':'even'}-row" onclick="prihlaskaData({$prihlaska->id});" onmouseenter="highlightRaceArea({$prihlaska->id});" onmouseleave="unsetHighlightRaceArea();" style="cursor:default;">
-
-
-
-
 				<td><a {*n:tag-if="$allow_view"*} n:href="AktualniVr:detail id=>$prihlaska->id">#{$prihlaska->id|padLeft:4,'0'}</a></td>
 				<td>{$kolo}.</td>
 				<td>{$termin|date:'j.n.'}</td>
@@ -65,262 +48,256 @@
 			</tr>
 		{/foreach}
 	</table>
+	<fieldset>
+		<legend>Mapa</legend>
+		{if $prihlasky_data}
+			<div id="mapa" style="width:100%; height:520px; margin:0px auto 5px;"></div>
+			<script>
+				var customColors = [
+					"#f44336",
+					"#f44336",
+					"#F4511E",
+					"#F4511E",
+					"#F4511E",
+					"#9C27B0",
+					"#673AB7",
+					"#673AB7",
+					"#673AB7",
+					"#FFB300",
+					"#F4511E",
+					"#F4511E",
+					"#8BC34A",
+					"#4CAF50",
+					"#FFF",
+					"#8BC34A",
+					"#FFF",
+					"#03A9F4",
+					"#F4511E",
+					"#9C27B0",
+					"#673AB7",
+					"#673AB7",
+					"#673AB7",
+					"#F51D53",
+					"#F51D53"
+				];
+
+				var data = {$prihlasky_data['data']};
+				var points = {$prihlasky_data['map_points']};
+				var stred = {array(49.83, 15.45)};
+
+				var m = new SMap(JAK.gel("mapa"), SMap.Coords.fromWGS84(stred[1], stred[0]), 6); /* mapa, základní objekt */
+				m.addControl(new SMap.Control.Sync()); /* Aby mapa reagovala na změnu velikosti průhledu */
+				m.addDefaultControls(); /* Přidání typických ovládacích prvků */
+				m.setCursor(''); /* Nastavení kurzoru */
+
+				//přidání podkladových vrstev do mapy
+				m.addDefaultLayer(SMap.DEF_OPHOTO);
+				m.addDefaultLayer(SMap.DEF_TURIST).enable();
+				m.addDefaultLayer(SMap.DEF_BASE);
+
+				//přidání ovládacího prvku řídícího změnu podkladů
+				var layerSwitch = new SMap.Control.Layer();
+				layerSwitch.addDefaultLayer(SMap.DEF_BASE);
+				layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
+				layerSwitch.addDefaultLayer(SMap.DEF_TURIST);
+
+				//přidání ovládacího prvku pro změnu podkladu
+				m.addControl(layerSwitch, { left:"8px", top:"9px" });
+
+				//nastavení rozsahu přibližování na mapě
+				m.setZoomRange(5,15);
+
+				//signály
+				var signals = m.getSignals();
+				signals.addListener(window, "geometry-click", geometryClick); /* Při signálu kliknutí volat tuto funkci */
+				signals.addListener(window, "marker-click", markerClick); /* Při signálu kliknutí volat tuto funkci */
+				signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */
+
+				//Pole vrstev se zákresy prostorů a center závodů
+				var layer = {};
+
+				//přidání vrstvy POLYGON (prostory závodů)
+				layer['raceArea-polygon'] = new SMap.Layer.Geometry();
+				m.addLayer(layer['raceArea-polygon']);
+				layer['raceArea-polygon'].enable();
+
+				//přidání vrstvy CENTRE-MARKER (centra závodů)
+				layer['centre-marker'] = new SMap.Layer.Marker();
+				m.addLayer(layer['centre-marker']);
+				layer['centre-marker'].enable();
+
+				//nastavení
+				var options = {
+					color: "#1CC0E3",
+					outlineColor: "#1BB1D1",
+					width: 3
+				};
+
+				for (var i = 0; i <= points.length - 1; i++) {
+					//vytvoření značky (centra závodu)
+					var centreMarker = new SMap.Marker(SMap.Coords.fromWGS84(points[i]['centrum_zavodu'][1], points[i]['centrum_zavodu'][0]), 'm-centrum-'+data[i]['id'], { title: "", url: SMap.CONFIG.img+"/marker/drop-red.png" });
+					//přidání centra do vrstvy CENTRE-MARKER
+					layer['centre-marker'].addMarker(centreMarker);
+
+					//projde každý bod záv. prostoru a vytvoří pole souřadnic (objekty SMap.Coords.*)
+					for (var a = points[i]['prostor_zavodu'].length - 1; a >= 0; a--) {
+						points[i]['prostor_zavodu'][a] = SMap.Coords.fromWGS84(points[i]['prostor_zavodu'][a][1], points[i]['prostor_zavodu'][a][0]);
+					};
+
+					var customOptions = {
+						opacity: 0.5,
+						color: "#1CC0E3",
+						outlineColor: "#1BB1D1",
+						width: 3
+					}
 
+					customOptions.color = customOptions.outlineColor = (data[i]['druh_zavodu'] <= customColors.length) ? customColors[data[i]['druh_zavodu']-1] : customOptions.color;
 
-<fieldset>
-<legend>Mapa</legend>
-{if $prihlasky_data}
-
-<div id="mapa" style="width:100%; height:520px; margin:0px auto 5px;"></div>
-
-
-<script>
-
-var customColors = [
-	"#f44336",
-	"#f44336",
-	"#F4511E",
-	"#F4511E",
-	"#F4511E",
-	"#9C27B0",
-	"#673AB7",
-	"#673AB7",
-	"#673AB7",
-	"#FFB300",
-	"#F4511E",
-	"#F4511E",
-	"#8BC34A",
-	"#4CAF50",
-	"#FFF",
-	"#8BC34A",
-	"#FFF",
-	"#03A9F4",
-	"#F4511E",
-	"#9C27B0",
-	"#673AB7",
-	"#673AB7",
-	"#673AB7",
-	"#F51D53",
-	"#F51D53"
-];
-
-var data = {$prihlasky_data['data']};
-var points = {$prihlasky_data['map_points']};
-var stred = {array(49.83, 15.45)};
-
-var m = new SMap(JAK.gel("mapa"), SMap.Coords.fromWGS84(stred[1], stred[0]), 6); /* mapa, základní objekt */
-m.addControl(new SMap.Control.Sync()); /* Aby mapa reagovala na změnu velikosti průhledu */
-m.addDefaultControls(); /* Přidání typických ovládacích prvků */
-m.setCursor(''); /* Nastavení kurzoru */
-
-//přidání podkladových vrstev do mapy
-m.addDefaultLayer(SMap.DEF_OPHOTO);
-m.addDefaultLayer(SMap.DEF_TURIST).enable();
-m.addDefaultLayer(SMap.DEF_BASE);
-
-//přidání ovládacího prvku řídícího změnu podkladů
-var layerSwitch = new SMap.Control.Layer();
-layerSwitch.addDefaultLayer(SMap.DEF_BASE);
-layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
-layerSwitch.addDefaultLayer(SMap.DEF_TURIST);
-
-//přidání ovládacího prvku pro změnu podkladu
-m.addControl(layerSwitch, { left:"8px", top:"9px" });
-
-//nastavení rozsahu přibližování na mapě
-m.setZoomRange(5,15);
+					//přidá novou geometrii z pole souřadnic prostru závodu
+					var polygon = new SMap.Geometry(SMap.GEOMETRY_POLYGON, 'm-prostor-'+data[i]['id'], points[i]['prostor_zavodu'], customOptions);
+					layer['raceArea-polygon'].addGeometry(polygon);
+				};
 
-//signály
-var signals = m.getSignals();
-signals.addListener(window, "geometry-click", geometryClick); /* Při signálu kliknutí volat tuto funkci */
-signals.addListener(window, "marker-click", markerClick); /* Při signálu kliknutí volat tuto funkci */
-signals.addListener(window, "control-layer-click", resetZoomRange); /* Při signálu kliknutí volat tuto funkci */
-
-
-//Pole vrstev se zákresy prostorů a center závodů
-var layer = {};
-
-//přidání vrstvy POLYGON (prostory závodů)
-layer['raceArea-polygon'] = new SMap.Layer.Geometry();
-m.addLayer(layer['raceArea-polygon']);
-layer['raceArea-polygon'].enable();
-
-//přidání vrstvy CENTRE-MARKER (centra závodů)
-layer['centre-marker'] = new SMap.Layer.Marker();
-m.addLayer(layer['centre-marker']);
-layer['centre-marker'].enable();
-
-
-//nastavení
-var options = {
-    color: "#1CC0E3",
-    outlineColor: "#1BB1D1",
-    width: 3
-};
-
-for (var i = 0; i <= points.length - 1; i++) {
-
-	//vytvoření značky (centra závodu)
-    var centreMarker = new SMap.Marker(SMap.Coords.fromWGS84(points[i]['centrum_zavodu'][1], points[i]['centrum_zavodu'][0]), 'm-centrum-'+data[i]['id'], { title: "", url: SMap.CONFIG.img+"/marker/drop-red.png" });
-	//přidání centra do vrstvy CENTRE-MARKER
-    layer['centre-marker'].addMarker(centreMarker);
+				//znovu vykreslí vrstvy (nutné po přidání nových dat)
+				layer['centre-marker'].redraw();
+				layer['raceArea-polygon'].redraw();
 
-
-    //projde každý bod záv. prostoru a vytvoří pole souřadnic (objekty SMap.Coords.*)
-    for (var a = points[i]['prostor_zavodu'].length - 1; a >= 0; a--) {
-    	points[i]['prostor_zavodu'][a] = SMap.Coords.fromWGS84(points[i]['prostor_zavodu'][a][1], points[i]['prostor_zavodu'][a][0]);
-    };
-
-    var customOptions = {
-    	opacity: 0.5,
-    	color: "#1CC0E3",
-	    outlineColor: "#1BB1D1",
-	    width: 3
-    }
-
-    customOptions.color = customOptions.outlineColor = (data[i]['druh_zavodu'] <= customColors.length) ? customColors[data[i]['druh_zavodu']-1] : customOptions.color;
-
-    //přidá novou geometrii z pole souřadnic prostru závodu
-	var polygon = new SMap.Geometry(SMap.GEOMETRY_POLYGON, 'm-prostor-'+data[i]['id'], points[i]['prostor_zavodu'], customOptions);
-	layer['raceArea-polygon'].addGeometry(polygon);
-};
-
-//znovu vykreslí vrstvy (nutné po přidání nových dat)
-layer['centre-marker'].redraw();
-layer['raceArea-polygon'].redraw();
-
-
-
-/**
-* ovládací, obslužné funkce
-*/
-
-function geometryClick(e, elm) {
-
-	var el_id = e.target.getId();
-	var prihlaska_id = el_id.substr(10);
-	prihlaskaData(prihlaska_id);
-}
-
-function markerClick(e, elm) {
-	var el_id = e.target.getId();
-	var prihlaska_id = el_id.substr(10);
-	prihlaskaData(prihlaska_id);
-}
-
-
-var prev = { 'geometry' : false };
-
-function prihlaskaData(pid) {
-	if(prev['geometry'] != false){
-		prev['geometry'].setOptions(prev['geometry-options']);
-		prev['marker'].setURL(SMap.CONFIG.img+"/marker/drop-red.png");
-
-		layer['raceArea-polygon'].redraw(prev['geometry']);
-	}
-
-	if(highlightedGeometry['geometry'] != false){
-		highlightedGeometry['geometry'].setOptions(highlightedGeometry['geometry-options']);
-		highlightedGeometry['marker'].setURL(SMap.CONFIG.img+"/marker/drop-red.png");
-
-		layer['raceArea-polygon'].redraw(highlightedGeometry['geometry']);
-	}
-
-
-	var pg = layer['raceArea-polygon'].getGeometries()['m-prostor-'+pid];
-	prev['geometry-options'] = { color: pg.getOptions().color, outlineColor: pg.getOptions().outlineColor };
-	pg.setOptions({
-		color:'#FAA914',
-    	/*outlineColor: "#EE7320"*/
-	});
-	layer['raceArea-polygon'].redrawGeometry(pg);
-	prev['geometry'] = pg;
-
-
-	var cm = getMarker('m-centrum-'+pid);
-	cm.setURL(SMap.CONFIG.img+"/marker/drop-yellow.png");
-	prev['marker'] = cm;
-	layer['centre-marker'].redraw();
-
-	var center_zoom = pg.computeCenterZoom(m);
-	m.setCenterZoom(center_zoom[0], center_zoom[1]);
-
-	//alert(pid);
-	$('.tavr-p-highlighted').removeClass('tavr-p-highlighted');
-	$('#tavr-pi-'+pid).removeClass('tavr-p-highlighted2').addClass('tavr-p-highlighted');
-	//$('#m-prostor-'+pid).attr('fill','#fff');
-}
-
-function getMarker(id) {
-	var markers = layer['centre-marker'].getMarkers();
-	var i = markers.length-1;
-	while(markers[i].getId() != id && i >= 0){ i = i-1; }
-	return markers[i];
-}
-
-function resetZoomRange() {
-	m.setZoomRange(5,15);
-}
-
-
-
-
-var highlightedGeometry = { 'geometry' : false };
-
-function highlightRaceArea(pid) {
-
-	var pg = layer['raceArea-polygon'].getGeometries()['m-prostor-'+pid];
-
-	if(pg === prev['geometry']){ return ; }
-
-	highlightedGeometry['geometry'] = pg;
-	highlightedGeometry['geometry-options'] = { color: pg.getOptions().color, outlineColor: pg.getOptions().outlineColor };
-
-	pg.setOptions({
-		color:'#1BB9F5',
-    	outlineColor: "#1BB9F5"
-	});
-	layer['raceArea-polygon'].redrawGeometry(pg);
-
-	//highlightedGeometry['zoom'] = m.getZoom();
-	//highlightedGeometry['center'] = m.getCenter();
-
-	//var center_zoom = pg.computeCenterZoom(m);
-	//	//m.setCenterZoom(center_zoom[0], 11);
-	//m.setCenterZoom(SMap.Coords.fromWGS84(stred[1], stred[0]), 6);
-
-
-	var cm = getMarker('m-centrum-'+pid);
-	cm.setURL(SMap.CONFIG.img+"/marker/drop-blue.png");
-	highlightedGeometry['marker'] = cm;
-
-	layer['centre-marker'].redraw();
-	$('#tavr-pi-'+pid).addClass('tavr-p-highlighted2');
-}
-
-
-function unsetHighlightRaceArea() {
-	if(highlightedGeometry['geometry'] === prev['geometry']){ return ; }
-
-	highlightedGeometry['geometry'].setOptions(highlightedGeometry['geometry-options']);
-	highlightedGeometry['marker'].setURL(SMap.CONFIG.img+"/marker/drop-red.png");
-	layer['raceArea-polygon'].redraw();
-	layer['centre-marker'].redraw();
-
-	$('.tavr-p-highlighted2').removeClass('tavr-p-highlighted2');
-}
-
-</script>
+				/**
+				* ovládací, obslužné funkce
+				*/
+				function geometryClick(e, elm) {
+
+					var el_id = e.target.getId();
+					var prihlaska_id = el_id.substr(10);
+					prihlaskaData(prihlaska_id);
+				}
+
+				function markerClick(e, elm) {
+					var el_id = e.target.getId();
+					var prihlaska_id = el_id.substr(10);
+					prihlaskaData(prihlaska_id);
+				}
+
+				var prev = { 'geometry' : false };
+
+				function prihlaskaData(pid) {
+					if(prev['geometry'] != false){
+						prev['geometry'].setOptions(prev['geometry-options']);
+						prev['marker'].setURL(SMap.CONFIG.img+"/marker/drop-red.png");
+
+						layer['raceArea-polygon'].redraw(prev['geometry']);
+					}
+
+					if(highlightedGeometry['geometry'] != false){
+						highlightedGeometry['geometry'].setOptions(highlightedGeometry['geometry-options']);
+						highlightedGeometry['marker'].setURL(SMap.CONFIG.img+"/marker/drop-red.png");
+
+						layer['raceArea-polygon'].redraw(highlightedGeometry['geometry']);
+					}
+
+					var pg = layer['raceArea-polygon'].getGeometries()['m-prostor-'+pid];
+					prev['geometry-options'] = { color: pg.getOptions().color, outlineColor: pg.getOptions().outlineColor };
+					pg.setOptions({
+						color:'#FAA914',
+					});
+					layer['raceArea-polygon'].redrawGeometry(pg);
+					prev['geometry'] = pg;
+
+
+					var cm = getMarker('m-centrum-'+pid);
+					cm.setURL(SMap.CONFIG.img+"/marker/drop-yellow.png");
+					prev['marker'] = cm;
+					layer['centre-marker'].redraw();
+
+					var center_zoom = pg.computeCenterZoom(m);
+					m.setCenterZoom(center_zoom[0], center_zoom[1]);
+
+					$('.tavr-p-highlighted').removeClass('tavr-p-highlighted');
+					$('#tavr-pi-'+pid).removeClass('tavr-p-highlighted2').addClass('tavr-p-highlighted');
+				}
+
+				function getMarker(id) {
+					var markers = layer['centre-marker'].getMarkers();
+					var i = markers.length-1;
+					while(markers[i].getId() != id && i >= 0){ i = i-1; }
+					return markers[i];
+				}
+
+				function resetZoomRange() {
+					m.setZoomRange(5,15);
+				}
+
+				var highlightedGeometry = { 'geometry' : false };
+
+				function highlightRaceArea(pid) {
+
+					var pg = layer['raceArea-polygon'].getGeometries()['m-prostor-'+pid];
+
+					if(pg === prev['geometry']){ return ; }
+
+					highlightedGeometry['geometry'] = pg;
+					highlightedGeometry['geometry-options'] = { color: pg.getOptions().color, outlineColor: pg.getOptions().outlineColor };
+
+					pg.setOptions({
+						color:'#1BB9F5',
+						outlineColor: "#1BB9F5"
+					});
+					layer['raceArea-polygon'].redrawGeometry(pg);
+
+					var cm = getMarker('m-centrum-'+pid);
+					cm.setURL(SMap.CONFIG.img+"/marker/drop-blue.png");
+					highlightedGeometry['marker'] = cm;
+
+					layer['centre-marker'].redraw();
+					$('#tavr-pi-'+pid).addClass('tavr-p-highlighted2');
+				}
+
+				function unsetHighlightRaceArea() {
+					if(highlightedGeometry['geometry'] === prev['geometry']){ return ; }
+
+					highlightedGeometry['geometry'].setOptions(highlightedGeometry['geometry-options']);
+					highlightedGeometry['marker'].setURL(SMap.CONFIG.img+"/marker/drop-red.png");
+					layer['raceArea-polygon'].redraw();
+					layer['centre-marker'].redraw();
+
+					$('.tavr-p-highlighted2').removeClass('tavr-p-highlighted2');
+				}
+			</script>
+		{else}
+			<div class="flashes">
+				<div class="flash error">Mapa prostoru není k dispozici.</div>
+			</div>
+		{/if}
+	</fieldset>
+{elseif $entries_current_round}
+	<h3>Přehled přihlášek pro aktuální kolo</h3>
+	<table id="tavr-table" class="table" style="max-width:24em;width:100%;" n:if="$entries_current_round">
+		<thead>
+			<tr>
+				<th>oddíl</th>
+				<th>datum</th>
+				<th>druh</th>
+			</tr>
+		</thead>
+		<tbody>
+			{var $prev_date}
+			{var $odd_date = 0}
+			{foreach $entries_current_round as $entry}
+				{if $prev_date != $entry['termin']}
+					{var $odd_date = $odd_date && 1 ? 0 : 1}
+					{var $prev_date = $entry['termin']}
+				{/if}
+				<tr class="{$odd_date==1?'odd':'even'}-row{if $entry['stav'] == 'draft'} soft{/if}{if $entry['oris_id'] !== NULL} oris-confirmed{/if}">
+					<td>{$entry['poradatel_zkratka']}</td>
+					<td>{$entry['termin']|date:"j. n."}</td>
+					<td class="{if $entry['stav'] != 'draft'}event-type-{$entry['druh_id']}{/if}">{$entry['druh']}</td>
+				</tr>
+			{/foreach}
+		</tbody>
+	</table>
 {else}
-<div class="flashes">
-	<div class="flash error">Mapa prostoru není k dispozici.</div>
-</div>
-{/if}
-</fieldset>
-
-
-{else}
-<div class="flash info">Přehled přihlášek bude zveřejněn po ukončení kola</div>
+	<h3>Přehled přihlášek pro rok {$rok}</h3>
+	<div class="flash info">Přehled přihlášek bude zveřejněn po ukončení kola</div>
 {/if}
 
 {/block}

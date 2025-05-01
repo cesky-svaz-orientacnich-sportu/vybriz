@@ -3,7 +3,7 @@
 namespace App\Presenters;
 
 use Nette;
-use	App\Model;
+use	App\Model\PrihlaskyRepository;
 
 class AktualniVrPresenter extends BasePresenter
 {
@@ -11,15 +11,19 @@ class AktualniVrPresenter extends BasePresenter
     /** @var Nette\Database\Explorer */
     private $database;
 
-    public function __construct(Nette\Database\Explorer $database)
+	private PrihlaskyRepository $prihlaskyRepository;
+
+    public function __construct(Nette\Database\Explorer $database, PrihlaskyRepository $prihlaskyRepository)
     {
         $this->database = $database;
+        $this->prihlaskyRepository = $prihlaskyRepository;
     }
 
 	public function renderDefault()
 	{
 		$rok = $this->database->table('kola')->select('rok')->order('rok DESC')->limit(1)->fetch()->rok;
 		$kola = $this->database->table('kola')->select('id')->where('do < CURDATE() AND rok = ?', $rok)->order('id DESC')->fetchPairs(NULL, 'id');
+		$round_current = $this->database->table('kola')->select('id')->where('od <= CURDATE() AND do >= CURDATE()')->order('id DESC')->limit(1)->fetch();
 		$allow_view = $this->user->isAllowed('aktualni-vr', 'view');
 		$vr = $kola ? $this->database->table('prihlasky')->where('stav ? AND kolo IN (?)', array('confirmed','submitted'), $kola[0]) : false;
 
@@ -27,6 +31,7 @@ class AktualniVrPresenter extends BasePresenter
 		$this->template->rok = $rok;
 		$this->template->vr = $vr ? $vr->order('termin.termin ASC') : false;
     	$this->template->kolo = $this->database->table('kola')->where('do >= CURDATE()')->order('od ASC')->limit(1)->fetch();
+		$this->template->entries_current_round = $round_current ? $this->prihlaskyRepository->getAllForRound($round_current) : false;
     	$this->template->loadMapsAPI = true;
 	}
 

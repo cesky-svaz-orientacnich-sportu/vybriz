@@ -396,7 +396,7 @@ html.js .jshidden {
 		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
 		box-sizing: border-box;         /* Opera/IE 8+ */
 	}
-	
+
 	.btn:before,.btn:after{ display:table; scontent:"" }
 	label {
 	}
@@ -525,7 +525,12 @@ html.js .jshidden {
 		border-collapse: collapse;
 	}
 
-	table.table tr td, 
+	.table thead th {
+		font-weight: bold;
+		text-align: left;
+	}
+
+	table.table tr td,
 	table.table tr th {
 		border: 1px solid #F9F9F9;
 		padding: 5px 6px;

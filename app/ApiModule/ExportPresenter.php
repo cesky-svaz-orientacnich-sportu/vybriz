@@ -32,28 +32,26 @@ class ExportPresenter extends BaseApiPresenter
         $this->payload->Method = $method;
         $this->payload->Format = in_array($format, [self::FORMAT_JSON, self::FORMAT_XML]) ? $format : self::FORMAT_JSON;
 
-
-
-        if(method_exists($this, $method) && in_array($method, $this->methods)){
+        if ($method !== null && method_exists($this, $method) && in_array($method, $this->methods)) {
             $data = call_user_func([$this, $method], $this->params);
 
             $this->payload->Status = 'OK';
             $this->payload->ExportCreated = date('Y-m-d H:i:s', time());
             $this->payload->Data = $data;
 
-            //Vygenerování výstupu podle formátu (JSON|XML)
+            // Vygenerování výstupu podle formátu (JSON|XML)
             if ($this->payload->Format === self::FORMAT_JSON) {
                 $this->sendPayload();
-            }elseif($this->payload->Format === self::FORMAT_XML){
+            } else if ($this->payload->Format === self::FORMAT_XML) {
                 $this->sendResponse(new \App\ApiModule\Responses\XmlResponse($this->payload));
             }
-        }else{
+        } else {
             $this->payload->Status = 'Error';
             $this->payload->Message = 'Method does not exist.';
             //$this->sendPayload();
         }
 
-        //Nastavení šablony v případě, že dojde k chybě
+        // Nastavení šablony v případě, že dojde k chybě
         $this->template->setFile(__DIR__ . '/export.default.latte');
     }
 
