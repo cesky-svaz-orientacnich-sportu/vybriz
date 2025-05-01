@@ -28,3 +28,7 @@ mp
 
 www/js/jquery.min.js
 www/js/netteForms.min.js
+www/js/leaflet.min.js
+www/js/Leaflet.Editable.js
+
+www/css/leaflet

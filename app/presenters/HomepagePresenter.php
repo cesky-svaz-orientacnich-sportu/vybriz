@@ -5,9 +5,6 @@ namespace App\Presenters;
 use Nette,
 	App\Model;
 
-/**
- * Homepage presenter.
- */
 class HomepagePresenter extends BasePresenter
 {
 
@@ -19,13 +16,9 @@ class HomepagePresenter extends BasePresenter
         $this->database = $database;
     }
 
-
     public function renderDefault()
     {
-    	$kolo = $this->database->table('kola')->where('do >= CURDATE()')->order('od ASC')->limit(1)->fetch();
-    	$this->template->kolo = $kolo;
+		$kolo = $this->database->table('kola')->where('do >= CURDATE()')->order('od ASC')->limit(1)->fetch();
+		$this->template->kolo = $kolo;
     }
-
-
-
 }

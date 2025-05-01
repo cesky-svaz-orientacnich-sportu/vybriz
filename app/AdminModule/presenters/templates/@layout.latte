@@ -18,14 +18,14 @@
 	<link rel="shortcut icon" type="image/png" href="{$basePath}/favicon.png">
 
 	<link rel="prefetch" href="https://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin">
-	<link rel="prefetch" href="https://api4.mapy.cz/loader.js">
 
 	<style></style>
 
 	{ifset $loadMapsAPI}
 		{if $loadMapsAPI}
-			<script src="https://api4.mapy.cz/loader.js"></script>
-			<script>Loader.load()</script>
+			<link rel="stylesheet" href="{$basePath}/css/leaflet/leaflet.css">
+			<script src="{$basePath}/js/leaflet.min.js"></script>
+			<script src="{$basePath}/js/maps.js"></script>
 		{/if}
 	{/ifset}
 
