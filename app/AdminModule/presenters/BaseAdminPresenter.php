@@ -2,8 +2,9 @@
 
 namespace App\AdminModule\Presenters;
 
-use Nette;
 use	App\Model;
+use App\Helpers\AssetsRevisioning;
+use Nette;
 
 /**
  * Base presenter for all application presenters in admin module.
@@ -22,7 +23,10 @@ abstract class BaseAdminPresenter extends Nette\Application\UI\Presenter
 
     public function beforeRender(): void
 	{
+		parent::beforeRender();
+
 		$latte = $this->template->getLatte();
 		$latte->addExtension(new \Latte\Essential\RawPhpExtension);
+		$latte->addFunction('asset', AssetsRevisioning::getAssetRevisionFunction());
 	}
 }

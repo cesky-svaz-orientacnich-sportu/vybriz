@@ -17,7 +17,6 @@
 	</div>
 </div>
 
-<script src="{$basePath}/js/Leaflet.Editable.js"></script>
 <script>
 	let action = 'none';
 	let centerMarker = null;
@@ -26,7 +25,8 @@
 	const map = mapyCZ({
 		center: {$centrum_zavodu_mapa ? $centrum_zavodu_mapa : [49.83, 15.45]},
 		zoom: 10,
-		editable: true
+		editable: true,
+		fullscreenControl: true
 	});
 
 	map.on('click', handleMapClick);

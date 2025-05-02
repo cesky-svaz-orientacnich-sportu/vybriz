@@ -1,8 +1,9 @@
-/vendor
-/bower_components
-/node_modules
+vendor
+node_modules
 
 npm-debug.log
+
+.env
 
 *.DS_Store
 *.seed
@@ -19,16 +20,16 @@ logs
 results
 temp
 log
+
 www/files
 www/uploads
+www/assets
+www/analytics
+www/favicon.*
+www/android-chrome-*.png
+www/apple-touch-icon.png
+
 mp
 
 .sass-cache
 .tmp
-
-www/js/jquery.min.js
-www/js/netteForms.min.js
-www/js/leaflet.min.js
-www/js/Leaflet.Editable.js
-
-www/css/leaflet

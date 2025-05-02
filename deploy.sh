@@ -3,5 +3,5 @@
 git pull
 /usr/bin/php8.3 /usr/local/bin/composer install
 npm install
-npm run assets
+npm run build
 sudo rm -r temp/cache

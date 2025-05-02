@@ -3,7 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Výpis přihlášek</title>
-	<link rel="shortcut icon" type="image/png" href="{$basePath}/favicon.png">
+
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="VybŘiz" />
+	<link rel="manifest" href="/site.webmanifest" />
 
 	<style>
 		body {
@@ -23,22 +28,6 @@
 		#content {
 			background: #FFF;
 			padding: 15px 25px;
-		}
-
-		.cols1 { width: 80px; }
-		.cols3 { width: 260px; //80*3 + 10*2 }
-		.cols6 { width: 530px; //80*6 + 10*5 }
-
-		.cols1, .cols3, .cols6 { margin-right: 10px; }
-
-		.warning {
-			color: #654D49;
-			background-color: #F0E2DB;
-			border: 1px solid #E2AAA9;
-			border-radius: 2px;
-			padding: 0 16px;
-			width: 800px;
-			margin: 15px auto 25px;
 		}
 
 		h1 {
@@ -61,7 +50,7 @@
 			color: #666;
 		}
 	</style>
-	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
+	<link rel="stylesheet" media="print" href="{asset('css/print.css')}">
 </head>
 <body>
 

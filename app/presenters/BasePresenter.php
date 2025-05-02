@@ -2,10 +2,10 @@
 
 namespace App\Presenters;
 
-use Nette;
-use App\Model;
 use App\Components\IContentControl;
-
+use App\Helpers\AssetsRevisioning;
+use App\Model;
+use Nette;
 
 /**
  * Base presenter for all application presenters.
@@ -51,7 +51,10 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 	public function beforeRender(): void
 	{
+		parent::beforeRender();
+
 		$latte = $this->template->getLatte();
 		$latte->addExtension(new \Latte\Essential\RawPhpExtension);
+		$latte->addFunction('asset', AssetsRevisioning::getAssetRevisionFunction());
 	}
 }

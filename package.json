@@ -1,14 +1,42 @@
 {
+	"name": "vybriz",
+	"browserslist": [
+		"last 2 versions",
+		"not dead",
+		"> 0.5% in CZ",
+		"Firefox ESR"
+	],
+	"type": "module",
 	"scripts": {
-		"jquery": "cp node_modules/jquery/dist/jquery.min.js www/js/jquery.min.js",
-		"netteforms": "cp node_modules/nette-forms/src/assets/netteForms.min.js www/js/netteForms.min.js",
-		"leaflet": "cp node_modules/leaflet/dist/leaflet.js www/js/leaflet.min.js && mkdir -p www/css/leaflet/images && cp node_modules/leaflet/dist/leaflet.css www/css/leaflet/leaflet.css && cp node_modules/leaflet/dist/images/* www/css/leaflet/images && cp node_modules/leaflet-editable/src/Leaflet.Editable.js www/js/Leaflet.Editable.js",
-		"assets": "npm run jquery && npm run netteforms && npm run leaflet"
+		"dev": "NODE_ENV=development gulp",
+		"build": "NODE_ENV=production gulp build"
 	},
 	"dependencies": {
 		"jquery": "^3.7.1",
 		"leaflet": "^1.9.4",
 		"leaflet-editable": "^1.3.1",
+		"leaflet-fullscreen": "^1.0.2",
 		"nette-forms": "^3.3.2"
-	}
+	},
+	"devDependencies": {
+		"autoprefixer": "^10.4.13",
+		"cssnano": "^7.0.4",
+		"del": "^7.1.0",
+		"fs-readdir-recursive": "^1.1.0",
+		"gulp": "^4.0.2",
+		"gulp-autoprefixer": "^9.0.0",
+		"gulp-clean-css": "^4.3.0",
+		"gulp-concat": "^2.6.1",
+		"gulp-connect": "^5.5.0",
+		"gulp-if": "^3.0.0",
+		"gulp-imagemin": "^9.1.0",
+		"gulp-merge-json": "^2.1.2",
+		"gulp-postcss": "^10.0.0",
+		"gulp-rev": "^11.0.0",
+		"gulp-terser": "^2.1.0"
+	},
+	"engines": {
+		"node": ">= 18"
+	},
+	"private": true
 }

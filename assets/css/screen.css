@@ -5,7 +5,7 @@ body {
 	color: #333;
 	background: #444349;/*#96C256;*/
 	background-repeat: repeat;
-	background-image: url('../images/stardust.png');	/* background downloaded from subtlepatterns.com */
+	background-image: url('../img/stardust.png');	/* background downloaded from subtlepatterns.com */
 	font-family: 'Open Sans', sans-serif;
 	font-size: 14px;
 	line-height:1.4;
@@ -245,7 +245,7 @@ p {
 #ajax-spinner {
 	margin: 15px 0 0 15px;
 	padding: 13px;
-	background: white url('../images/spinner.gif') no-repeat 50% 50%;
+	background: white url('../img/spinner.gif') no-repeat 50% 50%;
 	font-size: 0;
 	z-index: 123456;
 	display: none;
@@ -269,7 +269,7 @@ div.flash {
 	margin-bottom: 5px;
 	display: inline-block;
 	line-height: 1.5;
-	background-image: url('../images/icon-warning.png');
+	background-image: url('../img/icon-warning.png');
 	background-repeat: no-repeat;
 	background-position: 11px 13px;
 }
@@ -462,14 +462,14 @@ html.js .jshidden {
 	}
 
 	.cols1 { width: 80px; }
-	.cols2 { width: 170px; //80*2 + 10 }
-	.cols3 { width: 260px; //80*3 + 10*2 }
-	.cols4 { width: 350px; //80*4 + 10*3 }
-	.cols5 { width: 440px; //80*5 + 10*4 }
-	.cols6 { width: 530px; //80*6 + 10*5 }
-	.cols7 { width: 620px; //80*7 + 10*6 }
-	.cols8 { width: 710px; //80*8 + 10*7 }
-	.cols9 { width: 800px; //80*9 + 10*8 }
+	.cols2 { width: 170px; } /* 80*2 + 10 */
+	.cols3 { width: 260px; } /* 80*3 + 10*2 */
+	.cols4 { width: 350px; } /* 80*4 + 10*3 */
+	.cols5 { width: 440px; } /* 80*5 + 10*4 */
+	.cols6 { width: 530px; } /* 80*6 + 10*5 */
+	.cols7 { width: 620px; } /* 80*7 + 10*6 */
+	.cols8 { width: 710px; } /* 80*8 + 10*7 */
+	.cols9 { width: 800px; } /* 80*9 + 10*8 */
 
 	.cols1, .cols2, .cols3, .cols4, .cols5, .cols6,
 	.cols7, .cols8, .cols9 { margin-right: 10px; }
@@ -497,7 +497,7 @@ html.js .jshidden {
 		margin: 8px 10px;
 		display: block;
 		line-height: 1.5;
-		background-image: url('../images/icon-warning.png');
+		background-image: url('../img/icon-warning.png');
 		background-repeat: no-repeat;
 		background-position: 11px 13px;
 	}
@@ -570,7 +570,7 @@ html.js .jshidden {
 
 /* components -> form.mapa */
 #map-preview {
-	background-image: url('../images/map-preview.gif');
+	background-image: url('../img/map-preview.gif');
 	font-size: 0;
 }
 

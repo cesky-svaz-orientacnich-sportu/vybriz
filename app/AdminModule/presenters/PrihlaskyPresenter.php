@@ -359,8 +359,6 @@ class PrihlaskyPresenter extends BaseAdminPresenter
         $this->template->kolo = $this->kolaRepository->getOne($kolo_id);
     }
 
-
-
     public function renderDefault($rok = 0, $kolo_id = 0)
     {
         $cache_name = 'PrihlaskyFinder_y'.$rok."_".$kolo_id;

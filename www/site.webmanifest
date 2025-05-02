@@ -1,0 +1,23 @@
+{
+    "name": "Výběrová řízení ČSOS",
+    "short_name": "VybŘiz",
+    "lang": "cs",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "theme_color": "#edece3",
+    "background_color": "#edece3",
+    "start_url": "https://vybriz.orientacnisporty.cz/?utm_source=homescreen",
+    "display": "standalone"
+}

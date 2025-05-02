@@ -10,23 +10,28 @@
 
 	<title>{ifset #title}{include title|striptags} | {/ifset}Výběrová řízení OB</title>
 
-	<link rel="stylesheet" href="{$basePath}/css/reset.css">
-	<link href='https://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" media="screen,projection,tv" href="{$basePath}/css/screen.css">
-	<link rel="stylesheet" media="print" href="{$basePath}/css/print.css">
-	<link rel="shortcut icon" type="image/png" href="{$basePath}/favicon.png">
-
 	<link rel="prefetch" href="https://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin">
+
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="VybŘiz" />
+	<link rel="manifest" href="/site.webmanifest" />
+
+	<link rel="stylesheet" href="{asset('css/reset.css')}">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" media="screen,projection,tv" href="{asset('css/screen.css')}">
+	<link rel="stylesheet" media="print" href="{asset('css/print.css')}">
 
 	<style></style>
 
-	<script src="{$basePath}/js/jquery.min.js"></script>
+	<script src="{asset('js/jquery.min.js')}"></script>
 
 	{ifset $loadMapsAPI}
 		{if $loadMapsAPI}
-			<link rel="stylesheet" href="{$basePath}/css/leaflet/leaflet.css">
-			<script src="{$basePath}/js/leaflet.min.js"></script>
-			<script src="{$basePath}/js/maps.js"></script>
+			<script>const MAPY_CZ_API_KEY = {$_ENV['MAPY_CZ_API_KEY']};</script>
+			<link rel="stylesheet" href="{asset('css/leaflet/leaflet.css')}">
+			<script src="{asset('js/maps.js')}"></script>
 		{/if}
 	{/ifset}
 
@@ -93,8 +98,8 @@
 
 
 {block scripts}
-<script src="{$basePath}/js/netteForms.min.js"></script>
-<script src="{$basePath}/js/nette.ajax.js"></script>
+<script src="{asset('js/netteForms.min.js')}"></script>
+<script src="{asset('js/nette.ajax.js')}"></script>
 <script>
 	$(function () {
     	$.nette.init();

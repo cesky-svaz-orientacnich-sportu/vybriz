@@ -1,48 +1,51 @@
 const mapyCZMarkerRed = L.icon({
-	iconUrl: '/images/maps/drop-red.png',
+	iconUrl: '/assets/img/maps/drop-red.png',
 	iconSize: [22, 31],
 	iconAnchor: [11, 31]
 });
 
 const mapyCZMarkerYellow = L.icon({
-	iconUrl: '/images/maps/drop-yellow.png',
+	iconUrl: '/assets/img/maps/drop-yellow.png',
 	iconSize: [22, 31],
 	iconAnchor: [11, 31]
 });
 
 const mapyCZMarkerBlue = L.icon({
-	iconUrl: '/images/maps/drop-blue.png',
+	iconUrl: '/assets/img/maps/drop-blue.png',
 	iconSize: [22, 31],
 	iconAnchor: [11, 31]
 });
 
 const mapyCZ = (userOptions) => {
-	const API_KEY = ''; // TODO: .env
 	const DEFAULT_OPTIONS = {
 		id: "mapa",
 		center: [49.83, 15.45],
 		zoom: 6,
-		editable: false
+		editable: false,
+    fullscreenControl: false
 	}
 	const options = Object.assign({}, DEFAULT_OPTIONS, userOptions);
 
-	const map = L.map(options.id, { editable: options.editable }).setView(options.center, options.zoom);
+	const map = L.map(options.id, {
+    editable: options.editable,
+    fullscreenControl: options.fullscreenControl
+  }).setView(options.center, options.zoom);
 	initLayers();
 	initAttributionLogo();
 
 	function initLayers() {
 		const tileLayers = {
-			'Základní': L.tileLayer(`https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${API_KEY}`, {
+			'Základní': L.tileLayer(`https://api.mapy.cz/v1/maptiles/basic/256/{z}/{x}/{y}?apikey=${MAPY_CZ_API_KEY}`, {
 				minZoom: 5,
 				maxZoom: 15,
 				attribution: '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
 			}),
-			'Turistická': L.tileLayer(`https://api.mapy.cz/v1/maptiles/outdoor/256/{z}/{x}/{y}?apikey=${API_KEY}`, {
+			'Turistická': L.tileLayer(`https://api.mapy.cz/v1/maptiles/outdoor/256/{z}/{x}/{y}?apikey=${MAPY_CZ_API_KEY}`, {
 				minZoom: 5,
 				maxZoom: 15,
 				attribution: '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
 			}),
-			'Letecká': L.tileLayer(`https://api.mapy.cz/v1/maptiles/aerial/256/{z}/{x}/{y}?apikey=${API_KEY}`, {
+			'Letecká': L.tileLayer(`https://api.mapy.cz/v1/maptiles/aerial/256/{z}/{x}/{y}?apikey=${MAPY_CZ_API_KEY}`, {
 				minZoom: 5,
 				maxZoom: 15,
 				attribution: '<a href="https://api.mapy.cz/copyright" target="_blank">&copy; Seznam.cz a.s. a další</a>',
