@@ -21,7 +21,7 @@
 	"devDependencies": {
 		"autoprefixer": "^10.4.13",
 		"cssnano": "^7.0.4",
-		"del": "^7.1.0",
+		"del": "^8.0.0",
 		"fs-readdir-recursive": "^1.1.0",
 		"gulp": "^4.0.2",
 		"gulp-autoprefixer": "^9.0.0",
