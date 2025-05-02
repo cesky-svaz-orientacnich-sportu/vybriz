@@ -1,5 +1,13 @@
 # Change Log
 
+## [Unrealeased]
+
+## [1.2.0] - 2025-05-03
+- use script for deploy
+- current round entries preview
+- upgrade to new Mapy.cz API
+- assets processing
+
 ## [1.1.0] - 2023-10-25
 - upgrade to Nette 3
 

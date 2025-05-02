@@ -54,5 +54,5 @@ npm run dev
 ## Deploy
 On the remote server run:
 ```
-git pull && ./deploy.sh
+./deploy.sh
 ```
