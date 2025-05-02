@@ -38,5 +38,6 @@ services:
 	- App\Model\ContentRepository
 	- App\Model\AccessControler
 	- App\Components\IContentControl
+	- App\Presenters\PrihlaskaPresenter(%wwwDir%)
 	- App\RouterFactory
 	router: @App\RouterFactory::createRouter

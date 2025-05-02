@@ -52,12 +52,6 @@ class KolaPresenter extends BaseAdminPresenter
 	 */
 	public function renderDefault()
 	{
-		//$storage = new Nette\Caching\Storages\FileStorage($this->context->parameters['tempDir']);
-		//$cache = new Nette\Caching\Cache($storage);
-		//$cache->clean(array(
-		//    Nette\Caching\Cache::TAGS => ["terminy/1"],
-		//));
-		//exit(dump($cache));
 		$this->template->kola = $this->kolaRepository->getAll();
 	}
 

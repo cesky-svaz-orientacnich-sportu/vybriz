@@ -14,6 +14,8 @@ class PrihlaskaPresenter extends BasePresenter
 {
 	private $hash_salt = "juot4QHLCABM6ZWBOUDElqZ6vNlRfVB3";
 
+	private string $wwwDir;
+
 	/** @var Nette\Database\Explorer */
 	private $database;
 
@@ -38,8 +40,9 @@ class PrihlaskaPresenter extends BasePresenter
     public $accessControler;
 
 
-	public function __construct(Nette\Database\Explorer $database, Model\SessionControler $sessionControler)
+	public function __construct(string $wwwDir, Nette\Database\Explorer $database, Model\SessionControler $sessionControler)
 	{
+		$this->wwwDir = $wwwDir;
 		$this->database = $database;
 		$this->sessionControler = $sessionControler;
 	}
@@ -77,7 +80,6 @@ class PrihlaskaPresenter extends BasePresenter
 		}
 	}
 
-
 	public function renderOdeslana()
 	{
 		$last_application = $this->sessionControler->getLastApplication();
@@ -89,7 +91,6 @@ class PrihlaskaPresenter extends BasePresenter
 
 		$this->template->last_application = $last_application;
 	}
-
 
 	public function actionNova()
 	{
@@ -743,7 +744,6 @@ class PrihlaskaPresenter extends BasePresenter
 				$this->krok = 2;
 
 			}elseif($step == 2){
-
 				$array_to_clean = array(
 						'mapy_pokryvajici_prostor' => $values['krok2']['mapy_pokryvajici_prostor'],
 						'probehle_zavody' => $values['krok2']['probehle_zavody'],
@@ -807,9 +807,6 @@ class PrihlaskaPresenter extends BasePresenter
 						'dalsi_stavitele' 			=> $dalsi_stavitele
 					));
 
-
-
-
 				try {
 					if(count(Utils\Json::decode($prihlaska['centrum_zavodu_mapa'] ?? '{}')) == 0 || count(Utils\Json::decode($prihlaska['prostor_zavodu_mapa'] ?? '{}')) == 0){
 						$this->flashMessage('Zakreslete prosím centrum a prostor závodu do mapy.', 'error');
@@ -819,7 +816,6 @@ class PrihlaskaPresenter extends BasePresenter
 					$this->flashMessage('Zakreslete prosím centrum a prostor závodu do mapy.', 'error');
 					$this->redirect('this');
 				}
-
 
 				//ověření, zda-li uživatel zaškrtnul políčka Prohlášení
 
@@ -834,10 +830,6 @@ class PrihlaskaPresenter extends BasePresenter
 			$this->redirect('this');
 		}
 	}
-
-
-
-
 
 	public function PrihlaskaFormAddElementClicked(Nette\Forms\Controls\SubmitButton $button)
 	{
@@ -904,10 +896,6 @@ class PrihlaskaPresenter extends BasePresenter
 		}
 	}
 
-
-
-
-
 	public function handleUpdateCoords()
 	{
 		if ($this->isAjax()) {
@@ -929,9 +917,6 @@ class PrihlaskaPresenter extends BasePresenter
 		}
 	}
 
-
-
-
 	public function handleUploadFile()
 	{
 		if($this->hash && $this->pId){
@@ -945,11 +930,10 @@ class PrihlaskaPresenter extends BasePresenter
 			$chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
 
 			$ds = DIRECTORY_SEPARATOR;
-			$wwwDir = $this->getContext()->parameters['wwwDir'];
 
 			$fileName = isset($_REQUEST["name"]) ? $_REQUEST["name"] : $_FILES["file"]["name"];
 			$sanitized = trim(Utils\Strings::webalize($fileName, '.', FALSE), '.-');
-			$filePath = $wwwDir.$ds.'uploads'.$ds.'tmp-'.$this->pId.'-'.$sanitized;
+			$filePath = $this->wwwDir.$ds.'uploads'.$ds.'tmp-'.$this->pId.'-'.$sanitized;
 
 
 			// Open temp file
@@ -982,7 +966,7 @@ class PrihlaskaPresenter extends BasePresenter
 			if (!$chunks || $chunk == $chunks - 1) {
 				$t = time().'-'.Utils\Random::generate(3,'A-Z');
 
-				$upDir = $wwwDir.$ds.'files'.$ds;
+				$upDir = $this->wwwDir.$ds.'files'.$ds;
 				$files_count = 1000;
 				$thousand = 0;
 				while ($files_count >= 1000) {
@@ -997,7 +981,7 @@ class PrihlaskaPresenter extends BasePresenter
 				$folder_name = (1000*($thousand-1)+1).'-'.(1000*$thousand);
 
 
-				$filePath2 = $wwwDir.$ds.'files'.$ds.$folder_name.$ds.$this->pId.'-'.$t.'-'.$sanitized;
+				$filePath2 = $this->wwwDir.$ds.'files'.$ds.$folder_name.$ds.$this->pId.'-'.$t.'-'.$sanitized;
 				// Strip the temp .part suffix off
 				Nette\Utils\FileSystem::rename("{$filePath}.part", $filePath2);
 
