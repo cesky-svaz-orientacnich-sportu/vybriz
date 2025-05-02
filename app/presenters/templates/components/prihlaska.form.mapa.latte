@@ -32,7 +32,7 @@
 	map.on('click', handleMapClick);
 
 	{if $centrum_zavodu_mapa}
-		centerMarker = L.marker({$centrum_zavodu_mapa}, { draggable: true }).addTo(map);
+		centerMarker = L.marker({$centrum_zavodu_mapa}, { draggable: true, icon: mapyCZMarkerBlue }).addTo(map);
 	{/if}
 
 	{if $prostor_zavodu_mapa}
@@ -44,7 +44,7 @@
 			if (centerMarker !== null) {
 				map.removeLayer(centerMarker);
 			}
-			centerMarker = L.marker(e.latlng, { draggable: true }).addTo(map);
+			centerMarker = L.marker(e.latlng, { draggable: true, icon: mapyCZMarkerBlue }).addTo(map);
 		}
 
 		enableSaveBtn();

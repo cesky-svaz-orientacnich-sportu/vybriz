@@ -1,3 +1,21 @@
+const mapyCZMarkerRed = L.icon({
+	iconUrl: '/images/maps/drop-red.png',
+	iconSize: [22, 31],
+	iconAnchor: [11, 31]
+});
+
+const mapyCZMarkerYellow = L.icon({
+	iconUrl: '/images/maps/drop-yellow.png',
+	iconSize: [22, 31],
+	iconAnchor: [11, 31]
+});
+
+const mapyCZMarkerBlue = L.icon({
+	iconUrl: '/images/maps/drop-blue.png',
+	iconSize: [22, 31],
+	iconAnchor: [11, 31]
+});
+
 const mapyCZ = (userOptions) => {
 	const API_KEY = ''; // TODO: .env
 	const DEFAULT_OPTIONS = {
@@ -64,6 +82,6 @@ const entryMap = (center, area) => {
 		zoom: 10,
 	});
 
-	L.marker(center).addTo(map);
+	L.marker(center, { icon: mapyCZMarkerRed }).addTo(map);
 	L.polygon(area.map(point => [point[0], point[1]]), { color: "#f5270a", width: 3 }).addTo(map);
 }

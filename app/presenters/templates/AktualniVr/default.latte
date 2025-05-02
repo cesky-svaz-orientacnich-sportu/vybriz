@@ -86,7 +86,7 @@
 
 				const entryItems = {};
 				for (const entry of entries) {
-					const marker = L.marker(entry['centrum_zavodu']).addTo(map);
+					const marker = L.marker(entry['centrum_zavodu'], { icon: mapyCZMarkerRed }).addTo(map);
 					marker.on('click', () => {
 						handleEntryClick(entry.id);
 					})
@@ -105,14 +105,21 @@
 				let hoveredEntry = { id: null };
 				function handleEntryClick(pid) {
 					if (clickedEntry.id !== null) {
+						entryItems[clickedEntry.id].marker.setIcon(clickedEntry.originalIcon);
 						entryItems[clickedEntry.id].polygon.setStyle({ color: clickedEntry.originalColor });
 					}
 					if (hoveredEntry.id !== null) {
+						entryItems[hoveredEntry.id].marker.setIcon(hoveredEntry.originalIcon);
 						entryItems[hoveredEntry.id].polygon.setStyle({ color: hoveredEntry.originalColor });
 					}
 
-					clickedEntry = { id: pid, originalColor: entryItems[pid].polygon.options.color };
+					clickedEntry = {
+						id: pid,
+						originalIcon: entryItems[pid].marker.options.icon,
+						originalColor: entryItems[pid].polygon.options.color
+					};
 
+					entryItems[pid].marker.setIcon(mapyCZMarkerYellow);
 					entryItems[pid].polygon.setStyle({ color: '#faa914' });
 					map.fitBounds(entryItems[pid].polygon.getBounds());
 
@@ -125,8 +132,13 @@
 				function handleEntryMouseEnter(pid) {
 					if (pid === clickedEntry.id) return;
 
-					hoveredEntry = { id: pid, originalColor: entryItems[pid].polygon.options.color };
+					hoveredEntry = {
+						id: pid,
+						originalIcon: entryItems[pid].marker.options.icon,
+						originalColor: entryItems[pid].polygon.options.color
+					};
 
+					entryItems[pid].marker.setIcon(mapyCZMarkerBlue);
 					entryItems[pid].polygon.setStyle({ color: '#1bb9f5' });
 					document.querySelector('#tavr-pi-'+pid).classList.add('tavr-p-highlighted2');
 				}
@@ -134,6 +146,7 @@
 				function handleEntryMouseLeave() {
 					if (hoveredEntry.id === clickedEntry.id) return;
 
+					entryItems[hoveredEntry.id].marker.setIcon(hoveredEntry.originalIcon);
 					entryItems[hoveredEntry.id].polygon.setStyle({ color: hoveredEntry.originalColor });
 					const pHighlighted = document.querySelector('.tavr-p-highlighted2');
 					if (pHighlighted !== null) pHighlighted.classList.remove('tavr-p-highlighted2');
