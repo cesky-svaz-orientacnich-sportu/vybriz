@@ -93,7 +93,7 @@
 						console.log('check 2');
 						$el_output.val('Načítám data...');
 						var rn = $el_input.val();
-						$.getJSON("https://oris.orientacnisporty.cz/API/?callback=?", { format: 'json', method: 'getUser', rgnum: rn }, function( data ) {
+						$.getJSON("https://oris.ceskyorientak.cz/API/?callback=?", { format: 'json', method: 'getUser', rgnum: rn }, function( data ) {
 							if(typeof data['Data']['FirstName'] != 'undefined' && typeof data['Data']['LastName'] != 'undefined'){
 								$el_output.val(data['Data']['FirstName']+' '+data['Data']['LastName']);
 								$el_send.removeAttr('disabled');
@@ -200,7 +200,7 @@
 						$el_output_licence.val('...');
 						var rn = $el_input.val();
 
-						$.getJSON("https://oris.orientacnisporty.cz/API/?callback=?", { format: 'json', method: 'getUser', rgnum: rn }, function( data ) {
+						$.getJSON("https://oris.ceskyorientak.cz/API/?callback=?", { format: 'json', method: 'getUser', rgnum: rn }, function( data ) {
 							if(typeof data['Data']['FirstName'] != 'undefined' && typeof data['Data']['LastName'] != 'undefined'){
 								$el_output_name.val(data['Data']['FirstName']+' '+data['Data']['LastName']);
 								if(data['Data']['RefLicenceOB'] != ""){

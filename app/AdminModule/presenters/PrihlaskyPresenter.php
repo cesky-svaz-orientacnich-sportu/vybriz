@@ -326,7 +326,7 @@ class PrihlaskyPresenter extends BaseAdminPresenter
         $format = 'json';
         $method = 'getEventList';
         $oris_link = sprintf(
-            'https://oris.orientacnisporty.cz/API/?format=%s&method=%s&datefrom=%s&dateto=%s&sport=0&all=0&reg=%s',
+            'https://oris.ceskyorientak.cz/API/?format=%s&method=%s&datefrom=%s&dateto=%s&sport=0&all=0&reg=%s',
             $format,
             $method,
             $date_from,
