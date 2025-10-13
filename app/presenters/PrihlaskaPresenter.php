@@ -1069,7 +1069,7 @@ class PrihlaskaPresenter extends BasePresenter
 				$template->termin = $termin;
 
 				$mail = new Nette\Mail\Message;
-				$mail->setFrom('Výběrové řízení OB <vybriz@orientacnisporty.cz>')
+				$mail->setFrom('Výběrové řízení OB <vybriz@ceskyorientak.cz>')
 					->addTo($prihlaska->jmeno.' <'.$prihlaska->mail.'>')
 					->setHtmlBody($template);
 
@@ -1741,7 +1741,7 @@ class PrihlaskaPresenter extends BasePresenter
 		$template->setFile(__DIR__ . '/templates/components/accessRequest.mail.latte');
 
 		$mail = new Nette\Mail\Message;
-		$mail->setFrom('Výběrové řízení OB <vybriz@orientacnisporty.cz>')
+		$mail->setFrom('Výběrové řízení OB <vybriz@ceskyorientak.cz>')
 			->addTo($data['mail'] . ' <'.$data['mail'].'>')
 			->setHtmlBody($template);
 

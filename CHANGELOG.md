@@ -1,6 +1,7 @@
 # Change Log
 
 ## [Unrealeased]
+- change domain to vybriz.ceskyorientak.cz
 
 ## [1.2.0] - 2025-05-03
 - use script for deploy
