@@ -29,7 +29,7 @@
 		"gulp-concat": "^2.6.1",
 		"gulp-connect": "^5.5.0",
 		"gulp-if": "^3.0.0",
-		"gulp-imagemin": "^9.1.0",
+		"gulp-imagemin": "^8.0.0",
 		"gulp-merge-json": "^2.1.2",
 		"gulp-postcss": "^10.0.0",
 		"gulp-rev": "^11.0.0",
