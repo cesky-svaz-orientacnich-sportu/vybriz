@@ -28,7 +28,7 @@ RewriteRule ^(.*) /www/$1 [L,QSA]
 # | Content Security Policy (CSP)                                      |
 # ----------------------------------------------------------------------
 #<IfModule mod_headers.c>
-#    Header set Content-Security-Policy-Report-Only "script-src self; object-src self; report-uri https://csos0.orientacnisporty.cz/csp/report.php"
+#    Header set Content-Security-Policy-Report-Only "script-src self; object-src self"
 #</IfModule>
 
 
@@ -42,6 +42,6 @@ RewriteRule ^(.*) /www/$1 [L,QSA]
 # ----------------------------------------------------------------------
 # | reflected cross-site scripting                                     |
 # ----------------------------------------------------------------------
-<IfModule mod_headers.c> 
-  Header set X-XSS-Protection "1; mode=block" 
+<IfModule mod_headers.c>
+  Header set X-XSS-Protection "1; mode=block"
 </IfModule>

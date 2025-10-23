@@ -689,7 +689,7 @@ class PrihlaskaPresenter extends BasePresenter
 					$kolo = $this->database->table('kola')->select('id')->where('do >= CURDATE()')->order('od ASC')->limit(1)->fetch();
 
 					//Nahraje data o oddíle z ORISu
-					$json_data = Utils\Json::decode(file_get_contents('https://oris.orientacnisporty.cz/API/?format=json&method=getClub&id='.$odd_abbr), TRUE);
+					$json_data = Utils\Json::decode(file_get_contents('https://oris.ceskyorientak.cz/API/?format=json&method=getClub&id='.$odd_abbr), TRUE);
 					$odd = ($json_data && @$json_data['Status'] === 'OK') ? $json_data['Data']['Name'] : '?';
 
 					$prihlasky_table = $this->database->table('prihlasky');
@@ -1069,7 +1069,7 @@ class PrihlaskaPresenter extends BasePresenter
 				$template->termin = $termin;
 
 				$mail = new Nette\Mail\Message;
-				$mail->setFrom('Výběrové řízení OB <vybriz@orientacnisporty.cz>')
+				$mail->setFrom('Výběrové řízení OB <vybriz@ceskyorientak.cz>')
 					->addTo($prihlaska->jmeno.' <'.$prihlaska->mail.'>')
 					->setHtmlBody($template);
 
@@ -1741,7 +1741,7 @@ class PrihlaskaPresenter extends BasePresenter
 		$template->setFile(__DIR__ . '/templates/components/accessRequest.mail.latte');
 
 		$mail = new Nette\Mail\Message;
-		$mail->setFrom('Výběrové řízení OB <vybriz@orientacnisporty.cz>')
+		$mail->setFrom('Výběrové řízení OB <vybriz@ceskyorientak.cz>')
 			->addTo($data['mail'] . ' <'.$data['mail'].'>')
 			->setHtmlBody($template);
 
