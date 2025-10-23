@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unrealeased]
+
+## [1.3.0] - 2025-10-23
 - change domain to vybriz.ceskyorientak.cz
 
 ## [1.2.0] - 2025-05-03
