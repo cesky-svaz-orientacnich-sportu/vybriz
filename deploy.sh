@@ -2,6 +2,6 @@
 
 git pull
 /usr/bin/php8.3 /usr/local/bin/composer install
-npm install
-npm run build
+pnpm install
+pnpm run build
 sudo rm -r temp/cache

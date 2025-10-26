@@ -3,13 +3,14 @@
 ## Použité nástroje
 - [Nette](https://nette.org/)
 - [Gulp](https://gulpjs.com/) for asset processing
+- [pnpm](https://pnpm.io/)
 
 
 ## Instalace
 1. Nainstaluj závislosti:
 ```sh
 composer install
-npm install
+pnpm install
 ```
 2. Povol práva zápisu složkám `temp/` a `log/`:
 ```sh
@@ -24,7 +25,7 @@ php ./www/index.php o:s:c
 ```
 6. Zkompiluj assety:
 ```sh
-npm run build
+pnpm run build
 ```
 7. Web je dostupný k prohlížení v prohlížeči ve složce `www/`.
 
@@ -40,7 +41,7 @@ php -S localhost:8000 -t www
 ```
 4. Pokud hodláš pracovat s assety, spusť vývojový task (se zahrnutým watch taskem):
 ```sh
-npm run dev
+pnpm run dev
 ```
 
 
