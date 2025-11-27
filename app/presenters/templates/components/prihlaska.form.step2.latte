@@ -352,7 +352,7 @@
 				<tr><td>název</td><td>smazat soubor</td></tr>
 				{foreach $soubory as $soubor}
 					<tr>
-						<td class="cols4"><a href="{$basePath}{$soubor->url}" target="_blank" rel="noopener noreferrer">{$soubor->nazev}</a></td>
+						<td class="cols4"><a href="{$basePath}{$soubor->url}" target="_blank">{$soubor->nazev}</a></td>
 						<td class="cols2"><a n:href="deleteFile! file_id => $soubor->id">smazat</a></td>
 					</tr>
 				{/foreach}

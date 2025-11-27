@@ -103,7 +103,7 @@
 				</tr>
 				<tr>
 					<td>Termín</td>
-					<td><a n:href="AktualniVr:Detail $p1->id" target="_blank" rel="noopener noreferrer">{$terminy_table[$p1->termin]->termin|date:'j.n.'}</a> {if $oba_dny && $p1->termin != $p2->termin}+ <a n:href="AktualniVr:Detail $p2->id" target="_blank" rel="noopener noreferrer">{$terminy_table[$p2->termin]->termin|date:'j.n.'}</a>{/if}</td>
+					<td><a n:href="AktualniVr:Detail $p1->id">{$terminy_table[$p1->termin]->termin|date:'j.n.'}</a> {if $oba_dny && $p1->termin != $p2->termin}+ <a n:href="AktualniVr:Detail $p2->id">{$terminy_table[$p2->termin]->termin|date:'j.n.'}</a>{/if}</td>
 				</tr>
 
 				<tr>
@@ -130,7 +130,7 @@
 
 				<tr>
 					<td>Web</td>
-					<td><a href="{$p1->web}" target="_blank" rel="noopener noreferrer">{$p1->web}</a></td>
+					<td><a href="{$p1->web}">{$p1->web}</a></td>
 				</tr>
 			</table>
 		{/foreach}
@@ -166,7 +166,7 @@
 				</tr>
 				<tr>
 					<td>Web</td>
-					<td><a href="{$p1->web}" target="_blank" rel="noopener noreferrer">{$p1->web}</a></td>
+					<td><a href="{$p1->web}">{$p1->web}</a></td>
 				</tr>
 			</table>
 

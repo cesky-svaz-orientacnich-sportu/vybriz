@@ -283,7 +283,7 @@
 				{foreach $soubory as $soubor}
 					<tr>
 						<td>#{$soubor->id|padLeft:4,'0'}</td>
-						<td><a href="{$basePath}{$soubor->url}" class="t-file" target="_blank" rel="noopener noreferrer">{$soubor->nazev}</a></td>
+						<td><a href="{$basePath}{$soubor->url}" class="t-file" target="_blank">{$soubor->nazev}</a></td>
 						<td><a n:href="deleteFile! file_id => $soubor->id">smazat</a></td>
 					</tr>
 				{/foreach}

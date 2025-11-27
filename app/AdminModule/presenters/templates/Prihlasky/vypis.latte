@@ -117,7 +117,7 @@
 				</tr>
 				<tr>
 					<td>Termín</td>
-					<td><a n:href=":Archiv:Detail $p1->id" target="_blank" rel="noopener noreferrer">{$terminy_table[$p1->termin]->termin|date:'j.n.'}</a> {if $oba_dny && $p1->termin != $p2->termin}+ <a n:href=":Archiv:Detail $p2->id" target="_blank" rel="noopener noreferrer">{$terminy_table[$p2->termin]->termin|date:'j.n.'}</a>{/if}</td>
+					<td><a n:href=":Archiv:Detail $p1->id">{$terminy_table[$p1->termin]->termin|date:'j.n.'}</a> {if $oba_dny && $p1->termin != $p2->termin}+ <a n:href=":Archiv:Detail $p2->id">{$terminy_table[$p2->termin]->termin|date:'j.n.'}</a>{/if}</td>
 				</tr>
 
 				<tr>
@@ -144,7 +144,7 @@
 
 				<tr>
 					<td>Web</td>
-					<td>{if isset($p1->web)}<a href="{$p1->web}" target="_blank" rel="noopener noreferrer">{$p1->web}</a>{else}-{/if}</td>
+					<td>{if isset($p1->web)}<a href="{$p1->web}">{$p1->web}</a>{else}-{/if}</td>
 				</tr>
 			</table>
 		{/foreach}
@@ -187,7 +187,7 @@
 				</tr>
 				<tr>
 					<td>Web</td>
-					<td>{if $p1->web}<a href="{$p1->web}" target="_blank" rel="noopener noreferrer">{$p1->web}</a>{else}-{/if}</td>
+					<td>{if $p1->web}<a href="{$p1->web}">{$p1->web}</a>{else}-{/if}</td>
 				</tr>
 			</table>
 		{/foreach}
