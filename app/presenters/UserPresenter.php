@@ -66,7 +66,8 @@ class UserPresenter extends BasePresenter
 			);
 
 			$mail = new Nette\Mail\Message;
-			$mail->setFrom('Výběrové řízení OB <vybriz@ceskyorientak.cz>')
+			$mail->setFrom('Výběrové řízení OB <podpora@ceskyorientak.cz>')
+				->addReplyTo(self::CONTACT_EMAIL)
 				->addTo($user->mail)
 				->setHtmlBody($template);
 

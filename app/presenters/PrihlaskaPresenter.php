@@ -1067,9 +1067,11 @@ class PrihlaskaPresenter extends BasePresenter
 				$template->data = $prihlaska;
 				$template->druh = $druh_zavodu;
 				$template->termin = $termin;
+				$template->contact_email = self::CONTACT_EMAIL;
 
 				$mail = new Nette\Mail\Message;
-				$mail->setFrom('Výběrové řízení OB <vybriz@ceskyorientak.cz>')
+				$mail->setFrom('Výběrové řízení OB <podpora@ceskyorientak.cz>')
+					->addReplyTo(self::CONTACT_EMAIL)
 					->addTo($prihlaska->jmeno.' <'.$prihlaska->mail.'>')
 					->setHtmlBody($template);
 
@@ -1738,10 +1740,12 @@ class PrihlaskaPresenter extends BasePresenter
 
 		$template = $this->createTemplate();
 		$template->data = $data;
+		$template->contact_email = self::CONTACT_EMAIL;
 		$template->setFile(__DIR__ . '/templates/components/accessRequest.mail.latte');
 
 		$mail = new Nette\Mail\Message;
-		$mail->setFrom('Výběrové řízení OB <vybriz@ceskyorientak.cz>')
+		$mail->setFrom('Výběrové řízení OB <podpora@ceskyorientak.cz>')
+			->addReplyTo(self::CONTACT_EMAIL)
 			->addTo($data['mail'] . ' <'.$data['mail'].'>')
 			->setHtmlBody($template);
 

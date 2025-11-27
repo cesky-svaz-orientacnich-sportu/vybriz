@@ -13,6 +13,8 @@ use Nette;
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
 
+	public const CONTACT_EMAIL = "vyberoverizeni@orientacnibeh.cz";
+
 	public $mailer;
 
 	public function injectMailer(Nette\Mail\Mailer $mailer) {

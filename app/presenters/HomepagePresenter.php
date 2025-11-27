@@ -20,5 +20,6 @@ class HomepagePresenter extends BasePresenter
     {
 		$kolo = $this->database->table('kola')->where('do >= CURDATE()')->order('od ASC')->limit(1)->fetch();
 		$this->template->kolo = $kolo;
+		$this->template->contact_email = self::CONTACT_EMAIL;
     }
 }
