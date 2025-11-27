@@ -808,7 +808,7 @@ class PrihlaskaPresenter extends BasePresenter
 					));
 
 				try {
-					if(count(Utils\Json::decode($prihlaska['centrum_zavodu_mapa'] ?? '{}')) == 0 || count(Utils\Json::decode($prihlaska['prostor_zavodu_mapa'] ?? '{}')) == 0){
+					if (count(Utils\Json::decode($prihlaska['centrum_zavodu_mapa'] ?? '[]')) == 0 || count(Utils\Json::decode($prihlaska['prostor_zavodu_mapa'] ?? '[]')) == 0) {
 						$this->flashMessage('Zakreslete prosím centrum a prostor závodu do mapy.', 'error');
 						$this->redirect('this');
 					}
