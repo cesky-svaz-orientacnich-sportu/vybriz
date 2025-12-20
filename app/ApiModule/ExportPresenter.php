@@ -58,21 +58,21 @@ class ExportPresenter extends BaseApiPresenter
 
     private function getEventCoordsList($args)
     {
-        //Data - pole dat pro export
+        // Data - pole dat pro export
         $data = [];
-        if(isset($args['year'])){
-            //seznam kol vyhovujících zadaným parametrům
+        if (isset($args['year'])) {
+            // seznam kol vyhovujících zadaným parametrům
             $kola = $this->database->table('kola')->where('do < CURDATE() AND rok ?', (int) $args['year'])->select('id');
 
-            //?round=3 - kolo
+            // ?round=3 - kolo
             if (isset($args['round'])) {
                 $kola->where('kolo', substr($args['round'], 0, 4));
             }
 
-            //ID kol
+            // ID kol
             $kola = $kola->fetchPairs(NULL, 'id');
 
-            //Přihlášky pro daná kola
+            // Přihlášky pro daná kola
             $prihlasky = $this->database->table('prihlasky')->where('prihlasky.kolo IN(?) AND stav ?', $kola, ['submitted', 'confirmed', 'selected']);
 
             //?orisonly=1 - pouze spárované s ORISem
@@ -83,7 +83,7 @@ class ExportPresenter extends BaseApiPresenter
             //Vytvoření pole dat pro export
             //
             // Event_XXX: [ID, OrisId, EventCentre, RaceArea]
-            // 
+            //
             foreach ($prihlasky as $key => $prihlaska) {
                 $data['Event_'.$key] = [
                         'ID' => $prihlaska['id'],
