@@ -1,5 +1,6 @@
 {
     "require": {
+        "ext-intl": "*",
         "kdyby/forms-replicator": "~2.0",
         "latte/latte": "^3.0.14",
         "nette/nette": "^3.2",
