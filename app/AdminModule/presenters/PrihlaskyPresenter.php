@@ -336,16 +336,24 @@ class PrihlaskyPresenter extends BaseAdminPresenter
 
         //Uložení do cache
         $cache = new Nette\Caching\Cache($this->storage);
-        $formated_data = $cache->save('OrisLoaderFormated_y'.$rok.$kolo_id, function() use ($oris_link) {
-                $raw_data = Utils\Json::decode(file_get_contents($oris_link), 1);
-                $data = [];
+        $cache_key = 'OrisLoaderFormated_y'.$rok.$kolo_id;
+        $formated_data = $cache->load($cache_key);
+        if ($formated_data === null) {
+            //výpadek ORISu (např. 429 Too Many Requests) neukládat do cache, jen upozornit
+            $raw = @file_get_contents($oris_link);
+            $raw_data = $raw ? json_decode($raw, true) : null;
 
+            if (isset($raw_data['Data']) && is_array($raw_data['Data'])) {
+                $formated_data = [];
                 foreach ($raw_data['Data'] as $d) {
-                    $data[$d['Date']][$d['Org1']['Abbr']] = $d;
+                    $formated_data[$d['Date']][$d['Org1']['Abbr']] = $d;
                 }
-
-                return $data;
-        }, [Nette\Caching\Cache::EXPIRE => '20 minutes']);
+                $cache->save($cache_key, $formated_data, [Nette\Caching\Cache::EXPIRE => '20 minutes']);
+            } else {
+                $formated_data = [];
+                $this->flashMessage('Nepodařilo se načíst data z ORISu, zkuste to později.', 'error');
+            }
+        }
 
         $data2 = $this->prihlaskyRepository->getAllForYear($rok)->where('stav', 'submitted')->order('termin.termin ASC');
 

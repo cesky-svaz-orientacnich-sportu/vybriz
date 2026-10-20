@@ -689,7 +689,9 @@ class PrihlaskaPresenter extends BasePresenter
 					$kolo = $this->database->table('kola')->select('id')->where('do >= CURDATE()')->order('od ASC')->limit(1)->fetch();
 
 					//Nahraje data o oddíle z ORISu
-					$json_data = Utils\Json::decode(file_get_contents('https://oris.ceskyorientak.cz/API/?format=json&method=getClub&id='.$odd_abbr), TRUE);
+					//výpadek ORISu (např. 429 Too Many Requests) nesmí shodit podání přihlášky -> název oddílu bude '?'
+					$raw = @file_get_contents('https://oris.ceskyorientak.cz/API/?format=json&method=getClub&id='.$odd_abbr);
+					$json_data = $raw ? json_decode($raw, TRUE) : NULL;
 					$odd = ($json_data && @$json_data['Status'] === 'OK') ? $json_data['Data']['Name'] : '?';
 
 					$prihlasky_table = $this->database->table('prihlasky');
